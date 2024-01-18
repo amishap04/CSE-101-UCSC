@@ -57,11 +57,22 @@ void freeList(List* pL) {
 }
 
 // Access functions
-nt length(List L) {
+int length(List L) {
+
+    if( L==NULL ){
+	printf("List Error: calling length() on NULL List reference\n");
+	exit(EXIT_FAILURE);
+    }
     return L->length;
 }
 
 int index(List L) {
+
+    if( L==NULL ){
+        printf("List Error: calling index() on NULL List reference\n");
+        return -1;
+	exit(EXIT_FAILURE)
+    }
     return L->index;
 }
 
