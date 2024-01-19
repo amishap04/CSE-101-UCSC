@@ -77,28 +77,51 @@ int index(List L) {
 }
 
 int front(List L) {
-    if (L->length > 0) {
-        return L->front->data;
+    if( L==NULL ){
+	printf("List Error: calling front() on NULL List reference\n");
+	exit(EXIT_FAILURE);
     }
-    return -1; // Return an invalid value if the list is empty
+    if( length(L)==0 ){
+	printf("List Error: calling front() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+    if(L->length > 0){
+	 return(L->front->data);
+    }
+
 }
 
 int back(List L) {
-    if (L->length > 0) {
-        return L->back->data;
+    if( L==NULL ){
+        printf("List Error: calling back() on NULL List reference\n");
+        exit(EXIT_FAILURE);
     }
-    return -1; // Return an invalid value if the list is empty
+    if( length(L)==0 ){
+        printf("List Error: calling back() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+    if(L->length > 0){
+         return(L->back->data);
+    }
 }
 
 int get(List L) {
+    if( L==NULL ){
+        printf("List Error: calling get() on NULL List reference\n");
+        exit(EXIT_FAILURE);
+    }
     if (L->length > 0 && L->index >= 0) {
         return L->cursor->data;
     }
-    return -1; // Return an invalid value if the list is empty or cursor is undefined
 }
 
 bool equals(List A, List B) {
-    if (A->length != B->length) {
+   if( A==NULL || B==NULL ){
+	printf("List Error: calling equals() on NULL List reference\n");
+        exit(EXIT_FAILURE);
+   }
+
+   if (A->length != B->length) {
         return false;
     }
 
@@ -114,6 +137,7 @@ bool equals(List A, List B) {
     }
 
     return true;
+
 }
 
 // Manipulation procedures

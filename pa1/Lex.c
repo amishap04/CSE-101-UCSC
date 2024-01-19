@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
 // Read lines of input file and count them
     lines = malloc(MAX_LEN * sizeof(char *));
     while (fgets(line, MAX_LEN, in) != NULL) {
-        lines[line_count] = strcmp(line);
+        lines[line_count] = strdup(line);
         line_count++;
     }
 
