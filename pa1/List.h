@@ -40,4 +40,3 @@ void delete(List L);
 void printList(FILE* out, List L);
 List copyList(List L);
 List concatList(List A, List B);
-//

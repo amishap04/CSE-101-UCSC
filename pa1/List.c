@@ -70,8 +70,7 @@ int index(List L) {
 
     if( L==NULL ){
         printf("List Error: calling index() on NULL List reference\n");
-        return -1;
-	exit(EXIT_FAILURE)
+	exit(EXIT_FAILURE);
     }
     return L->index;
 }
@@ -123,7 +122,7 @@ bool equals(List A, List B) {
 
    if (A->length != B->length) {
         return false;
-    }
+   }
 
     Node nodeA = A->front;
     Node nodeB = B->front;
