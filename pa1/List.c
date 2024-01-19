@@ -11,7 +11,7 @@ typedef struct NodeObj{
    int data;
    struct NodeObj* next;
    struct NodeObj* prev;
-} NodeObj;
+} Node;
 
 // private ListObj type
 typedef struct ListObj{
@@ -20,7 +20,7 @@ typedef struct ListObj{
    Node cursor;
    int length;
    int index;
-} ListObj;
+} List;
 
 // Constructors-Destructors
 
