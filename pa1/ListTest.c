@@ -1,4 +1,4 @@
-#include "../../pa1/List.h"
+#include "List.h"
 #include <stdio.h>
 #include <stdlib.h>
 

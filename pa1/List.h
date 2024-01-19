@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+
+typedef struct NodeObj* Node;
+typedef struct ListObj* List;
+
 // Constructors-Destructors
 List newList(void); 
 void freeList(List* pL);
