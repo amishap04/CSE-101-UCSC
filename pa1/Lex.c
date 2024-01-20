@@ -86,13 +86,18 @@ int main(int argc, char * argv[]){
  
    }
 
-   for (int i = 0; i < size-1; i++) {
+
+
+   int array_length = size-1;
+
+   
+   for (int i = 0; i < array_length; i++) {
         printf("%s\n", stringArray[i]);
     }
 
 
 
-   for (int i = 0; i < size; i++) {
+   for (int i = 0; i < array_length; i++) {
         free(stringArray[i]);
     }
     free(stringArray);   
