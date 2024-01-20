@@ -4,14 +4,14 @@
 
 // private Node type
 typedef struct NodeObj* Node;
-typedef struct ListObj* List;
+// typedef struct ListObj* List;
 
 // private NodeObj type
 typedef struct NodeObj{
    int data;
-   struct NodeObj* next;
-   struct NodeObj* prev;
-} Node;
+   Node next;
+   Node prev;
+} NodeObj;
 
 // private ListObj type
 typedef struct ListObj{
@@ -20,7 +20,7 @@ typedef struct ListObj{
    Node cursor;
    int length;
    int index;
-} List;
+} ListObj;
 
 // Constructors-Destructors
 
@@ -84,9 +84,7 @@ int front(List L) {
 	printf("List Error: calling front() on empty List reference\n");
         exit(EXIT_FAILURE);
     }
-    if(L->length > 0){
-	 return(L->front->data);
-    }
+    return(L->front->data);
 
 }
 
@@ -99,9 +97,7 @@ int back(List L) {
         printf("List Error: calling back() on empty List reference\n");
         exit(EXIT_FAILURE);
     }
-    if(L->length > 0){
-         return(L->back->data);
-    }
+    return(L->back->data);
 }
 
 int get(List L) {
@@ -109,9 +105,11 @@ int get(List L) {
         printf("List Error: calling get() on NULL List reference\n");
         exit(EXIT_FAILURE);
     }
-    if (L->length > 0 && L->index >= 0) {
-        return L->cursor->data;
+    if( length(L)==0 || index(L) < 0){
+        printf("List Error: calling get() on empty List reference\n");
+        exit(EXIT_FAILURE);
     }
+    return L->cursor->data;
 }
 
 bool equals(List A, List B) {
@@ -267,7 +265,7 @@ void insertAfter(List L, int x) {
 
 void deleteFront(List L) {
     if (L->length > 0) {
-        Node* temp = L->front;
+        Node temp = L->front;
         if (L->length == 1) {
             L->front = NULL;
             L->back = NULL;
@@ -288,7 +286,7 @@ void deleteFront(List L) {
 
 void deleteBack(List L) {
     if (L->length > 0) {
-        Node* temp = L->back;
+        Node temp = L->back;
         if (L->length == 1) {
             L->front = NULL;
             L->back = NULL;
@@ -345,11 +343,11 @@ void printList(FILE* out, List L) {
 }
 
 List copyList(List L) {
-    List newListCopy = *newList();
+    List newListCopy = newList();
     Node current = L->front;
 
     while (current != NULL) {
-        append(&newListCopy, current->data);
+        append(newListCopy, current->data);
         current = current->next;
     }
 
@@ -357,17 +355,17 @@ List copyList(List L) {
 }
 
 List concatList(List A, List B) {
-    List newListConcat = *newList();
+    List newListConcat = newList();
 
     Node currentA = A->front;
     while (currentA != NULL) {
-        append(&newListConcat, currentA->data);
+        append(newListConcat, currentA->data);
         currentA = currentA->next;
     }
 
     Node currentB = B->front;
     while (currentB != NULL) {
-        append(&newListConcat, currentB->data);
+        append(newListConcat, currentB->data);
         currentB = currentB->next;
     }
 
