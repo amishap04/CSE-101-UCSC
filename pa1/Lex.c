@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<stdbool.h>
 #include<string.h>
+#include "List.h"
 
 #define MAX_LEN 300
 
@@ -94,6 +95,48 @@ int main(int argc, char * argv[]){
    for (int i = 0; i < array_length; i++) {
         printf("%s\n", stringArray[i]);
     }
+
+
+   List indexList = newList();
+
+   for (int i = 0; i < array_length; i++) {
+     append(indexList, i);
+   }
+
+   printList(stdout, indexList);
+   printf("\n");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
