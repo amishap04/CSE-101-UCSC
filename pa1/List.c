@@ -322,8 +322,8 @@ void delete(List L) {
 
 void printList(FILE* out, List L) {
     if (L->length > 0) {
-        Node current = L->front;
-        while (current != NULL) {
+        Node current = L->front->next;
+        while (current != L->back) {
             fprintf(out, "%d ", current->data);
             current = current->next;
         }
