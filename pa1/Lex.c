@@ -5,6 +5,9 @@
 #include "List.h"
 
 #define MAX_LEN 300
+//void insertionSortList(List L, char** stringArray);
+
+
 
 int main(int argc, char * argv[]){
 
@@ -107,6 +110,10 @@ int main(int argc, char * argv[]){
    printf("\n");
 
 
+   insertionSortList(indexList, stringArray);
+
+   printList(stdout, indexList);
+   printf("\n");
 
 
 
@@ -152,3 +159,72 @@ int main(int argc, char * argv[]){
 
    return(0);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+void insertionSortList(List L, char** stringArray) {
+    if (L == NULL || length(L) < 2) {
+        return; 
+    }
+
+    Node current, sortedIter, next;
+    current = L->front->next; 
+
+    while (current != NULL) {
+        int currentValue = current->data;
+        sortedIter = current->prev; 
+
+       
+	int comp = strcmp(stringArray[currentValue], stringArray[sortedIter->data]); 
+        while (sortedIter != NULL && comp < 0) {
+            sortedIter = sortedIter->prev;
+        }
+
+        
+        next = current->next;
+        if (current->prev != NULL) {
+            current->prev->next = current->next;
+        }
+        if (current->next != NULL) {
+            current->next->prev = current->prev;
+        }
+
+        
+        if (sortedIter == NULL) { 
+            current->next = L->front;
+            current->prev = NULL;
+            L->front->prev = current;
+            L->front = current;
+        } else { 
+            current->next = sortedIter->next;
+            current->prev = sortedIter;
+            if (sortedIter->next != NULL) {
+                sortedIter->next->prev = current;
+            }
+            sortedIter->next = current;
+            if (current->next == NULL) { 
+                L->back = current;
+            }
+        }
+
+        
+        current = next;
+    }
+}
+*/
+
+
+
