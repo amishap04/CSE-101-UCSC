@@ -3,6 +3,30 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
+/*
+  List Amisha = newList();
+  myPrintList(Amisha);
+
+  append(Amisha, 4);
+  myPrintList(Amisha);
+
+
+
+  append(Amisha, 5);
+  myPrintList(Amisha);
+
+  append(Amisha, 6);
+  myPrintList(Amisha);
+  
+  prepend(Amisha, 3);
+  myPrintList(Amisha);
+
+  prepend(Amisha, 2);
+  myPrintList(Amisha);
+
+  prepend(Amisha, 1);
+  myPrintList(Amisha);
+*/
 
   List A = newList();
   List B = newList();
@@ -23,6 +47,7 @@ int main(int argc, char *argv[]) {
     printf("%d ", get(A));
   }
   printf("\n");
+
   for (moveBack(B); index(B) >= 0; movePrev(B)) {
     printf("%d ", get(B));
   }
@@ -42,7 +67,9 @@ int main(int argc, char *argv[]) {
   insertAfter(A, -2);
   for (i = 0; i < 5; i++)
     movePrev(A); // at index 10
+  printf("before: %d\n", get(A));
   delete (A);
+  //printf("after: %d\n", get(A));
   printList(stdout, A);
   printf("\n");
   printf("%d\n", length(A));
@@ -54,5 +81,8 @@ int main(int argc, char *argv[]) {
   freeList(&C);
 
   return (0);
+
+
+
 }
 
