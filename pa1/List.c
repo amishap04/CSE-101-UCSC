@@ -43,7 +43,10 @@ void freeNode(Node* pN) {
 List newList(void) {
     List L = malloc(sizeof(ListObj));
     assert( L!=NULL );
-    L->front = L->back = NULL;
+    L->front = newNode(-1);
+    L->back = newNode(-1);
+    L->front->next = L->back;
+    L->back->prev = L->front;
     L->length = 0;
     return(L);
 }
@@ -187,41 +190,25 @@ void moveNext(List L) {
 void prepend(List L, int x) {
     Node newNode = malloc(sizeof(NodeObj));
     newNode->data = x;
-    newNode->prev = NULL;
-    newNode->next = NULL;
-
-    if (L->length == 0) {
-        L->front = newNode;
-        L->back = newNode;
-        L->cursor = newNode;
-        L->index = 0;
-    } else {
-        newNode->next = L->front;
-        L->front->prev = newNode;
-        L->front = newNode;
+        newNode->prev = L->front;
+        newNode->next = L->front->next;
+        L->front->next->prev = newNode;
+        L->front->next = newNode;
         L->index++;
-    }
 
-    L->length++;
+
+    L->length++;    
+
 }
 
-void append(List L, int x) {
+
+void append(List L, int x){
     Node newNode = malloc(sizeof(NodeObj));
     newNode->data = x;
-    newNode->prev = NULL;
-    newNode->next = NULL;
-
-    if (L->length == 0) {
-        L->front = newNode;
-        L->back = newNode;
-        L->cursor = newNode;
-        L->index = 0;
-    } else {
         newNode->next = L->back;
 	newNode->prev = L->back->prev;
 	L->back->prev->next = newNode;
         L->back->prev = newNode;
-    }
 
     L->length++;
 }
