@@ -152,7 +152,7 @@ void set(List L, int x) {
 
 void moveFront(List L) {
     if (L->length > 0) {
-        L->cursor = L->front;
+        L->cursor = L->front->next;
         L->index = 0;
     }
 }
@@ -166,7 +166,7 @@ void moveBack(List L) {
 
 void movePrev(List L) {
     if (L->length > 0 && L->index > 0) {
-        L->cursor->prev = L->cursor;
+        L->cursor = L->cursor->prev;
         L->index--;
     } else if (L->length > 0 && L->index == 0) {
         L->cursor = NULL;
@@ -176,7 +176,7 @@ void movePrev(List L) {
 
 void moveNext(List L) {
     if (L->length > 0 && L->index < L->length - 1) {
-        L->cursor->next = L->cursor;
+        L->cursor = L->cursor->next;
         L->index++;
     } else if (L->length > 0 && L->index == L->length - 1) {
         L->cursor = NULL;
@@ -217,9 +217,10 @@ void append(List L, int x) {
         L->cursor = newNode;
         L->index = 0;
     } else {
-        newNode->prev = L->back;
-        L->back->next = newNode;
-        L->back = newNode;
+        newNode->next = L->back;
+	newNode->prev = L->back->prev;
+	L->back->prev->next = newNode;
+        L->back->prev = newNode;
     }
 
     L->length++;
