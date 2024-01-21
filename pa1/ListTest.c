@@ -38,6 +38,11 @@ int main(int argc, char *argv[]) {
     prepend(B, i);
   }
 
+  //printf("back of List A %d\n", back(A));
+  //printf("front of List A %d\n", front(A));
+  //printf("back of List B %d\n", back(B));
+  //printf("front of List B %d\n", front(B));
+
   printList(stdout, A);
   printf("\n");
   printList(stdout, B);
@@ -49,6 +54,8 @@ int main(int argc, char *argv[]) {
   printf("\n");
 
   for (moveBack(B); index(B) >= 0; movePrev(B)) {
+
+    printf("index value at back %d\n", index(B));
     printf("%d ", get(B));
   }
   printf("\n");

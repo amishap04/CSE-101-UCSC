@@ -71,18 +71,47 @@ int length(List L) {
 
 int index(List L) {
 
-    if( L==NULL ){
-        printf("List Error: calling index() on NULL List reference\n");
+    if( L==NULL){
+//        printf("List Error: calling index() on NULL List reference\n");
+	printf("-1 A\n");
 	return -1;
     }
-    int index = 0;
-    Node itr = L->front;
+/*
+    else if(L->cursor == NULL){
+	printf("-1 C\n");
+	return -1;
 
-    while(itr->data != L->cursor->data){
-	itr = itr->next;
-	index++;
     }
-    return index;
+*/
+    else{
+
+	if(L->cursor == NULL){
+             printf("-1 C\n");
+             return -1;
+
+        }
+
+
+
+
+	Node itr = L->front;
+        int index = 0;
+
+	
+	
+
+        while(itr->data != L->cursor->data && itr != NULL){
+	    itr = itr->next;
+	    index++;
+        }  
+
+	if(itr == NULL){
+		printf("-1 B");
+		return -1;
+	}
+
+      return index;
+    } 
 }
 
 int front(List L) {
@@ -197,42 +226,30 @@ void moveAmishaPrev(List L) {
 */
 void movePrev(List L) {
 
-   if(index(L) > -1){
-        if(get(L) != front(L)){
+    if(L->cursor != NULL){
+	printf("cool\n");
+        if(L->cursor->prev != NULL){
+		printf("nice\n");
                 L->cursor = L->cursor->prev;
         }
-        else{
-                L->cursor = NULL;
+        else if(L->cursor->prev == NULL){   
+        	printf("yayyy\n"); 
+	        L->cursor = NULL;
         }
 
     }
-    else{
-        // do nothing
-       }
 
+    printf("index value in movePrev %d\n", index(L));
+
+  
 
 }
 
-
-/*
-void moveAmishaNext(List L) {
-    if (index(L) > -1) {
-
-	if(L->cursor != L->back){
-	  
-        	L->cursor = L->cursor->next;
-        }
-        else{
-	   L->cursor = NULL;
-        }
-    }  
-}
-*/
 
 void moveNext(List L) {
 
-    if(index(L) > -1){
-	if(get(L) != back(L)){
+    if(L->cursor != NULL){
+	if(L->cursor->next != NULL){
 		L->cursor = L->cursor->next;
 	}
 	else{
@@ -241,8 +258,8 @@ void moveNext(List L) {
 
     }
     else{
-	// do nothing
-    }
+	// do nothing 
+   }
 
  }
 
@@ -256,6 +273,7 @@ void prepend(List L, int x) {
 
     else{
         // newNode->prev = NULL;
+        L->front->prev = newNde;
         newNde->next = L->front;
         L->front = newNde;
 	// printf("%d\n", L->back->data);
