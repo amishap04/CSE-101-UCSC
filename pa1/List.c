@@ -73,7 +73,7 @@ int index(List L) {
 
     if( L==NULL){
 //        printf("List Error: calling index() on NULL List reference\n");
-	printf("-1 A\n");
+//	printf("-1 A\n");
 	return -1;
     }
 /*
@@ -86,7 +86,7 @@ int index(List L) {
     else{
 
 	if(L->cursor == NULL){
-             printf("-1 C\n");
+            // printf("-1 C\n");
              return -1;
 
         }
@@ -106,7 +106,7 @@ int index(List L) {
         }  
 
 	if(itr == NULL){
-		printf("-1 B");
+//		printf("-1 B");
 		return -1;
 	}
 
@@ -227,19 +227,19 @@ void moveAmishaPrev(List L) {
 void movePrev(List L) {
 
     if(L->cursor != NULL){
-	printf("cool\n");
+//	printf("cool\n");
         if(L->cursor->prev != NULL){
-		printf("nice\n");
+//		printf("nice\n");
                 L->cursor = L->cursor->prev;
         }
         else if(L->cursor->prev == NULL){   
-        	printf("yayyy\n"); 
+     //   	printf("yayyy\n"); 
 	        L->cursor = NULL;
         }
 
     }
 
-    printf("index value in movePrev %d\n", index(L));
+    //printf("index value in movePrev %d\n", index(L));
 
   
 

@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
 
   for (moveBack(B); index(B) >= 0; movePrev(B)) {
 
-    printf("index value at back %d\n", index(B));
+   // printf("index value at back %d\n", index(B));
     printf("%d ", get(B));
   }
   printf("\n");

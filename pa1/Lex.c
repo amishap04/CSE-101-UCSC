@@ -6,7 +6,7 @@
 
 #define MAX_LEN 300
 void insertionSortList(List L, char** stringArray, FILE *out);
-
+void insertionSortString(List L, char** stringArray);
 
 
 int main(int argc, char * argv[]){
@@ -111,9 +111,9 @@ int main(int argc, char * argv[]){
   // printf("\n");
 
    insertionSortList(indexList, stringArray, out);
+   // insertionSortString(indexList, stringArray);
 
    for (int i = 0; i < array_length; i++) {
-    //    printf(" after sort stringArray[i] is %s\n", stringArray[i]);
     }
 
 /*
@@ -218,9 +218,27 @@ void insertionSortList(List L, char** stringArray, FILE *out){
 
 
 
+void insertionSortString(List L, char** stringArray) {
+    if (length(L) <= 1) return; // No need to sort if the list is empty or has only one element
 
+    moveFront(L);
+    moveNext(L); // Start from the second element
 
+    while (index(L) >= 0) {
+        int temp = get(L);
+        char* tempString = stringArray[temp];
+        movePrev(L);
 
+        while (index(L) >= 0 && strcmp(stringArray[get(L)], tempString) > 0) {
+            moveNext(L); // Move the cursor back to where it was
+            insertBefore(L, temp); // Insert the index before its current position
+            delete(L); // Delete the index at its original position
+            movePrev(L); // Move back to continue the sort
+        }
+
+        moveNext(L); // Move to the next element to be sorted
+    }
+}
 
 
 
