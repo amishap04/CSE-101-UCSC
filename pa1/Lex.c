@@ -7,7 +7,7 @@
 #define MAX_LEN 300
 void insertionSortList(List L, char** stringArray, FILE *out);
 void insertionSortString(List L, char** stringArray);
-
+void insertionSortTemp(List L, char** stringArray, FILE *out);
 
 int main(int argc, char * argv[]){
 
@@ -167,13 +167,13 @@ void insertionSortList(List L, char** stringArray, FILE *out){
 //		printf("hello  %d\n", get(L));
         }
 
-        int tempIndx;
+        //int tempIndx;
 	char* tempVal;
 	int j;
 	
         for(int i=1; i< length(L); i++){
 
-                tempIndx = i;
+                //tempIndx = i;
 		tempVal = stringArray[i];
                 j = i-1;
 
@@ -225,7 +225,52 @@ void insertionSortString(List L, char** stringArray) {
 }
 
 
+void insertionSortTemp(List L, char** stringArray, FILE *out){
 
+
+        int indexArray[length(L)];
+
+        moveFront(L);
+
+
+        for(int i=0; i < length(L); i++){
+                indexArray[i] = get(L);
+                indexArray[i] = i;
+
+                if (i < length(L) - 1){
+                        moveNext(L);
+                }
+
+        }
+
+        int temp;
+        int j;
+
+        for(int i=1; i< length(L); i++){
+
+                temp = indexArray[i];
+                j = i-1;
+
+
+                while(j>=0 && strcmp(stringArray[j], stringArray[temp]) > 0){
+
+                        indexArray[j+1] = indexArray[j];
+                        j--;
+                }
+
+                indexArray[j+1] = temp;
+
+        }
+
+
+        for(int i=0; i < length(L); i++){
+                fprintf(out, "%s\n", stringArray[indexArray[i]]);
+
+        }
+
+
+
+}
 
 
 
