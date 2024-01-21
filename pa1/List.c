@@ -1,5 +1,7 @@
 #include "List.h"
 
+
+
 // structs
 
 // private Node type
@@ -194,13 +196,24 @@ void moveAmishaPrev(List L) {
 }
 */
 void movePrev(List L) {
-    if (L != NULL && L->cursor != NULL && L->cursor != L->front) {
-        L->cursor = L->cursor->prev;
-    } else if (L->cursor == L->front) {
-        L->cursor = NULL; // Cursor becomes undefined if it's at the front
+
+   if(index(L) > -1){
+        if(get(L) != front(L)){
+                L->cursor = L->cursor->prev;
+        }
+        else{
+                L->cursor = NULL;
+        }
+
     }
-    // If cursor is already undefined, do nothing
- }
+    else{
+        // do nothing
+       }
+
+
+}
+
+
 /*
 void moveAmishaNext(List L) {
     if (index(L) > -1) {
@@ -217,12 +230,20 @@ void moveAmishaNext(List L) {
 */
 
 void moveNext(List L) {
-    if (L != NULL && L->cursor != NULL && L->cursor != L->back) {
-        L->cursor = L->cursor->next;
-    } else if (L->cursor == L->back) {
-        L->cursor = NULL; // Cursor becomes undefined if it's at the back
+
+    if(index(L) > -1){
+	if(get(L) != back(L)){
+		L->cursor = L->cursor->next;
+	}
+	else{
+		L->cursor = NULL;
+	}
+
     }
-    // If cursor is already undefined, do nothing
+    else{
+	// do nothing
+    }
+
  }
 
 void prepend(List L, int x) {
@@ -409,52 +430,7 @@ List concatList(List A, List B) {
 }
 
 
-void insertionSortList(List L, char** stringArray) {
-     if (L == NULL || length(L) < 2) {
-         return;
-     }
- 
-     Node current, sortedIter, next;
-     current = L->front->next;
- 
-     while (current != NULL) {
-         int currentValue = current->data;
-         sortedIter = current->prev;
- 
- 
-         int comp = strcmp(stringArray[currentValue], stringArray[sortedIter->data]);
-         while (sortedIter != NULL && comp < 0) {
-             sortedIter = sortedIter->prev;
-         }
- 
- 
-         next = current->next;
-         if (current->prev != NULL) {
-             current->prev->next = current->next;
-         }
-         if (current->next != NULL) {
-             current->next->prev = current->prev;
-         }
- 
- 
-         if (sortedIter == NULL) {
-             current->next = L->front;
-             current->prev = NULL;
-             L->front->prev = current;
-             L->front = current;
-         } else {
-             current->next = sortedIter->next;
-             current->prev = sortedIter;
-             if (sortedIter->next != NULL) {
-                 sortedIter->next->prev = current;
-             }
-             sortedIter->next = current;
-             if (current->next == NULL) {
-                 L->back = current;
-             }
-         }
- 
-         current = next;
-     }
-}
+
+
+
 

@@ -42,4 +42,3 @@ void printList(FILE* out, List L);
 void myPrintList(List L);
 List copyList(List L);
 List concatList(List A, List B);
-void insertionSortList(List L, char** stringArray);

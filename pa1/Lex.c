@@ -5,7 +5,7 @@
 #include "List.h"
 
 #define MAX_LEN 300
-//void insertionSortList(List L, char** stringArray);
+void insertionSortList(List L, char** stringArray);
 
 
 
@@ -96,21 +96,22 @@ int main(int argc, char * argv[]){
 
    
    for (int i = 0; i < array_length; i++) {
-        printf("%s\n", stringArray[i]);
+        printf("stringArray[i] is %s\n", stringArray[i]);
     }
 
 
    List indexList = newList();
 
+
    for (int i = 0; i < array_length; i++) {
-     append(indexList, i);
+       append(indexList, i);
    }
 
    printList(stdout, indexList);
    printf("\n");
 
-
    insertionSortList(indexList, stringArray);
+
 
    printList(stdout, indexList);
    printf("\n");
@@ -163,68 +164,75 @@ int main(int argc, char * argv[]){
 
 
 
+void insertionSortList(List L, char** stringArray){
 
 
+        int indexArray[length(L)];
 
+        moveFront(L);
 
+	
+        for(int i=0; i < length(L); i++){
+                indexArray[i] = get(L);
+		printf("cool  %d\n", get(L));
 
+		if (i < length(L) - 1){
+			moveNext(L);
+		}
 
+		printf("hello  %d\n", get(L));
+        }
 
-
-
-
-
+        printf("length is %d\n", length(L));
+	printf("last value is: %d\n", indexArray[length(L) - 1]);
 /*
-void insertionSortList(List L, char** stringArray) {
-    if (L == NULL || length(L) < 2) {
-        return; 
-    }
-
-    Node current, sortedIter, next;
-    current = L->front->next; 
-
-    while (current != NULL) {
-        int currentValue = current->data;
-        sortedIter = current->prev; 
-
-       
-	int comp = strcmp(stringArray[currentValue], stringArray[sortedIter->data]); 
-        while (sortedIter != NULL && comp < 0) {
-            sortedIter = sortedIter->prev;
+        for(int i=0; i < length(L); i++){
+                printf("index array at %d is %d\n", i, indexArray[i]);
         }
-
-        
-        next = current->next;
-        if (current->prev != NULL) {
-            current->prev->next = current->next;
-        }
-        if (current->next != NULL) {
-            current->next->prev = current->prev;
-        }
-
-        
-        if (sortedIter == NULL) { 
-            current->next = L->front;
-            current->prev = NULL;
-            L->front->prev = current;
-            L->front = current;
-        } else { 
-            current->next = sortedIter->next;
-            current->prev = sortedIter;
-            if (sortedIter->next != NULL) {
-                sortedIter->next->prev = current;
-            }
-            sortedIter->next = current;
-            if (current->next == NULL) { 
-                L->back = current;
-            }
-        }
-
-        
-        current = next;
-    }
-}
 */
+        //printf("duck");
+        for(int i=1; i< length(L); i++){
+
+                int temp = indexArray[i];
+                int j = i-1;
+        
+
+               // printf("befire comp\n");
+		//printf("stringArray[j] is %s\n", stringArray[j]);
+		//printf("stringArray[i] is %s\n", stringArray[i]);
+                int comp = strcmp(stringArray[j], stringArray[temp]);
+                printf("after comp %d\n", comp);
+                while(j>=0 && comp > 0){
+
+                        indexArray[j+1] = indexArray[j];
+                        j--;
+                }       
+
+                indexArray[j+1] = temp;
+
+        }
+
+
+        for(int i=0; i < length(L); i++){
+                printf("index array at %d is %d\n", i, indexArray[i]);
+		printf("string array at %d is %s\n", i, stringArray[indexArray[i]]);
+        }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
