@@ -157,6 +157,7 @@ void insertionSortList(List L, char** stringArray, FILE *out){
 	
         for(int i=0; i < length(L); i++){
                 indexArray[i] = get(L);
+		indexArray[i] = i;
 //		printf("cool  %d\n", get(L));
 
 		if (i < length(L) - 1){
@@ -166,48 +167,31 @@ void insertionSortList(List L, char** stringArray, FILE *out){
 //		printf("hello  %d\n", get(L));
         }
 
-  //      printf("length is %d\n", length(L));
-//	printf("last value is: %d\n", indexArray[length(L) - 1]);
-/*
-        for(int i=0; i < length(L); i++){
-                printf("index array at %d is %d\n", i, indexArray[i]);
-        }
-*/
-
-/*
-	for(int i=0; i < length(L); i++){
-                printf("APPP string array at %d is %s\n", i, stringArray[i]);
-        }
-*/
-
-        //printf("duck");
+        int tempIndx;
+	char* tempVal;
+	int j;
+	
         for(int i=1; i< length(L); i++){
 
-                int temp = indexArray[i];
-                int j = i-1;
+                tempIndx = i;
+		tempVal = stringArray[i];
+                j = i-1;
 
 
-        
+                while(j>=0 && strcmp(stringArray[j], tempVal) > 0){
 
-               // printf("befire comp\n");
-		//printf("stringArray[j] is %s\n", stringArray[j]);
-		//printf("stringArray[i] is %s\n", stringArray[i]);
-                int comp = strcmp(stringArray[j], stringArray[temp]);
-  //              printf("after comp %d\n", comp);
-                while(j>=0 && comp > 0){
-
-                        indexArray[j+1] = indexArray[j];
+                        stringArray[j+1] = stringArray[j];
                         j--;
                 }       
 
-                indexArray[j+1] = temp;
+                stringArray[j+1] = tempVal;
 
         }
 
 
         for(int i=0; i < length(L); i++){
-                printf("NEW index array at %d is %d\n", i, indexArray[i]);
-		printf("NEW string array at %d is %s\n", i, stringArray[indexArray[i]]);
+                //printf("index array at %d is %d\n", i, indexArray[i]);
+		//printf("string array at %d is %s\n", i, stringArray[i]);
 		fprintf(out, "%s\n", stringArray[indexArray[i]]);
 
         }

@@ -28,6 +28,13 @@ int main(int argc, char *argv[]) {
   myPrintList(Amisha);
 */
 
+  char * str1 = "Six";
+  char * str2 = "Seven";
+
+  int comp = strcmp(str1, str2);
+  printf(" string comp: %d\n", comp);
+
+
   List A = newList();
   List B = newList();
   List C = NULL;
