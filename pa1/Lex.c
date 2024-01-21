@@ -5,7 +5,7 @@
 #include "List.h"
 
 #define MAX_LEN 300
-void insertionSortList(List L, char** stringArray);
+void insertionSortList(List L, char** stringArray, FILE *out);
 
 
 
@@ -62,9 +62,9 @@ int main(int argc, char * argv[]){
       }
 
     
-      fprintf(out, "line %d contains %d ", line_count, token_count);
-      fprintf(out, "token%s: \n", token_count==1?"":"s" );
-      fprintf(out, "%s\n", tokenBuffer);
+     // fprintf(out, "line %d contains %d ", line_count, token_count);
+     // fprintf(out, "token%s: \n", token_count==1?"":"s" );
+     // fprintf(out, "%s\n", tokenBuffer);
 
       if(size == 1){
       	stringArray[size-1] = strdup(tokenBuffer);
@@ -110,9 +110,22 @@ int main(int argc, char * argv[]){
    printList(stdout, indexList);
    printf("\n");
 
-   insertionSortList(indexList, stringArray);
+   insertionSortList(indexList, stringArray, out);
 
+   for (int i = 0; i < array_length; i++) {
+        printf(" after sort stringArray[i] is %s\n", stringArray[i]);
+    }
 
+/*
+   moveFront(indexList);
+   printf("cursor val is: %d\n", get(indexList));
+   for(int i=0; i<length(indexList); i++){
+//	fprintf(out, "%s\n", stringArray[get(indexList)]);
+        moveNext(indexList);
+   }
+*/
+
+   printf("sorted list print\n");
    printList(stdout, indexList);
    printf("\n");
 
@@ -164,7 +177,7 @@ int main(int argc, char * argv[]){
 
 
 
-void insertionSortList(List L, char** stringArray){
+void insertionSortList(List L, char** stringArray, FILE *out){
 
 
         int indexArray[length(L)];
@@ -216,6 +229,8 @@ void insertionSortList(List L, char** stringArray){
         for(int i=0; i < length(L); i++){
                 printf("index array at %d is %d\n", i, indexArray[i]);
 		printf("string array at %d is %s\n", i, stringArray[indexArray[i]]);
+		fprintf(out, "%s\n", stringArray[indexArray[i]]);
+
         }
 
 
