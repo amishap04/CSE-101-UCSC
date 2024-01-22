@@ -23,6 +23,9 @@ void getGraphFileData(char* inputFile, InputData* inputData);
 void freeInputData(InputData* inputData);
 void printOutputFile(char* outputFile, char** outputDataArray, int arraySize);
 void freeOutputArray(char** outputArray, int arraySize);
+char** createStringArray(int* size);
+char** addString(char** array, int* size, const char* string);
+
 
 
 // start of main
@@ -37,9 +40,12 @@ int main(int argc, char * argv[]){
 
 
    InputData* inputData = malloc(sizeof(InputData));
-   
-   char** outputArray;
+
    int outputArraySize = 0;
+   char** outputArray = createStringArray(&outputArraySize);
+
+   outputArray = addString(outputArray, &outputArraySize, "123\n");
+   outputArray = addString(outputArray, &outputArraySize, "456\n");
 
 
 
@@ -187,6 +193,51 @@ void freeInputData(InputData* inputData){
 
 void printOutputFile(char* outputFile, char** outputDataArray, int arraySize){
 
+
+   FILE *out;
+   out = fopen(outputFile, "w");
+
+   if( out==NULL ){
+      printf("Unable to open file %s for writing\n", outputFile);
+      exit(1);
+   }	
+
+   if(arraySize > 0){
+
+        for(int i = 0; i < arraySize; i++){
+		fprintf(out, outputDataArray[i]);
+        }   
+   }
+   fclose(out);
+}
+
+
+char** createStringArray(int* size) {
+    
+    char** array = malloc(sizeof(char*));
+
+    
+    *size = 0;
+
+    return array;
+}
+
+
+char** addString(char** array, int* size, const char* string) {
+    
+    char** temp = realloc(array, (*size + 1) * sizeof(char*));
+    array = temp;
+
+    
+    array[*size] = malloc(strlen(string) + 1); 
+
+    
+    strcpy(array[*size], string);
+
+    
+    (*size)++;
+
+    return array;
 }
 
 
