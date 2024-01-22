@@ -7,18 +7,25 @@
 
 #define MAX_LEN 300
 
-typedef struct inputData{
+// defining structs
 
+typedef struct InputData{
+
+	int numNodes;
 	int numConnections;
 	int** connections;
 
-}inputData;
+}InputData;
+
+// defining functions
+
+void getGraphFileData(char* inputFile, InputData* inputData);
+void freeInputData(InputData* inputData);
+void printOutputFile(char* outputFile, char** outputDataArray, int arraySize);
+void freeOutputArray(char** outputArray, int arraySize);
 
 
-inputData* getGraphFileData(char* inputFile);
-void freeInputData(inputData* inputData);
-
-
+// start of main
 
 int main(int argc, char * argv[]){
 
@@ -27,36 +34,50 @@ int main(int argc, char * argv[]){
       exit(1);
    }
 
-   inputData* inputD = getGraphFileData(argv[1]);
+
+
+   InputData* inputData = malloc(sizeof(InputData));
+   
+   char** outputArray;
+   int outputArraySize = 0;
+
+
+
+   getGraphFileData(argv[1], inputData);
+
+
 
    
-   for(int i = 0; i < inputD->numConnections; i++){
+   for(int i = 0; i < inputData->numConnections; i++){
 	for(int j = 0; j < 2; j++){
-		printf("value at %d %d is: %d", i, j, inputD->connections[i][j]);
+		printf("%d ", inputData->connections[i][j]);
 	}
 	printf("\n");
 
    }
 
 
-   freeInputData(inputD);
-   return(0);
+
+   printOutputFile(argv[2], outputArray, outputArraySize);
+   
+
+   freeInputData(inputData);
+   freeOutputArray(outputArray, outputArraySize);
+   
+
+
+  return(0);
 }
 
 
 
+// start of helper functions
 
-
-inputData* getGraphFileData(char* inputFile){
+void getGraphFileData(char* inputFile, InputData* inputData){
    
-   inputData* inputData1 = malloc(sizeof(inputData));
-   int** connections;
-   
-
-   int token_count, line_count;
+   int  line_count, row;
    FILE *in;
    char line[MAX_LEN];
-   char tokenBuffer[MAX_LEN];
    char* token;
 
 
@@ -66,77 +87,118 @@ inputData* getGraphFileData(char* inputFile){
       exit(1);
    }
 
+   inputData->numConnections = 0;
+
 
    line_count = 0;
+
+
+
    while( fgets(line, MAX_LEN, in) != NULL)  {
+
       line_count++;
-
-
-      token_count = 0;
-      tokenBuffer[0] = '\0';
-
-
-      token = strtok(line, " \n");
 
       if(line_count == 1){
 
-	inputData1->numConnections = atoi(token);
-	connections = malloc((inputData1->numConnections) * sizeof(int*));
+		row = -1;
 
+      }
+      else{
+	row++;
 
       }
 
-      if(line_count > inputData1->numConnections + 1){
-	  break;
+      
+      if(line_count == 1){
+	// processing for numNodes
+	
+	token = strtok(line, " \n");
+	inputData->numNodes = atoi(token);	 	
+	
       }
+      else{
+	// getting connections
+        
+	// 15 found in line 76-82
+	// 1 7
+	// 0 0
+	
+	int firstValue = atoi(strtok(line, " \n"));
+	int secondValue = atoi(strtok(NULL, " \n")); 
 
-      int row = line_count - 2;
-      int col = 0;
 
-      while( token!=NULL ){
 
-         strcat(tokenBuffer, "   ");
-         strcat(tokenBuffer, token);
-         strcat(tokenBuffer, "\n");
-         token_count++;
-	 token = strtok(NULL, " \n");
+	if(firstValue == 0 && secondValue == 0){
+		break;
+	}
 
-//	printf("token is: %s\n", token);
-	printf("row  %d col %d line %d\n", row, col, line_count);
+	else{
 
-	 if(line_count >= 2){
-//	 	connections[row][col] = atoi(token);
-		col++;
-		if(col == 2){ 
-		
-			col = 0;
+		if(inputData->connections == NULL){
+			inputData->connections = malloc(sizeof(int*)); // creates row
+			
 		}
-	 }
 
-        // token = strtok(NULL, " \n");
+		else{
+		
+			int ** temp = realloc(inputData->connections, (row + 1) * sizeof(int*));
+			inputData->connections = temp;
+
+		}
+
+		inputData->connections[row] = malloc(2 * sizeof(int)); // creates 2 col
+		inputData->connections[row][0] = firstValue;
+		inputData->connections[row][1] = secondValue;
+		inputData->numConnections++;
+
+
+	}
+
+
+
       }
 
-   }
 
 
-inputData1->connections = connections;
 
-fclose(in);
-return inputData1;
+  } 
 
-}
-
-void freeInputData(inputData* inputData){
-
+  
+  //fclose(in);
 
 
 }
 
+void freeInputData(InputData* inputData){
+
+	for(int i = 0; i < inputData->numConnections; i++){
 
 
+		free(inputData->connections[i]);
+
+	}
+
+	free(inputData->connections);
+
+	free(inputData);
+
+}
 
 
+void printOutputFile(char* outputFile, char** outputDataArray, int arraySize){
 
+}
+
+
+void freeOutputArray(char** outputArray, int arraySize){
+
+	for (int i = 0; i < arraySize; i++) {
+		free(outputArray[i]);
+        }
+
+	free(outputArray);
+
+}
 
 
 
