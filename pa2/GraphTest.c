@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"Graph.h"
+#include "List.h"
+
 
 int main(int argc, char* argv[]){
    int i, s, max, min, d, n=35;
@@ -11,6 +13,11 @@ int main(int argc, char* argv[]){
 
     
    G = newGraph(n);
+
+   append(C, 3);
+   myPrintList(C);
+
+
    for(i=1; i<n; i++){
       if( i%7!=0 ) addEdge(G, i, i+1);
       if( i<=28  ) addEdge(G, i, i+7);
@@ -21,7 +28,7 @@ int main(int argc, char* argv[]){
 
 
    printGraph(stdout, G);
-
+/*
    
    for(s=1; s<=n; s++){
       BFS(G, s);
@@ -58,6 +65,8 @@ int main(int argc, char* argv[]){
       moveNext(E);
    }
 
+
+
 // Print results
    printf("\n");
    printf("Radius = %d\n", min);
@@ -68,6 +77,7 @@ int main(int argc, char* argv[]){
    printf("Peripheral vert%s: ", length(P)==1?"ex":"ices");
    printList(stdout, P);
    printf("\n");
+*/
 
 // Free objects
    freeList(&C);

@@ -37,6 +37,13 @@ int main(int argc, char * argv[]){
       exit(1);
    }
 
+   FILE *out;
+   out = fopen(argv[2], "w");
+
+   if( out==NULL ){
+      printf("Unable to open file %s for writing\n", argv[2]);
+      exit(1);
+   }
 
 
    InputData* inputData = malloc(sizeof(InputData));
@@ -51,9 +58,16 @@ int main(int argc, char * argv[]){
 
    getGraphFileData(argv[1], inputData);
 
+   Graph G = newGraph(inputData->numNodes);
 
+   for(int i = 0; i < inputData->numConnections; i++){
+       addEdge(G, inputData->connections[i][0], inputData->connections[i][1]);
 
-   
+   }
+
+   printGraph(out, G);
+
+/*   
    for(int i = 0; i < inputData->numConnections; i++){
 	for(int j = 0; j < 2; j++){
 		printf("%d ", inputData->connections[i][j]);
@@ -61,10 +75,10 @@ int main(int argc, char * argv[]){
 	printf("\n");
 
    }
+*/
 
 
-
-   printOutputFile(argv[2], outputArray, outputArraySize);
+ //  printOutputFile(argv[2], outputArray, outputArraySize);
    
 
    freeInputData(inputData);
