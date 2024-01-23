@@ -14,6 +14,8 @@ typedef struct InputData{
 	int numNodes;
 	int numConnections;
 	int** connections;
+        int bfsLength;
+        int** bfsArray;
 
 }InputData;
 
@@ -51,10 +53,6 @@ int main(int argc, char * argv[]){
    int outputArraySize = 0;
    char** outputArray = createStringArray(&outputArraySize);
 
-   outputArray = addString(outputArray, &outputArraySize, "123\n");
-   outputArray = addString(outputArray, &outputArraySize, "456\n");
-
-
 
    getGraphFileData(argv[1], inputData);
 
@@ -67,18 +65,14 @@ int main(int argc, char * argv[]){
 
    printGraph(out, G);
 
-/*   
-   for(int i = 0; i < inputData->numConnections; i++){
+   for(int i = 0; i < inputData->bfsLength; i++){
 	for(int j = 0; j < 2; j++){
-		printf("%d ", inputData->connections[i][j]);
+		printf("%d ", inputData->bfsArray[i][j]);
 	}
 	printf("\n");
 
-   }
-*/
+  }
 
-
- //  printOutputFile(argv[2], outputArray, outputArraySize);
    
 
    freeInputData(inputData);
@@ -95,10 +89,12 @@ int main(int argc, char * argv[]){
 
 void getGraphFileData(char* inputFile, InputData* inputData){
    
-   int  line_count, row;
+   int  line_count, rowADJ, rowBFS;
    FILE *in;
    char line[MAX_LEN];
    char* token;
+
+   int foundF00 = 0;
 
 
    in = fopen(inputFile, "r");
@@ -120,11 +116,11 @@ void getGraphFileData(char* inputFile, InputData* inputData){
 
       if(line_count == 1){
 
-		row = -1;
+		rowADJ = -1;
 
       }
       else{
-	row++;
+	rowADJ++;
 
       }
 
@@ -149,10 +145,21 @@ void getGraphFileData(char* inputFile, InputData* inputData){
 
 
 	if(firstValue == 0 && secondValue == 0){
-		break;
+
+		if(foundF00 == 1){
+                         break;
+                }
+
+
+		if(foundF00 == 0){		
+			foundF00 = 1;
+			rowBFS = 0;
+		}
+
+
 	}
 
-	else{
+	if(foundF00 == 0){
 
 		if(inputData->connections == NULL){
 			inputData->connections = malloc(sizeof(int*)); // creates row
@@ -161,17 +168,45 @@ void getGraphFileData(char* inputFile, InputData* inputData){
 
 		else{
 		
-			int ** temp = realloc(inputData->connections, (row + 1) * sizeof(int*));
+			int ** temp = realloc(inputData->connections, (rowADJ + 1) * sizeof(int*));
 			inputData->connections = temp;
 
 		}
 
-		inputData->connections[row] = malloc(2 * sizeof(int)); // creates 2 col
-		inputData->connections[row][0] = firstValue;
-		inputData->connections[row][1] = secondValue;
+		inputData->connections[rowADJ] = malloc(2 * sizeof(int)); // creates 2 col
+		inputData->connections[rowADJ][0] = firstValue;
+		inputData->connections[rowADJ][1] = secondValue;
 		inputData->numConnections++;
 
 
+	} 
+	else{
+
+		if(firstValue == 0 && secondValue == 0){
+			continue;
+		}
+
+
+		if(inputData->bfsArray == NULL){
+                        inputData->bfsArray = malloc(sizeof(int*)); // creates row
+
+                }
+
+                else{
+
+                        int ** temp = realloc(inputData->bfsArray, (rowBFS + 1) * sizeof(int*));
+                        inputData->bfsArray = temp;
+
+                }
+
+
+                inputData->bfsArray[rowBFS] = malloc(2 * sizeof(int)); // creates 2 col
+                inputData->bfsArray[rowBFS][0] = firstValue;
+                inputData->bfsArray[rowBFS][1] = secondValue;
+                inputData->bfsLength++;
+		rowBFS++;
+
+		
 	}
 
 
