@@ -1,8 +1,6 @@
 #include "List.h"
 
 
-
-
 typedef struct NodeObj* Node;
 
 
@@ -21,6 +19,12 @@ typedef struct ListObj{
    int length;
 } ListObj;
 
+
+typedef struct QueueObj{
+   Node front;
+   Node back;
+   int length;
+} QueueObj;
 
 
 Node newNode(int data){
@@ -55,6 +59,95 @@ void freeList(List* pL) {
         free(*pL);
         *pL = NULL;
     }
+}
+
+Queue newQueue(){
+   Queue Q;
+   Q = malloc(sizeof(QueueObj));
+   assert( Q!=NULL );
+   Q->front = Q->back = NULL;
+   Q->length = 0;
+   return(Q);
+}
+
+
+void freeQueue(Queue* pQ){
+   if(pQ!=NULL && *pQ!=NULL) { 
+      while( !isQEmpty(*pQ) ) { 
+         Dequeue(*pQ); 
+      }
+      free(*pQ);
+      *pQ = NULL;
+   }
+}
+
+int getQFront(Queue Q){
+   if( Q==NULL ){
+      printf("Queue Error: calling getFront() on NULL Queue reference\n");
+      exit(EXIT_FAILURE);
+   }
+   if( isQEmpty(Q) ){
+      printf("Queue Error: calling getFront() on an empty Queue\n");
+      exit(EXIT_FAILURE);
+   }
+   return(Q->front->data);
+}
+
+int getQLength(Queue Q){
+   if( Q==NULL ){
+      printf("Queue Error: calling getLength() on NULL Queue reference\n");
+      exit(EXIT_FAILURE);
+   }
+   return(Q->length);
+}
+
+bool isQEmpty(Queue Q){
+   if( Q==NULL ){
+      printf("Queue Error: calling isEmpty() on NULL Queue reference\n");
+      exit(EXIT_FAILURE);
+   }
+   return(Q->length==0);
+}
+
+void Enqueue(Queue Q, int data)
+{
+   Node N = newNode(data);
+
+   if( Q==NULL ){
+      printf("Queue Error: calling Enqueue() on NULL Queue reference\n");
+      exit(EXIT_FAILURE);
+   }
+   
+   if( isQEmpty(Q) ) { 
+      Q->front = Q->back = N; 
+   }else{ 
+      Q->back->next = N; 
+      Q->back = N; 
+   }
+   Q->length++;
+}
+
+
+void Dequeue(Queue Q){
+   Node N = NULL;
+
+   if( Q==NULL ){
+      printf("Queue Error: calling Dequeue() on NULL Queue reference\n");
+      exit(EXIT_FAILURE);
+   }
+   if( isQEmpty(Q) ){
+      printf("Queue Error: calling Dequeue on an empty Queue\n");
+      exit(EXIT_FAILURE);
+   }
+   
+   N = Q->front;
+   if( getQLength(Q)>1 ) { 
+      Q->front = Q->front->next; 
+   }else{ 
+      Q->front = Q->back = NULL; 
+   }
+   Q->length--;
+   freeNode(&N);
 }
 
 

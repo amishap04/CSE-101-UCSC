@@ -5,7 +5,7 @@
 
 
 int main(int argc, char* argv[]){
-   int i, s, max, min, d, n=35;
+   int i, s, max, min, d, n=3;
    List  C = newList();  
    List  P = newList();  
    List  E = newList();  
@@ -28,10 +28,16 @@ int main(int argc, char* argv[]){
 
 
    printGraph(stdout, G);
-/*
+
    
    for(s=1; s<=n; s++){
+
+      printf("source is: %d", s);
+	
       BFS(G, s);
+
+      printf("\n");
+
       max = getDist(G, 1);
       for(i=2; i<=n; i++){
          d = getDist(G, i);
@@ -77,7 +83,7 @@ int main(int argc, char* argv[]){
    printf("Peripheral vert%s: ", length(P)==1?"ex":"ices");
    printList(stdout, P);
    printf("\n");
-*/
+
 
 // Free objects
    freeList(&C);

@@ -169,7 +169,52 @@ void addArc(Graph G, int u, int v) {
 
 
 
-void BFS(Graph G, int s) {}
+void BFS(Graph G, int s) {
+
+	G->source = s;
+	
+	for (int i = 1; i <= G->order; i++){
+		G->colors[i] = WHITE;
+	}
+
+
+	Queue Q = newQueue();
+
+	Enqueue(Q, s);
+	G->colors[s] = GRAY;
+
+	printf("Dequeue Sequence is: ");
+
+	while(isQEmpty(Q) != true){
+
+		
+		int temp = getQFront(Q);
+		Dequeue(Q);
+		printf("%d ", temp);
+
+
+		moveFront(G->neighbors[temp]);
+
+		if(length(G->neighbors[temp]) > 0){
+
+			for(int i = 0; i < length(G->neighbors[temp]); i++){
+
+				if(G->colors[get(G->neighbors[temp])] == WHITE){
+					Enqueue(Q, get(G->neighbors[temp]));
+					G->colors[get(G->neighbors[temp])] = GRAY;
+				
+				}
+				moveNext(G->neighbors[temp]);
+			} // for end
+
+		}
+
+	}
+
+	freeQueue(&Q);
+
+}
+
 
 
 void printGraph(FILE* out, Graph G) {
