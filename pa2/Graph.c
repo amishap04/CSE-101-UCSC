@@ -205,11 +205,21 @@ void BFS(Graph G, int s) {
 				
 				}
 				moveNext(G->neighbors[temp]);
+
 			} // for end
+
 
 		}
 
+		G->colors[temp]= BLACK;
+
 	}
+
+	for(int i = 1; i <= G->order; i++){
+
+		printf("Color at %d is: %d\n", i, G->colors[i]);
+	}
+
 
 	freeQueue(&Q);
 
