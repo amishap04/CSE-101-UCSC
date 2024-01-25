@@ -24,7 +24,7 @@ void freeQueue(Queue* pQ);
 
 // Access functions
 int length(List L);
-int listIndex(List L);
+int index(List L);
 int front(List L);
 int back(List L);
 int get(List L);

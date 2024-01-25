@@ -120,10 +120,10 @@ void addEdge(Graph G, int u, int v) {
             append(G->neighbors[u], v);
         } else {
             moveFront(G->neighbors[u]);
-            while (listIndex(G->neighbors[u]) >= 0 && get(G->neighbors[u]) < v) {
+            while (index(G->neighbors[u]) >= 0 && get(G->neighbors[u]) < v) {
                 moveNext(G->neighbors[u]);
             }
-            if (listIndex(G->neighbors[u]) >= 0) {
+            if (index(G->neighbors[u]) >= 0) {
                 insertBefore(G->neighbors[u], v);
             } else {
                 append(G->neighbors[u], v);
@@ -135,10 +135,10 @@ void addEdge(Graph G, int u, int v) {
             append(G->neighbors[v], u);
         } else {
             moveFront(G->neighbors[v]);
-            while (listIndex(G->neighbors[v]) >= 0 && get(G->neighbors[v]) < u) {
+            while (index(G->neighbors[v]) >= 0 && get(G->neighbors[v]) < u) {
                 moveNext(G->neighbors[v]);
             }
-            if (listIndex(G->neighbors[v]) >= 0) {
+            if (index(G->neighbors[v]) >= 0) {
                 insertBefore(G->neighbors[v], u);
             } else {
                 append(G->neighbors[v], u);
@@ -154,10 +154,10 @@ void addArc(Graph G, int u, int v) {
     if (1 <= u && u <= G->order && 1 <= v && v <= G->order) {
         
         moveFront(G->neighbors[u]);
-        while (listIndex(G->neighbors[u]) >= 0 && get(G->neighbors[u]) < v) {
+        while (index(G->neighbors[u]) >= 0 && get(G->neighbors[u]) < v) {
             moveNext(G->neighbors[u]);
         }
-        if (listIndex(G->neighbors[u]) == -1) {
+        if (index(G->neighbors[u]) == -1) {
             append(G->neighbors[u], v);
         } else if (get(G->neighbors[u]) != v) {
             insertBefore(G->neighbors[u], v);
@@ -253,7 +253,7 @@ void printGraph(FILE* out, Graph G) {
     for (int i = 1; i <= G->order; i++) {
         fprintf(out, "%d: ", i);
         moveFront(G->neighbors[i]);
-        while (listIndex(G->neighbors[i]) >= 0) {
+        while (index(G->neighbors[i]) >= 0) {
             fprintf(out, "%d ", get(G->neighbors[i]));
             moveNext(G->neighbors[i]);
         }

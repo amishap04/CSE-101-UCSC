@@ -160,7 +160,7 @@ int length(List L) {
     return L->length;
 }
 
-int listIndex(List L) {
+int index(List L) {
 
     if( L==NULL){
 
@@ -225,7 +225,7 @@ int back(List L) {
 
 int get(List L) {
 
-    if(listIndex(L) >= 0 && length(L) > 0){
+    if(index(L) >= 0 && length(L) > 0){
         return L->cursor->data;
     }
     else{
@@ -277,7 +277,7 @@ void clear(List L) {
 }
 
 void set(List L, int x) {
-    if (length(L) > 0 && listIndex(L) > -1) {
+    if (length(L) > 0 && index(L) > -1) {
         L->cursor->data = x;
     }
 }
@@ -370,7 +370,7 @@ void append(List L, int x){
 }
 
 void insertBefore(List L, int x) {
-    if (length(L) > 0 && listIndex(L) >= 0) {
+    if (length(L) > 0 && index(L) >= 0) {
         Node newNde = newNode(x);
 
         if (L->cursor == L->front) {
@@ -386,7 +386,7 @@ void insertBefore(List L, int x) {
 }
 
 void insertAfter(List L, int x) {
-    if (length(L) > 0 && listIndex(L) >= 0){
+    if (length(L) > 0 && index(L) >= 0){
 	Node newNde = newNode(x);
 
 	if(L->cursor == L->back){
@@ -423,7 +423,7 @@ void deleteBack(List L) {
 }
 
 void delete(List L) {
-    if (length(L) > 0 && listIndex(L) >= 0) {
+    if (length(L) > 0 && index(L) >= 0) {
 	if(L->cursor == L->front){
 	    deleteFront(L);
 	}
