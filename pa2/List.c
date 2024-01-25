@@ -162,20 +162,9 @@ int length(List L) {
 
 int index(List L) {
 
-    if( L==NULL){
-
-	return -1;
-    }
-
-    else{
-
-	if(L->cursor == NULL){
-            
-             return -1;
-
-        }
-
-
+	if (L == NULL || L->cursor == NULL) {
+        	return -1;
+    	}
 
 
 	Node itr = L->front;
@@ -184,7 +173,7 @@ int index(List L) {
 	
 	
 
-        while(itr->data != L->cursor->data && itr != NULL){
+        while(itr != NULL && itr->data != L->cursor->data){
 	    itr = itr->next;
 	    index++;
         }  
@@ -195,7 +184,7 @@ int index(List L) {
 	}
 
       return index;
-    } 
+     
 }
 
 int front(List L) {
