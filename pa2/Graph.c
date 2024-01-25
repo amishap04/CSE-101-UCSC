@@ -289,6 +289,10 @@ void printShortestDistance(FILE* out, Graph G, int destination){
 		fprintf(out, "No %d-%d path exists\n",getSource(G), destination);
 
 	}
+	else if(getSource(G) == destination){
+		fprintf(out, "A shortest %d-%d path is: %d\n", destination, destination, destination);
+	}
+
 	else{
 	
 		fprintf(out, "A shortest %d-%d path is: ", getSource(G), destination);
