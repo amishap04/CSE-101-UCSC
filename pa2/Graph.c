@@ -175,33 +175,48 @@ void BFS(Graph G, int s) {
 	
 	for (int i = 1; i <= G->order; i++){
 		G->colors[i] = WHITE;
+		G->parents[i] = NIL;
+		G->distances[i] = INF;
 	}
-
 
 	Queue Q = newQueue();
 
 	Enqueue(Q, s);
 	G->colors[s] = GRAY;
+	G->parents[s] = NIL;
+	G->distances[s] = 0;
 
-	printf("Dequeue Sequence is: ");
+
+	//printf("Dequeue Sequence is: ");
+
+	int currentNeighbor;
+	int neighborsListLength;
+	int temp;
 
 	while(isQEmpty(Q) != true){
 
 		
-		int temp = getQFront(Q);
+		temp = getQFront(Q);
+		neighborsListLength = length(G->neighbors[temp]);
+
 		Dequeue(Q);
-		printf("%d ", temp);
+		//printf("%d ", temp);
 
 
 		moveFront(G->neighbors[temp]);
 
-		if(length(G->neighbors[temp]) > 0){
+		if(neighborsListLength > 0){
+			
 
-			for(int i = 0; i < length(G->neighbors[temp]); i++){
+			for(int i = 0; i < neighborsListLength; i++){
 
-				if(G->colors[get(G->neighbors[temp])] == WHITE){
-					Enqueue(Q, get(G->neighbors[temp]));
-					G->colors[get(G->neighbors[temp])] = GRAY;
+				currentNeighbor = get(G->neighbors[temp]);
+
+				if(G->colors[currentNeighbor] == WHITE){
+					Enqueue(Q, currentNeighbor);
+					G->colors[currentNeighbor] = GRAY;
+					G->parents[currentNeighbor] = temp;
+					G->distances[currentNeighbor] = G->distances[temp] + 1;
 				
 				}
 				moveNext(G->neighbors[temp]);
@@ -215,9 +230,13 @@ void BFS(Graph G, int s) {
 
 	}
 
+	//printf("\n");
+
 	for(int i = 1; i <= G->order; i++){
 
-		printf("Color at %d is: %d\n", i, G->colors[i]);
+		//printf("Color at %d is: %d\n", i, G->colors[i]);
+		//printf("Parent at %d is: %d\n", i, G->parents[i]);
+		//printf("Distance at %d is: %d\n", i, G->distances[i]);
 	}
 
 

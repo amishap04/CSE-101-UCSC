@@ -5,7 +5,7 @@
 
 
 int main(int argc, char* argv[]){
-   int i, s, max, min, d, n=3;
+   int i, s, max, min, d, n=35;
    List  C = newList();  
    List  P = newList();  
    List  E = newList();  
@@ -32,11 +32,11 @@ int main(int argc, char* argv[]){
    
    for(s=1; s<=n; s++){
 
-      printf("source is: %d", s);
+      //printf("source is: %d\n", s);
 	
       BFS(G, s);
 
-      printf("\n");
+      //printf("\n");
 
       max = getDist(G, 1);
       for(i=2; i<=n; i++){
