@@ -170,20 +170,15 @@ int index(List L) {
 	Node itr = L->front;
         int index = 0;
 
-	
-	
+        while (itr != NULL) {
+     	   if (itr == L->cursor) {
+        	    return index;
+           }
+           itr = itr->next;
+           index++;
+        }	
 
-        while(itr != NULL && itr->data != L->cursor->data){
-	    itr = itr->next;
-	    index++;
-        }  
-
-	if(itr == NULL){
-
-		return -1;
-	}
-
-      return index;
+      return -1;
      
 }
 
