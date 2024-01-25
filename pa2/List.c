@@ -283,13 +283,14 @@ void set(List L, int x) {
 }
 
 void moveFront(List L) {
-    if (length(L) > 0 && L->front != NULL) {
+    if (L != NULL && length(L) > 0 && L->front != NULL) {
         L->cursor = L->front;
     }
 }
 
 void moveBack(List L) {
-    if (length(L) > 0 && L->back != NULL) {
+
+    if (L != NULL && length(L) > 0 && L->back != NULL) {
         L->cursor = L->back;
     }
 }
