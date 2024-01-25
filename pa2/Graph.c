@@ -239,9 +239,9 @@ void BFS(Graph G, int s) {
 		//printf("Distance at %d is: %d\n", i, G->distances[i]);
 	}
 
-	printf("\n");
-	printf("\n");
-	printf("\n");
+	//printf("\n");
+	//printf("\n");
+	//printf("\n");
 
 	freeQueue(&Q);
 
