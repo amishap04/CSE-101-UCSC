@@ -361,11 +361,13 @@ void append(List L, int x){
 
 void insertBefore(List L, int x) {
     if (length(L) > 0 && index(L) >= 0) {
-        Node newNde = newNode(x);
+       // Node newNde = newNode(x);
 
         if (L->cursor == L->front) {
             prepend(L, x);
         } else {
+
+	    Node newNde = newNode(x);
 	    newNde->next = L->cursor;
 	    newNde->prev = L->cursor->prev;
 	    L->cursor->prev->next = newNde;
