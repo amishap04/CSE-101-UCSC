@@ -405,9 +405,9 @@ void insertAfter(List L, int x) {
 
 void deleteFront(List L) {
     if (length(L) > 0) {
-	Node* temp = &L->front;
+	Node temp = L->front;
 	L->front = L->front->next;
-	freeNode(temp);	
+	freeNode(&temp);	
 	L->length--;
    }
 
@@ -415,9 +415,9 @@ void deleteFront(List L) {
 
 void deleteBack(List L) {
     if (length(L) > 0) {
-        Node* temp = &L->back;
+        Node temp = L->back;
 	L->back = L->back->prev;
-	freeNode(temp);
+	freeNode(&temp);
 	L->length--;
     }
 }
