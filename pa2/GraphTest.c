@@ -5,7 +5,7 @@
 
 
 int main(int argc, char* argv[]){
-   int i, s, max, min, d, n=35;
+   int i, s, max, min, d, n=5;
    List  C = newList();  
    List  P = newList();  
    List  E = newList();  
@@ -32,7 +32,9 @@ int main(int argc, char* argv[]){
    
    for(s=1; s<=n; s++){
 
-      //printf("source is: %d\n", s);
+      printf("source is: %d\n", s);
+
+      printGraph(stdout, G);
 	
       BFS(G, s);
 

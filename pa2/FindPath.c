@@ -65,16 +65,29 @@ int main(int argc, char * argv[]){
 
    printGraph(out, G);
 
+   fprintf(out, "\n");
+
+
    for(int i = 0; i < inputData->bfsLength; i++){
-	for(int j = 0; j < 2; j++){
-		printf("%d ", inputData->bfsArray[i][j]);
-	}
-	printf("\n");
+		
+	BFS(G, inputData->bfsArray[i][0]);	
+	printShortestDistance(out, G, inputData->bfsArray[i][1]);
+
+	
+
+		//printf("%d ", inputData->bfsArray[i][j]);
+	fprintf(out, "\n");
 
   }
 
-   
+    
+  
 
+
+
+
+ 
+   
    freeInputData(inputData);
    freeOutputArray(outputArray, outputArraySize);
    

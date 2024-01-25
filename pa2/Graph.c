@@ -239,6 +239,9 @@ void BFS(Graph G, int s) {
 		//printf("Distance at %d is: %d\n", i, G->distances[i]);
 	}
 
+	printf("\n");
+	printf("\n");
+	printf("\n");
 
 	freeQueue(&Q);
 
@@ -256,7 +259,80 @@ void printGraph(FILE* out, Graph G) {
         }
         fprintf(out, "\n");
     }
+
+
+
 }
+
+
+void printShortestDistance(FILE* out, Graph G, int destination){
+
+
+	if(getDist(G, destination) == INF){
+		fprintf(out, "The distance from %d to %d is infinity\n", getSource(G), destination);
+
+	}
+	else{
+		fprintf(out, "The distance from %d to %d is %d\n", getSource(G), destination, getDist(G, destination));
+	}
+
+
+
+
+	//fprintf(out, "\n");
+	//fprintf(out, "The distance from %d to %d is %d\n", getSource(G), destination, getDist(G, destination));
+	
+
+	List parentPath;
+
+	if(getParent(G, destination) == NIL){
+		fprintf(out, "No %d-%d path exists\n",getSource(G), destination);
+
+	}
+	else{
+	
+		fprintf(out, "A shortest %d-%d path is: ", getSource(G), destination);
+
+        	parentPath = newList();
+
+        	getPath(parentPath, G, destination);
+
+        	moveFront(parentPath);
+
+        	int nextParent;
+
+		for(int i = 0; i < length(parentPath); i++){
+                	nextParent = get(parentPath);
+                	fprintf(out, "%d ", nextParent);
+
+
+                	moveNext(parentPath);
+		}
+            }
+
+
+	fprintf(out, "\n");
+	freeList(&parentPath);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
