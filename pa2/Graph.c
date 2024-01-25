@@ -152,7 +152,27 @@ void addEdge(Graph G, int u, int v) {
 void addArc(Graph G, int u, int v) {
     if (1 <= u && u <= G->order && 1 <= v && v <= G->order) {
 
-        moveFront(G->neighbors[u]);
+	if (length(G->neighbors[u]) == 0 || back(G->neighbors[u]) < v) {
+             append(G->neighbors[u], v);
+         } else {
+             moveFront(G->neighbors[u]);
+             while (index(G->neighbors[u]) >= 0 && get(G->neighbors[u]) < v) {
+                 moveNext(G->neighbors[u]);
+             }
+             if (index(G->neighbors[u]) >= 0) {
+                 insertBefore(G->neighbors[u], v);
+             } else {
+                 append(G->neighbors[u], v);
+             }
+         }
+
+
+
+
+/*
+	if(G->neighbors[u] != NULL){
+		moveFront(G->neighbors[u]);
+	}
 
         while (index(G->neighbors[u]) >= 0) {
             if (get(G->neighbors[u]) >= v) {
@@ -166,7 +186,7 @@ void addArc(Graph G, int u, int v) {
         } else if (get(G->neighbors[u]) != v) {
             insertBefore(G->neighbors[u], v);
         }
-
+*/
         G->size++;
     }
 }

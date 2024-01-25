@@ -166,6 +166,7 @@ int index(List L) {
         	return -1;
     	}
 
+	
 
 	Node itr = L->front;
         int index = 0;
@@ -247,18 +248,11 @@ bool equals(List A, List B) {
 
 
 void clear(List L) {
-	L->cursor = L->front;
-	Node temp;
-
-	while(L->cursor != NULL){
-	     temp = L->cursor;
-	     L->cursor = L->cursor->next;
-	     free(temp);
-	     L->length--;
-	}
-	L->front = NULL;
-	L->back = NULL;
+    while (L->front != NULL) {
+        deleteFront(L);
+    }
 }
+
 
 void set(List L, int x) {
     if (length(L) > 0 && index(L) > -1) {
@@ -400,14 +394,27 @@ void deleteFront(List L) {
 
 }
 
+
 void deleteBack(List L) {
     if (length(L) > 0) {
         Node temp = L->back;
-	L->back = L->back->prev;
-	freeNode(&temp);
-	L->length--;
+        if (L->back->prev) {
+            L->back = L->back->prev;
+            L->back->next = NULL;
+        } else {
+            L->front = NULL;
+            L->back = NULL;
+        }
+        if (L->cursor == temp) {
+            L->cursor = NULL;
+        }
+        freeNode(&temp);
+        L->length--;
     }
 }
+
+
+
 
 void delete(List L) {
     if (length(L) > 0 && index(L) >= 0) {

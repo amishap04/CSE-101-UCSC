@@ -4,7 +4,16 @@
 #include "List.h"
 
 
+void moveBackTest();
+
+
+
 int main(int argc, char* argv[]){
+
+   moveBackTest();
+
+
+
    int i, s, max, min, d, n=5;
    List  C = newList();  
    List  P = newList();  
@@ -95,3 +104,39 @@ int main(int argc, char* argv[]){
 
    return(0);
 }
+
+
+void moveBackTest(){
+
+	List myList;
+	moveBack(myList);
+
+	printf("move back ok \n\n\n\n");
+
+	myList = newList();
+
+
+	append(myList, 1);
+	deleteBack(myList);
+
+	append(myList, 3);
+	append(myList, 6);
+	
+
+	moveBack(myList);
+	printf("move back ok %d \n\n\n\n", back(myList));
+	
+
+	printf("move back ok \n\n\n\n");
+
+
+
+
+
+}
+
+
+
+
+
+
