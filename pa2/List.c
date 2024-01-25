@@ -474,16 +474,16 @@ List copyList(List L) {
     List newListCopy = newList();
 
     if(length(L) > 0){
-    
-	    L->cursor = L->front;
-
-    	while (L->cursor != NULL) {
-        	append(newListCopy, L->cursor->data);
-        	L->cursor = L->cursor->next;
-    	}
+        Node temp = L->front;
+        while (temp != NULL) {
+            append(newListCopy, temp->data);
+            temp = temp->next;
+        }
     }
     return newListCopy;
 }
+
+
 
 List concatList(List A, List B) {
     List newListConcat = newList();

@@ -10,10 +10,6 @@ void moveBackTest();
 
 int main(int argc, char* argv[]){
 
-   moveBackTest();
-
-
-
    int i, s, max, min, d, n=5;
    List  C = newList();  
    List  P = newList();  
@@ -109,7 +105,7 @@ int main(int argc, char* argv[]){
 void moveBackTest(){
 
 	List myList;
-	moveBack(myList);
+//	moveBack(myList);
 
 	printf("move back ok \n\n\n\n");
 
