@@ -13,18 +13,21 @@ typedef enum {
     WHITE, GRAY, BLACK
 } Color;
 
-typedef struct GraphObj {
-    List* neighbors;   
-    Color* colors;     
-    int* parents;   
-    int* discover;    
+typedef struct GraphObj {        
     int order;       
-    int size;          
-    int* finish;       
+    int size; 
+    List* neighbors;   
+    Color* colors; 
+    int* parents; 
+    int* discover;          
+    int* finish;   
+
 } GraphObj;
 
-
 GraphObj* newGraph(int n){
+
+
+return NULL; // REMOVE
 
 }
 
@@ -53,11 +56,14 @@ int getParent(Graph G, int u) {
 int getDiscover(Graph G, int u){
 
 
+
+return 0; // REMOVE
 }
 
 int getFinish(Graph G, int u){
 
 
+return 0; // REMOVE
 }
 
 
@@ -131,14 +137,14 @@ void DFS(Graph G, List S){
 Graph transpose(Graph G){
 
 
-
+return NULL; // REMOVE
 }
 
 
 Graph copyGraph(Graph G){
 
 
-
+return NULL; // REMOVE
 }
 
 
