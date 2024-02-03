@@ -1,3 +1,13 @@
+/**
+ * * * * Amisha Prasad // First and Last Name
+ * * * * aprasa14 // UCSC UserID
+ * * * * 2024 Winter CSE101 PA3 // Assignment Number
+ * * * * List.h // FileName
+ * * * * Header for List ADT // Description
+ * * * * ***/
+
+
+
 #ifndef QUEUE_H_INCLUDE_
 #define QUEUE_H_INCLUDE_
 #include <stdio.h>

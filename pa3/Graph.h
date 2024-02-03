@@ -1,3 +1,12 @@
+/**
+ * * * * Amisha Prasad // First and Last Name
+ * * * * aprasa14 // UCSC UserID
+ * * * * 2024 Winter CSE101 PA3 // Assignment Number
+ * * * * Graph.h // FileName
+ * * * * Header for Graph ADT // Description
+ * * * * ***/
+
+
 #ifndef GRAPH_H
 #define GRAPH_H
 
