@@ -53,6 +53,16 @@ int main(int argc, char * argv[]){
 
 // step 2 read input file and populate inputData struct
 
+FILE *out;
+   out = fopen(argv[2], "w");
+
+   if( out==NULL ){
+      printf("Unable to open file %s for writing\n", argv[2]);
+      exit(1);
+   }
+
+
+
 
 InputData* input = malloc(sizeof(InputData));
 createInputData(argv[1], input);
@@ -70,7 +80,8 @@ Graph graph = newGraph(input->numVertices);
 
 populateGraph(graph, input); // this populates adj list
 
-
+fprintf(out, "Adjacency list representation of G:\n");
+printGraph(out, graph);
 
 // step 4 call DFS on created Graph and populates all fields including finish and stack of finish times
 
@@ -234,10 +245,10 @@ void freeInput(InputData *input){
 }
 
 void populateGraph(Graph graph, InputData* input){
-
-	// TO DO
-	// TO DO
-	// TO DO
+	for(int i = 0; i< input->edgesArrLen; i++){
+		addArc(graph, input->edgesArr[i][0], input->edgesArr[i][1]);
+	}
+	
 
 }
 
