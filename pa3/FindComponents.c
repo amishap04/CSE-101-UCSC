@@ -22,6 +22,7 @@ typedef struct InputData { // contains input file info
     int** edgesArr; // each row will contain and edge represented in file line 2 to 00
     int edgesArrLen; // length of edges array
 
+
 } InputData;
 
 
@@ -56,6 +57,11 @@ int main(int argc, char * argv[]){
 InputData* input = malloc(sizeof(InputData));
 createInputData(argv[1], input);
 
+printf("edgesArrLen is %d\n", input->edgesArrLen);
+//for(int i = 0; i < input->numVertices; i++){
+	
+
+//}
 
 	
 // step 3 create and populate non business items of graph given by inputData struct 
@@ -119,9 +125,104 @@ freeOutput(output);
 // helper function section
 
 void createInputData(char* inputFile, InputData* input){
-	//TO DO
-	//TO DO
-	//TO DO
+
+	int line_count;
+	int rowADJ;
+	int rowDFS;
+	FILE *in;
+	char line[MAX_LEN];
+	char* token;
+
+	int found00 = 0;
+
+
+	in = fopen(inputFile, "r");
+		if( in==NULL ){
+			printf("Unable to open file %s for reading\n", inputFile);
+			exit(1);
+		}
+
+	input->numVertices = 0;
+	line_count = 0;
+
+	while( fgets(line, MAX_LEN, in) != NULL ){
+
+		line_count++;
+
+		if(line_count == 1){
+			rowADJ = -1;
+
+		}
+
+		else{
+	
+			rowADJ++;
+		}
+
+
+		if(line_count == 1){
+			
+			token = strtok(line, " \n");
+			input->numVertices = atoi(token);
+
+			printf("numVertices is %d\n", input->numVertices);
+		}
+
+		else{
+
+			int firstVal = atoi(strtok(line, " \n"));
+			int secondVal = atoi(strtok(NULL, " \n"));
+
+			if(firstVal == 0 && secondVal == 0){
+				if(found00 == 1){
+					break;
+				}
+
+				if(found00 == 0){
+					found00 = 1;
+					rowDFS = 0;
+				}
+
+
+			}
+
+
+			if(found00 == 0){
+
+				if(input->edgesArr == NULL){
+					input->edgesArr = malloc(sizeof(int*));
+
+				}
+
+				else{
+					int** temp = realloc(input->edgesArr, (rowADJ + 1) * sizeof(int*));
+					input->edgesArr = temp;
+				}
+
+				input->edgesArr[rowDFS] = malloc(2 * sizeof(int));
+				input->edgesArr[rowDFS][0] = firstVal;
+				input->edgesArr[rowDFS][1] = secondVal;
+				input->edgesArrLen++;
+				rowDFS++;
+
+
+
+			}
+
+
+
+		}
+		
+
+
+
+	}
+
+
+
+
+
+
 
 }
 
@@ -133,6 +234,7 @@ void freeInput(InputData *input){
 }
 
 void populateGraph(Graph graph, InputData* input){
+
 	// TO DO
 	// TO DO
 	// TO DO
