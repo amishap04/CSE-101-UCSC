@@ -26,12 +26,54 @@ typedef struct GraphObj {
 
 GraphObj* newGraph(int n){
 
+    GraphObj* G = malloc(sizeof(GraphObj));
+    G->order = n;
+    G->size = 0;
+    
+    G->neighbors = malloc((n+1) * sizeof(List));
+    G->colors = malloc((n+1) * sizeof(Color));
+    G->parents = malloc((n+1) * sizeof(int));
+    G->discover = malloc((n+1) * sizeof(int));
+    G->finish = malloc((n+1) * sizeof(int));
 
-return NULL; // REMOVE
+
+    for(int i = 1; i <= n; i++){
+	G->neighbors[i] = newList(); 
+        G->colors[i] = WHITE; 
+        G->parents[i] = NIL; 
+        G->discover[i] = UNDEF;
+	G->finish[i] = UNDEF;
+
+    }
+
+    return G;
 
 }
 
 void freeGraph(Graph* pG){
+    
+    if(pG != NULL && *pG != NULL) {
+        
+        for(int i = 1; i <= (*pG)->order; i++) {
+            freeList(&((*pG)->neighbors[i]));
+        }
+        
+        free((*pG)->neighbors);
+        
+        
+        free((*pG)->colors);
+        
+        
+        free((*pG)->parents);
+
+	free((*pG)->discover);
+
+	free((*pG)->finish);
+
+	free(*pG);
+	*pG = NULL;
+     }
+
 
 }
 
@@ -54,16 +96,21 @@ int getParent(Graph G, int u) {
 }
 
 int getDiscover(Graph G, int u){
+    if(1 <= u && u <= getOrder(G)){
+	return G->discover[u];
+    } else {
+	return UNDEF;
+    }
 
-
-
-return 0; // REMOVE
 }
 
 int getFinish(Graph G, int u){
+    if(1 <= u && u <= getOrder(G)){
+        return G->finish[u];
+    } else {
+        return UNDEF;
+    }
 
-
-return 0; // REMOVE
 }
 
 
