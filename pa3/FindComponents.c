@@ -64,7 +64,7 @@ int main(int argc, char * argv[]){
 
 
 	FILE *out;
-	out = fopen(argv[2], "w");
+	out = fopen(argv[2], "wb");
 
         if( out==NULL ){
                 printf("Unable to open file %s for writing\n", argv[2]);
@@ -321,7 +321,7 @@ void populateOutputData(OutputData* output, Graph tGraph, List L){
 void printOutputFile(char* outputFile, Graph graph, OutputData* output){
 
 	FILE *out;
-   	out = fopen(outputFile, "w");
+   	out = fopen(outputFile, "wb");
 
    	if( out==NULL ){
 		printf("Unable to open file %s for writing\n", outputFile);
@@ -330,7 +330,7 @@ void printOutputFile(char* outputFile, Graph graph, OutputData* output){
 
 
 
-	fprintf(out, "Adjacency list representation of G:\n");
+	fprintf(out, "Adjacency list representation of G:\012");
 	printGraph(out, graph);
 	fprintf(out, "\n");
 
