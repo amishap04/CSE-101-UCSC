@@ -212,19 +212,22 @@ void DFS(Graph G, List S) {
 int visit(Graph G, List S, int u, int time) {
     G->colors[u] = GRAY;
     G->discover[u] = time;
-
-    for (moveFront(G->neighbors[u]); index(G->neighbors[u]) >= 0; moveNext(G->neighbors[u])) {
-        int v = get(G->neighbors[u]);
-        if (G->colors[v] == WHITE) {
-            G->parents[v] = u;
-            time = visit(G, S, v, time + 1);
+    List adjList = G->neighbors[u];
+    if (length(adjList) > 0) {
+        moveFront(adjList);
+        while (index(adjList) >= 0) {
+            int v = get(adjList);
+            if (G->colors[v] == WHITE) {
+                G->parents[v] = u;
+                time = visit(G, S, v, time + 1);
+            }
+            moveNext(adjList);
         }
     }
-
     G->colors[u] = BLACK;
-    G->finish[u] = time + 1;
+    G->finish[u] = ++time;
     prepend(S, u);
-    return time + 1;
+    return time;
 }
 
 
