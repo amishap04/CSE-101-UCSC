@@ -52,6 +52,17 @@ int main(int argc, char * argv[]){
    	}	
 
 
+	FILE *in;
+	in = fopen(argv[1], "r");
+
+        if( in==NULL ){
+		printf("Unable to open file %s for reading\n", argv[1]);
+                exit(1);
+        }
+
+
+
+
 	FILE *out;
 	out = fopen(argv[2], "w");
 
