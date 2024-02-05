@@ -101,8 +101,8 @@ Graph tGraph = transpose(graph);
 DFS(tGraph, sGraphList);
 
 
-printBusData(tGraph);
-myPrintList(sGraphList);
+//printBusData(tGraph);
+//myPrintList(sGraphList);
 
 // step 7 find strongly connected components using DFS results from step 6
 
@@ -233,9 +233,12 @@ void createInputData(char* inputFile, InputData* input){
 }
 
 void freeInput(InputData *input){
-	// TO DO
-	// TO DO
-	// TO DO
+
+	for(int i = 0; i < input->edgesArrLen; i++){
+		free(input->edgesArr[i]);
+	}
+
+	free(input);
 
 }
 
@@ -321,8 +324,12 @@ void printOutputFile(char* outputFile, Graph graph, OutputData* output){
 
 void freeOutput(OutputData* output){
 
-	// TO DO 
-	// TO DO
-	// TO DO
+	for(int i = 0; i < output->componentsLength; i++){
+		freeList(&output->components[i]);
+	}
+	
+	free(output->components);
+
+	free(output);
 
 }         
