@@ -51,6 +51,17 @@ int main(int argc, char * argv[]){
       		exit(1);
    	}	
 
+
+	FILE *out;
+	out = fopen(argv[2], "w");
+
+        if( out==NULL ){
+                printf("Unable to open file %s for writing\n", argv[2]);
+                exit(1);
+        }
+
+
+
 // step 2 read input file and populate inputData struct
 
 InputData* input = malloc(sizeof(InputData));
