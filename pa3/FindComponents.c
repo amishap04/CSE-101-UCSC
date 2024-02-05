@@ -326,34 +326,34 @@ void populateOutputData(OutputData* output, Graph tGraph, List L){
 
 void printOutputFile(char* outputFile, Graph graph, OutputData* output){
 
-	FILE *out;
-   	out = fopen(outputFile, "wb");
+	FILE *out1;
+   	out1 = fopen(outputFile, "wb");
 
-   	if( out==NULL ){
+   	if( out1==NULL ){
 		printf("Unable to open file %s for writing\n", outputFile);
       		exit(1);
    	}
 
 
 
-	fprintf(out, "Adjacency list representation of G:\012");
-	printGraph(out, graph);
-	fprintf(out, "\n");
+	fprintf(out1, "Adjacency list representation of G:\012");
+	printGraph(out1, graph);
+	fprintf(out1, "\n");
 
-	fprintf(out, "G contains %d strongly connected components:\n", output->componentsLength);
+	fprintf(out1, "G contains %d strongly connected components:\n", output->componentsLength);
 	
 	for(int i = 0; i < output->componentsLength; i++){
-		fprintf(out, "Component %d: ", i+1);
+		fprintf(out1, "Component %d: ", i+1);
 		for(moveFront(output->components[i]); index(output->components[i]) >= 0; moveNext(output->components[i])){
-			fprintf(out, "%d ", get(output->components[i]));
+			fprintf(out1, "%d ", get(output->components[i]));
 		}
 	
-		fprintf(out, "\n");	
+		fprintf(out1, "\n");	
 	}
 
 	
-	fprintf(out, "\n");
-	fclose(out);
+	fprintf(out1, "\n");
+	fclose(out1);
 
 }
  
