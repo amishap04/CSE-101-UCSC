@@ -138,6 +138,12 @@ printOutputFile(argv[2], graph, output);
 
 //printOutputFile(argv[2], tGraph, output);
 
+
+fclose(out);
+fclose(in);
+
+
+
 // free section
 // free InputData input
 freeInput(input);
@@ -249,7 +255,7 @@ void createInputData(char* inputFile, InputData* input){
 
 
 
-
+fclose(in);
 
 
 }
@@ -347,6 +353,7 @@ void printOutputFile(char* outputFile, Graph graph, OutputData* output){
 
 	
 	fprintf(out, "\n");
+	fclose(out);
 
 }
  
