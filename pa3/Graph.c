@@ -80,11 +80,16 @@ void freeGraph(Graph* pG){
 
 
 int getOrder(Graph G) {
+    if (G == NULL) {
+        fprintf(stderr, "Graph Error: calling getOrder() on NULL Graph reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     return G->order;
 }
 
 int getSize(Graph G) {
-    if (G == NULL) {
+    if (G == NULL || getOrder(G) < 0) {
         fprintf(stderr, "Graph Error: calling getSize() on NULL Graph reference\n");
         exit(EXIT_FAILURE);
     }
@@ -132,6 +137,17 @@ void addEdge(Graph G, int u, int v) {
         
         if (length(G->neighbors[u]) == 0 || back(G->neighbors[u]) < v) {
             append(G->neighbors[u], v);
+
+
+	    if(getSize(G) < 0){
+                G->size = 1;
+             }
+             else{
+                G->size++;
+             }
+	
+
+
         } else {
             moveFront(G->neighbors[u]);
             while (index(G->neighbors[u]) >= 0 && get(G->neighbors[u]) < v) {
@@ -141,12 +157,32 @@ void addEdge(Graph G, int u, int v) {
                 insertBefore(G->neighbors[u], v);
             } else {
                 append(G->neighbors[u], v);
+
+		if(getSize(G) < 0){
+                	G->size = 1;
+                }
+                else{
+                	G->size++;
+                }
+
+
+
             }
         }
 
         
         if (length(G->neighbors[v]) == 0 || back(G->neighbors[v]) < u) {
             append(G->neighbors[v], u);
+
+
+	    if(getSize(G) < 0){
+                G->size = 1;
+             }
+             else{
+                G->size++;
+             }
+
+
         } else {
             moveFront(G->neighbors[v]);
             while (index(G->neighbors[v]) >= 0 && get(G->neighbors[v]) < u) {
@@ -156,10 +192,19 @@ void addEdge(Graph G, int u, int v) {
                 insertBefore(G->neighbors[v], u);
             } else {
                 append(G->neighbors[v], u);
+
+
+
+		if(getSize(G) < 0){
+                	G->size = 1;
+                }
+                else{
+                	G->size++;
+                }
+
             }
         }
 
-        G->size++;
     }
 }
 
@@ -168,6 +213,14 @@ void addArc(Graph G, int u, int v) {
 
 	if (length(G->neighbors[u]) == 0 || back(G->neighbors[u]) < v) {
              append(G->neighbors[u], v);
+		
+	     if(getSize(G) < 0){
+                G->size = 1;
+             }
+             else{
+                G->size++;
+             }
+	     
          } else {
              moveFront(G->neighbors[u]);
              while (index(G->neighbors[u]) >= 0 && get(G->neighbors[u]) < v) {
@@ -177,12 +230,21 @@ void addArc(Graph G, int u, int v) {
                  insertBefore(G->neighbors[u], v);
              } else {
                  append(G->neighbors[u], v);
+
+
+		if(getSize(G) < 0){
+                	G->size = 1;
+                }
+        	else{
+                	G->size++;
+        	}
+
              }
          }
 
 
 
-        G->size++;
+
     }
 }
 
