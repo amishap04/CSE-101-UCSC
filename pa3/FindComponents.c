@@ -37,7 +37,7 @@ typedef struct OutputData {
 void createInputData(char* inputFile, InputData* input);
 void freeInput(InputData *input);
 void populateGraph(Graph graph, InputData* input);
-void populateOutputData(OutputData* output, Graph tGraph);
+void populateOutputData(OutputData* output, Graph tGraph, List L);
 void printOutputFile(char* outputFile, Graph graph, OutputData* output);
 void freeOutput(OutputData* output);
 
@@ -107,12 +107,12 @@ myPrintList(sGraphList);
 // step 7 find strongly connected components using DFS results from step 6
 
 OutputData* output = malloc(sizeof(OutputData));
-populateOutputData(output, tGraph);
+populateOutputData(output, tGraph, sGraphList);
 
 
 // step 8 print list and component data to output file
 
-printOutputFile(argv[2], tGraph, output);
+printOutputFile(argv[2], graph, output);
 
 //printOutputFile(argv[2], tGraph, output);
 
@@ -248,11 +248,40 @@ void populateGraph(Graph graph, InputData* input){
 }
 
  
-void populateOutputData(OutputData* output, Graph tGraph){
+void populateOutputData(OutputData* output, Graph tGraph, List L){
 
-	// TO DO
-	//         // TO DO
-	//                 // TO DO
+	output->componentsLength = 0;
+	for(int i = 1; i <= getOrder(tGraph); i++){
+		if(getParent(tGraph, i) == NIL){
+			output->componentsLength++;
+		}
+	}
+
+	output->components = malloc(output->componentsLength * sizeof(List));
+	for(int i = 0; i < output->componentsLength; i++){
+
+		output->components[i] = newList();
+
+	}
+
+
+	// 8-> 7-> 6-> 3-> 4-> 1-> 5-> 2-> 
+	// -1 -1      -1     -1
+
+	int arrInd = output->componentsLength;
+	for(moveFront(L); index(L) >= 0; moveNext(L)){
+
+		if(getParent(tGraph, get(L)) == NIL){
+			arrInd--;
+                	append(output->components[arrInd], get(L));
+                }
+                else{
+			append(output->components[arrInd], get(L));
+                }
+         }
+
+
+
 
 }
  
@@ -271,10 +300,21 @@ void printOutputFile(char* outputFile, Graph graph, OutputData* output){
 
 	fprintf(out, "Adjacency list representation of G:\n");
 	printGraph(out, graph);
+	fprintf(out, "\n");
 
+	fprintf(out, "G contains %d strongly connected components:\n", output->componentsLength);
+	
+	for(int i = 0; i < output->componentsLength; i++){
+		fprintf(out, "Component %d: ", i+1);
+		for(moveFront(output->components[i]); index(output->components[i]) >= 0; moveNext(output->components[i])){
+			fprintf(out, "%d ", get(output->components[i]));
+		}
+	
+		fprintf(out, "\n");	
+	}
 
 	
-
+	fprintf(out, "\n");
 
 }
  
