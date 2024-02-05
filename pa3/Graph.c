@@ -186,6 +186,58 @@ void addArc(Graph G, int u, int v) {
     }
 }
 
+
+void DFS(Graph G, List S) {
+    for (int i = 1; i <= getOrder(G); i++) {
+        G->colors[i] = WHITE;
+        G->parents[i] = NIL;
+    }
+
+    int time = 0;
+    List tempS = newList();
+    for (moveFront(S); index(S) >= 0; moveNext(S)) {
+        int u = get(S);
+        if (G->colors[u] == WHITE) {
+            time = visit(G, tempS, u, time + 1);
+        }
+    }
+
+    clear(S);
+    for (moveFront(tempS); index(tempS) >= 0; moveNext(tempS)) {
+        append(S, get(tempS));
+    }
+    freeList(&tempS);
+}
+
+int visit(Graph G, List S, int u, int time) {
+    G->colors[u] = GRAY;
+    G->discover[u] = time;
+
+    for (moveFront(G->neighbors[u]); index(G->neighbors[u]) >= 0; moveNext(G->neighbors[u])) {
+        int v = get(G->neighbors[u]);
+        if (G->colors[v] == WHITE) {
+            G->parents[v] = u;
+            time = visit(G, S, v, time + 1);
+        }
+    }
+
+    G->colors[u] = BLACK;
+    G->finish[u] = time + 1;
+    prepend(S, u);
+    return time + 1;
+}
+
+
+
+
+
+
+
+
+
+
+/**
+
 void DFS(Graph G, List S){
 
 	int sLenIni = length(S); 
@@ -193,16 +245,24 @@ void DFS(Graph G, List S){
 		return;
 	}
 
+	for (int i = 1; i <= getOrder(G); i++) {
+        	G->colors[i] = WHITE;
+        	G->parents[i] = NIL;
+        }
+
+
 // step 1: run DFS over each node in the list S if color is white by calling visit(currNode)
 // step 1 discovers and finishes all connected nodes of the currNode
 	
-	int vertex, time = 1;
+	int vertex, time = 0;
+	List tempS = newList();
+	
 	for(moveFront(S); index(S) >= 0; moveNext(S)){
 
 		vertex = get(S);
 
 		if(G->colors[vertex] == WHITE){
-			time = visit(G, S, vertex, time);
+			time = visit(G, tempS, vertex, time++);
 		}
 		
 
@@ -217,8 +277,12 @@ void DFS(Graph G, List S){
 		deleteFront(S);
 	}
 
-	//printf("prinitn AFTER DELETE FRONT S:\n\n");
-        //myPrintList(S);
+	clear(S);
+	for (moveFront(tempS); index(tempS) >= 0; moveNext(tempS)) {
+        	append(S, get(tempS));
+    	}
+
+    	freeList(&tempS);
 
 
 	List copyS = copyList(S);
@@ -230,17 +294,10 @@ void DFS(Graph G, List S){
 
 
 
-	//printf("prinitn AFTER JUST DELETE S:\n\n");
-        //myPrintList(S);
 
 	for(moveFront(copyS); index(copyS) >= 0; moveNext(copyS)){
 		prepend(S, get(copyS));
 	}
-	//printf("prinitn reversed S:\n\n");
-	//myPrintList(S);
-
-	//printf("prinitn COPY reversed S:\n\n");
-        //myPrintList(copyS);
 
 	freeList(&copyS);
 
@@ -251,13 +308,8 @@ int visit(Graph G, List S, int vertex, int time){
 
 
 
-	//printf("Vertex: %d\n", vertex);
-	//printf("Time: %d\n", time);
-	//printBusData(G);
-
-
 	G->colors[vertex] = GRAY;
-	G->discover[vertex] = time++;
+	G->discover[vertex] = time;
 	List conns = G->neighbors[vertex];
 
 	if(length(conns) == 0){
@@ -266,30 +318,36 @@ int visit(Graph G, List S, int vertex, int time){
 		append(S, vertex);
 	}
 
-	else{
+else{
 
-		for(moveFront(conns); index(conns) >= 0; moveNext(conns)) {
-			int child = get(conns);
-			if(G->colors[child] == WHITE){
-				G->parents[child] = vertex;
-				time = visit(G, S, child, time);
-			}
+	for(moveFront(conns); index(conns) >= 0; moveNext(conns)) {
+		int child = get(conns);
+		if(G->colors[child] == WHITE){
+			G->parents[child] = vertex;
+			time = visit(G, S, child, time++);
 		}
+	}
 
 	G->finish[vertex] = time++;
 	G->colors[vertex] = BLACK;
-	append(S, vertex);
-
-	}
-
-
-	//printf("Vertex: %d\n", vertex);
-        //printf("Time: %d\n", time);
-        //printBusData(G);
-
-	return time;
+	prepend(S, vertex);
 
 }
+
+
+	return time++;
+
+}
+
+
+**/
+
+
+
+
+
+
+
 
 
 
