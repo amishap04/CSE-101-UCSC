@@ -80,7 +80,7 @@ void freeGraph(Graph* pG){
 
 
 int getOrder(Graph G) {
-    if (G == NULL) {
+    if (G == NULL || G->order < 0) {
         fprintf(stderr, "Graph Error: calling getOrder() on NULL Graph reference\n");
         exit(EXIT_FAILURE);
     }
@@ -97,10 +97,16 @@ int getSize(Graph G) {
 }
 
 int getParent(Graph G, int u) {
+    if(G == NULL) {
+        fprintf(stderr, "Graph Error: calling getParent() on NULL Graph reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     if (1 <= u && u <= getOrder(G)) {
         return G->parents[u];
     } else {
-        return NIL;
+        fprintf(stderr, "Graph Error: getParent() called with vertex %d out of bounds\n", u);
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -133,6 +139,12 @@ int getFinish(Graph G, int u){
 
 
 void addEdge(Graph G, int u, int v) {
+    if(G == NULL){
+	fprintf(stderr, "Graph Error: calling addEdge() on NULL Graph reference\n");
+        exit(EXIT_FAILURE);	
+
+    }
+
     if (1 <= u && u <= G->order && 1 <= v && v <= G->order) {
         
         if (length(G->neighbors[u]) == 0 || back(G->neighbors[u]) < v) {
@@ -209,6 +221,12 @@ void addEdge(Graph G, int u, int v) {
 }
 
 void addArc(Graph G, int u, int v) {
+    if(G == NULL){
+        fprintf(stderr, "Graph Error: calling addArc() on NULL Graph reference\n");
+        exit(EXIT_FAILURE);
+
+    }
+
     if (1 <= u && u <= G->order && 1 <= v && v <= G->order) {
 
 	if (length(G->neighbors[u]) == 0 || back(G->neighbors[u]) < v) {
@@ -250,6 +268,13 @@ void addArc(Graph G, int u, int v) {
 
 
 void DFS(Graph G, List S) {
+    if(G == NULL || S == NULL || length(S) <= 0){
+        fprintf(stderr, "Graph Error: calling addEdge() on NULL Graph reference\n");
+        exit(EXIT_FAILURE);
+
+    }
+
+
     for (int i = 1; i <= getOrder(G); i++) {
         G->colors[i] = WHITE;
         G->parents[i] = NIL;
@@ -420,6 +445,13 @@ else{
 
 Graph transpose(Graph G){
 
+   if(G == NULL){
+        fprintf(stderr, "Graph Error: calling transpose() on NULL Graph reference\n");
+        exit(EXIT_FAILURE);
+
+    }
+
+
    GraphObj* tGraph = newGraph(getOrder(G));
    
    //tGraph->size = getSize(G);
@@ -454,6 +486,13 @@ Graph transpose(Graph G){
 
 
 Graph copyGraph(Graph G){
+
+     if(G == NULL){
+        fprintf(stderr, "Graph Error: calling copyGraph() on NULL Graph reference\n");
+        exit(EXIT_FAILURE);
+
+     }
+
 
      GraphObj* copy = newGraph(getOrder(G));
 
@@ -491,6 +530,13 @@ Graph copyGraph(Graph G){
 
 
 void printGraph(FILE* out, Graph G) {
+
+   if(G == NULL || out == NULL){
+        fprintf(stderr, "Graph Error: calling printGraph() on NULL Graph reference\n");
+        exit(EXIT_FAILURE);
+
+    }
+
     for (int i = 1; i <= G->order; i++) {
         fprintf(out, "%d: ", i);
         moveFront(G->neighbors[i]);
@@ -505,6 +551,14 @@ void printGraph(FILE* out, Graph G) {
 
 
 void myPrintGraph(Graph G, char* valueType){
+
+	if(G == NULL){
+        	fprintf(stderr, "Graph Error: calling myPrintGraph() on NULL Graph reference\n");
+        	exit(EXIT_FAILURE);
+
+        }
+
+
 
 	for(int i = 1; i <= getOrder(G); i++){
 		if(strcmp(valueType, "P") == 0){
@@ -527,6 +581,14 @@ void myPrintGraph(Graph G, char* valueType){
 
 
 void printBusData(Graph G){
+
+	if(G == NULL){
+        	fprintf(stderr, "Graph Error: calling printBusData() on NULL Graph reference\n");
+        	exit(EXIT_FAILURE);
+
+        }
+
+
 
 	printf("Printing Discover:\n");
 	myPrintGraph(G, "D");
