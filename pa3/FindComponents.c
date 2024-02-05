@@ -253,6 +253,13 @@ void populateGraph(Graph graph, InputData* input){
  
 void populateOutputData(OutputData* output, Graph tGraph, List L){
 
+
+	if(getOrder(tGraph) != length(L)){
+		return;
+	}
+
+
+
 	output->componentsLength = 0;
 	for(int i = 1; i <= getOrder(tGraph); i++){
 		if(getParent(tGraph, i) == NIL){
