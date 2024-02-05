@@ -84,6 +84,10 @@ int getOrder(Graph G) {
 }
 
 int getSize(Graph G) {
+    if (G == NULL) {
+        fprintf(stderr, "Graph Error: calling getSize() on NULL Graph reference\n");
+        exit(EXIT_FAILURE);
+    }
     return G->size;
 }
 
@@ -96,21 +100,30 @@ int getParent(Graph G, int u) {
 }
 
 int getDiscover(Graph G, int u){
-    if(1 <= u && u <= getOrder(G)){
-	return G->discover[u];
-    } else {
-	return UNDEF;
+    if(G == NULL) {
+        fprintf(stderr, "Graph Error: calling getDiscover() on NULL Graph reference\n");
+        exit(EXIT_FAILURE);
     }
-
+    if(1 <= u && u <= getOrder(G)){
+        return G->discover[u];
+    } else {
+        fprintf(stderr, "Graph Error: getDiscover() called with vertex %d out of bounds\n", u);
+        exit(EXIT_FAILURE);
+    }
 }
 
+
 int getFinish(Graph G, int u){
+    if(G == NULL) {
+        fprintf(stderr, "Graph Error: calling getFinish() on NULL Graph reference\n");
+        exit(EXIT_FAILURE);
+    }
     if(1 <= u && u <= getOrder(G)){
         return G->finish[u];
     } else {
-        return UNDEF;
+        fprintf(stderr, "Graph Error: getFinish() called with vertex %d out of bounds\n", u);
+        exit(EXIT_FAILURE);
     }
-
 }
 
 
@@ -189,7 +202,7 @@ void DFS(Graph G, List S){
 		vertex = get(S);
 
 		if(G->colors[vertex] == WHITE){
-			visit(G, S, vertex, time);
+			time = visit(G, S, vertex, time);
 		}
 		
 
@@ -229,6 +242,7 @@ void DFS(Graph G, List S){
 	//printf("prinitn COPY reversed S:\n\n");
         //myPrintList(copyS);
 
+	freeList(&copyS);
 
 }
 
@@ -285,7 +299,7 @@ Graph transpose(Graph G){
 
    GraphObj* tGraph = newGraph(getOrder(G));
    
-   tGraph->size = getSize(G);
+   //tGraph->size = getSize(G);
 
    int src, dest;
 
@@ -321,12 +335,14 @@ Graph copyGraph(Graph G){
      GraphObj* copy = newGraph(getOrder(G));
 
      copy->size = getSize(G);
-     
+
 
      // copying parents
      int src, dest;
 
-     for(int i = 0; i <= getOrder(G); i++){
+
+     for(int i = 1; i <= getOrder(G); i++){
+
 
 	  src = i;
 	  copy->parents[i] = getParent(G, i);

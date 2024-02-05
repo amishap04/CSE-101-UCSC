@@ -36,6 +36,8 @@ int main(int argc, char* argv[]){
    printGraph(stdout, G);
 
    DFS(G, S);
+
+
    fprintf(stdout, "\n");
    fprintf(stdout, "x:  d  f  p\n");
    for(i=1; i<=n; i++){
@@ -45,8 +47,14 @@ int main(int argc, char* argv[]){
    printList(stdout, S);
    fprintf(stdout, "\n");
 
+
+
    T = transpose(G);
+
+   
    C = copyGraph(G);
+
+
    fprintf(stdout, "\n");
    printGraph(stdout, C);
    fprintf(stdout, "\n");

@@ -20,7 +20,7 @@
 typedef struct GraphObj* Graph;
 
 #define UNDEF -2
-#define NIL -1
+#define NIL 0
 
 /*** Constructors-Destructors ***/
 Graph newGraph(int n);
