@@ -229,7 +229,7 @@ void addArc(Graph G, int u, int v) {
 
     if (1 <= u && u <= G->order && 1 <= v && v <= G->order) {
 
-	
+	/*
 	List srcL = G->neighbors[u];
 	for(moveFront(srcL); index(srcL) >= 0; moveNext(srcL)){
 		if(get(srcL) == v){
@@ -237,7 +237,7 @@ void addArc(Graph G, int u, int v) {
 		}
 
 	}
-
+	*/
 
 	if (length(G->neighbors[u]) == 0 || back(G->neighbors[u]) < v) {
              append(G->neighbors[u], v);
