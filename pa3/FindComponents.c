@@ -87,8 +87,8 @@ for(int i = 1; i <= getOrder(graph); i++){
 
 DFS(graph, sGraphList); // make sure sGraphList is in descending finish order at end of DFS
 
-myPrintList(sGraphList);
-printf("LAST LINE\n");
+//myPrintList(sGraphList);
+//printf("LAST LINE\n");
 
 // step 5 create new graph by trasposing graph above
 
@@ -98,8 +98,11 @@ Graph tGraph = transpose(graph);
 
 // step 6 run DFS on transposed graph in order of the stack from step 4
 
-//DFS(tGraph, sGraphList);
+DFS(tGraph, sGraphList);
 
+
+printBusData(tGraph);
+myPrintList(sGraphList);
 
 // step 7 find strongly connected components using DFS results from step 6
 
@@ -109,7 +112,7 @@ populateOutputData(output, tGraph);
 
 // step 8 print list and component data to output file
 
-printOutputFile(argv[2],graph, output);
+printOutputFile(argv[2], tGraph, output);
 
 //printOutputFile(argv[2], tGraph, output);
 

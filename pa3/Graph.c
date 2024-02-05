@@ -199,12 +199,35 @@ void DFS(Graph G, List S){
 // step 2: continue DFS until all nodes are not white in order of list
 // step 3: transform S to contain nodes in descending order of finish times
 
+
 	for(int i = 0; i < sLenIni; i++){
 		deleteFront(S);
 	}
 
+	//printf("prinitn AFTER DELETE FRONT S:\n\n");
+        //myPrintList(S);
+
+
 	List copyS = copyList(S);
-		
+	
+	while(length(S) > 0){
+		deleteFront(S);
+	}
+
+
+
+
+	//printf("prinitn AFTER JUST DELETE S:\n\n");
+        //myPrintList(S);
+
+	for(moveFront(copyS); index(copyS) >= 0; moveNext(copyS)){
+		prepend(S, get(copyS));
+	}
+	//printf("prinitn reversed S:\n\n");
+	//myPrintList(S);
+
+	//printf("prinitn COPY reversed S:\n\n");
+        //myPrintList(copyS);
 
 
 }
@@ -246,9 +269,9 @@ int visit(Graph G, List S, int vertex, int time){
 	}
 
 
-	printf("Vertex: %d\n", vertex);
-        printf("Time: %d\n", time);
-        printBusData(G);
+	//printf("Vertex: %d\n", vertex);
+        //printf("Time: %d\n", time);
+        //printBusData(G);
 
 	return time;
 
