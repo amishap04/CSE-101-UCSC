@@ -53,21 +53,10 @@ int main(int argc, char * argv[]){
 
 // step 2 read input file and populate inputData struct
 
-FILE *out;
-   out = fopen(argv[2], "w");
-
-   if( out==NULL ){
-      printf("Unable to open file %s for writing\n", argv[2]);
-      exit(1);
-   }
-
-
-
-
 InputData* input = malloc(sizeof(InputData));
 createInputData(argv[1], input);
 
-printf("edgesArrLen is %d\n", input->edgesArrLen);
+//printf("edgesArrLen is %d\n", input->edgesArrLen);
 //for(int i = 0; i < input->numVertices; i++){
 	
 
@@ -80,15 +69,16 @@ Graph graph = newGraph(input->numVertices);
 
 populateGraph(graph, input); // this populates adj list
 
-fprintf(out, "Adjacency list representation of G:\n");
-printGraph(out, graph);
+//myPrintGraph(graph, "P");
+
+//Graph cGraph = copyGraph(graph);
 
 // step 4 call DFS on created Graph and populates all fields including finish and stack of finish times
 
 List sGraphList = newList();
 
 
-for(int i = 0; i <= getOrder(graph); i++){
+for(int i = 1; i <= getOrder(graph); i++){
 
 	append(sGraphList, i);
 
@@ -97,6 +87,8 @@ for(int i = 0; i <= getOrder(graph); i++){
 
 DFS(graph, sGraphList); // make sure sGraphList is in descending finish order at end of DFS
 
+myPrintList(sGraphList);
+printf("LAST LINE\n");
 
 // step 5 create new graph by trasposing graph above
 
@@ -106,7 +98,7 @@ Graph tGraph = transpose(graph);
 
 // step 6 run DFS on transposed graph in order of the stack from step 4
 
-DFS(tGraph, sGraphList);
+//DFS(tGraph, sGraphList);
 
 
 // step 7 find strongly connected components using DFS results from step 6
@@ -117,9 +109,9 @@ populateOutputData(output, tGraph);
 
 // step 8 print list and component data to output file
 
-printOutputFile(argv[2], graph, output);
+printOutputFile(argv[2],graph, output);
 
-
+//printOutputFile(argv[2], tGraph, output);
 
 // free section
 // free InputData input
@@ -176,7 +168,7 @@ void createInputData(char* inputFile, InputData* input){
 			token = strtok(line, " \n");
 			input->numVertices = atoi(token);
 
-			printf("numVertices is %d\n", input->numVertices);
+			//printf("numVertices is %d\n", input->numVertices);
 		}
 
 		else{
@@ -264,9 +256,22 @@ void populateOutputData(OutputData* output, Graph tGraph){
 
 void printOutputFile(char* outputFile, Graph graph, OutputData* output){
 
-	// TO DO
-	//         // TO DO
-	//                 // TO DO
+	FILE *out;
+   	out = fopen(outputFile, "w");
+
+   	if( out==NULL ){
+		printf("Unable to open file %s for writing\n", outputFile);
+      		exit(1);
+   	}
+
+
+
+	fprintf(out, "Adjacency list representation of G:\n");
+	printGraph(out, graph);
+
+
+	
+
 
 }
  

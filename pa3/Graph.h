@@ -38,11 +38,13 @@ int getFinish(Graph G, int u);
 void addEdge(Graph G, int u, int v);
 void addArc(Graph G, int u, int v);
 void DFS(Graph G, List S);
-
+int visit(Graph G, List S, int vertex, int time);
 /*** Other operations ***/
 void printGraph(FILE* out, Graph G);
 Graph transpose(Graph G);
 Graph copyGraph(Graph G);
+void myPrintGraph(Graph G, char* valueType);
+void printBusData(Graph G);
 
 
 #endif 
