@@ -218,6 +218,8 @@ void addEdge(Graph G, int u, int v) {
         }
 
     }
+G->size--;
+
 }
 
 void addArc(Graph G, int u, int v) {
