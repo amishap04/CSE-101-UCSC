@@ -136,17 +136,16 @@ void printMatrix(FILE* out, Matrix M){
         exit(EXIT_FAILURE);
     }
 
-    fprintf(out, "size is: %d\n", size(M));
 
     if(size(M) > 0){
         for(int row = 0; row < size(M); row++){
-            fprintf(out, "%d:", row+1);
             
             if(length(M->rows[row]) > 0){
+		fprintf(out, "%d:", row+1);
                 EntryObj* curEnt;
                 for(moveFront(M->rows[row]); index(M->rows[row]) >= 0; moveNext(M->rows[row])){
                     curEnt = get(M->rows[row]);
-                    fprintf(out, " (%d %.1f)", curEnt->col, curEnt->val);
+                    fprintf(out, " (%d, %.1f)", curEnt->col, curEnt->val);
                 }
                 fprintf(out, "\n");
             }

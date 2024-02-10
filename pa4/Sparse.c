@@ -11,6 +11,7 @@
 #include<stdbool.h>
 #include<string.h>
 #include "List.h"
+#include "Matrix.h"
 
 #define MAX_LEN 300
 
@@ -49,6 +50,8 @@ int main(int argc, char * argv[]){
    int b_nn;
    int row, col;
    double val;
+   Matrix A, B;
+
    while( fgets(line, MAX_LEN, in) != NULL)  {
       line_count++;
       if(line_count == 1){
@@ -58,11 +61,11 @@ int main(int argc, char * argv[]){
         a_nn = atoi(token);
         token = strtok(NULL, " \n");
         b_nn = atoi(token);
-        printf("%d %d %d\n", n, a_nn, b_nn);
+        A = newMatrix(n);
+        B = newMatrix(n);
       }
       
       else if(line_count == 2){
-        printf("first continues\n");
         continue;
       }
       else if(line_count <= (a_nn + 2)){
@@ -72,10 +75,9 @@ int main(int argc, char * argv[]){
         col = atoi(token);
         token = strtok(NULL, " \n");
         val = atof(token);
-        printf("matrix a: %d %d %.1f\n", row, col, val); 
+        changeEntry(A, row, col, val);
       }
       else if(line_count == (a_nn + 3)){
-        printf("second continues\n");
         continue;
       }
       else{
@@ -85,10 +87,20 @@ int main(int argc, char * argv[]){
         col = atoi(token);
         token = strtok(NULL, " \n");
         val = atof(token);
-        printf("matrix b: %d %d %.1f\n", row, col, val); 
+        changeEntry(B, row, col, val); 
       }
 
    }
+
+   fprintf(out, "A has %d non-zero entries:\n", a_nn);
+   printMatrix(out, A);
+
+   fprintf(out, "\n");
+
+   fprintf(out, "B has %d non-zero entries:\n", b_nn);
+   printMatrix(out, B);
+
+
 
   
    fclose(in);
@@ -99,6 +111,5 @@ int main(int argc, char * argv[]){
 
 
 }
-
 
 
