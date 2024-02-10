@@ -6,6 +6,8 @@
  * * * * Implementation of Matrix ADT // Description
  * * * ***/
 
+
+
 #include "List.h"
 #include "Matrix.h"
 
@@ -82,37 +84,37 @@ void freeMatrix(Matrix* pM){
 
 void changeEntry(Matrix M, int i, int j, double x){
 
-    if(M != NULL && 1 <= i && i <= M->size && 1 <= j && j <= M->size){
-        List row = M->rows[i-1];
-
+  if(M != NULL && 1 <= i && i <= M->size && 1 <= j && j <= M->size){
+        List row = M->rows[i-1]; 
 
         if(row == NULL){
             return;
         }
 
-        Entry newE = newEntry(j, x, M->size);
-        if(length(row) == 0){
-            append(row, newE);
-            return;
-        }
-
+        EntryObj* newE = newEntry(j, x, M->size); 
+        bool found = false;
         for(moveFront(row); index(row) >= 0; moveNext(row)){
             EntryObj* entry = (EntryObj*)get(row);
             if(j < entry->col){
                 insertBefore(row, newE);
+                found = true;
+                break; 
             }
             else if(j == entry->col){
-                entry->val = x;
-            }
-            else{
-                append(row, newE);
+                entry->val = x; 
+                free(newE); 
+                found = true;
+                break; 
             }
         }
 
-    }
+        if(!found){
+            append(row, newE); 
+        }
 
+
+  }
 }
-
 
 
 int size(Matrix M){
@@ -157,7 +159,6 @@ void printMatrix(FILE* out, Matrix M){
 
 
 }
-
 
 
 
