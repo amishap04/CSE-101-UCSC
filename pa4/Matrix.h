@@ -21,10 +21,11 @@ typedef struct MatrixObj* Matrix;
 Matrix newMatrix(int n);
 void freeMatrix(Matrix* pM);
 void changeEntry(Matrix M, int i, int j, double x);
-Entry newEntry(int col, int val, int mSize);
+Entry newEntry(int col, double val, int mSize);
 void freeEntry(Entry pE);
 int size(Matrix M);
 void printMatrix(FILE* out, Matrix M);
-
+Entry getColEnt(List L, int col, int size);
+Matrix scalarMult(double x, Matrix A);
 
 

@@ -43,7 +43,7 @@ MatrixObj* newMatrix(int n){
     return mat;
 }
 
-EntryObj* newEntry(int col, int val, int mSize){
+EntryObj* newEntry(int col, double val, int mSize){
 
     if(1 <= col  && col <= mSize){
         EntryObj* entry = malloc(sizeof(EntryObj));
@@ -127,40 +127,97 @@ int size(Matrix M){
 }
 
 
-void printMatrix(FILE* out, Matrix M){
+void printMatrix(FILE* out, Matrix M) {
 
-    if(M == NULL){
+    if(M == NULL) {
         printf("Matrix Error: calling printMatrix() on NULL matrix reference\n");
         exit(EXIT_FAILURE);
     }
-    if(out == NULL){
+    if(out == NULL) {
         printf("Matrix Error: calling printMatrix() on NULL file reference\n");
         exit(EXIT_FAILURE);
     }
 
+    if(size(M) > 0) {
+        for(int row = 0; row < size(M); row++) {
 
-    if(size(M) > 0){
-        for(int row = 0; row < size(M); row++){
-            
-            if(length(M->rows[row]) > 0){
-		fprintf(out, "%d:", row+1);
+            if(length(M->rows[row]) > 0) {
+                fprintf(out, "%d:", row+1);
                 EntryObj* curEnt;
-                for(moveFront(M->rows[row]); index(M->rows[row]) >= 0; moveNext(M->rows[row])){
+                for(moveFront(M->rows[row]); index(M->rows[row]) >= 0; moveNext(M->rows[row])) {
                     curEnt = get(M->rows[row]);
                     fprintf(out, " (%d, %.1f)", curEnt->col, curEnt->val);
                 }
                 fprintf(out, "\n");
             }
         }
+    } else {
+        printf("Matrix has no entries");
     }
-    else{
-        fprintf(out, "Matrix has no entries");
+}
+
+
+EntryObj* getColEnt(List L, int col, int size){
+
+    if(L == NULL){
+        printf("List Error: calling getColEnt() on NULL List reference\n");
+            exit(EXIT_FAILURE);
     }
+
+    if(col < 1 || col > size){
+        printf("Matrix Error: calling getColEnt() on NULL Matrix reference\n");
+            exit(EXIT_FAILURE);
+    }
+
+    if(length(L) == 0){
+        return NULL;
+    }
+
+
+    EntryObj* curEnt;
+    for(moveFront(L); index(L) >= 0; moveNext(L)){
+        curEnt = get(L);
+        if(curEnt->col == col){
+            return curEnt;
+        }
+    }
+
+    return NULL;
 
 
 }
 
+Matrix scalarMult(double x, Matrix A){
 
+    if(A == NULL){
+        printf("Matrix Error: calling scalarMult() on NULL Matrix reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if(size(A) < 1){
+        printf("Matrix Error: calling scalarMult() on Empty Matrix reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    Matrix result = newMatrix(size(A));
+    List currRow;
+
+    for(int i = 0; i < size(A); i++){
+        currRow = A->rows[i];
+        if(length(currRow) == 0){
+            continue;
+        }
+        EntryObj* entryA;
+        EntryObj* entry;
+        for(moveFront(currRow); index(currRow) >= 0; moveNext(currRow)){
+            entryA = get(currRow);
+            entry = newEntry(entryA->col, (entryA->val * x), size(A));
+            append(result->rows[i], entry);
+        }
+    } 
+
+    return result;
+}
 
 
 

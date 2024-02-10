@@ -103,6 +103,11 @@ int main(int argc, char * argv[]){
    printMatrix(out, B);
 
 
+   double mult = 1.5;
+   Matrix SM = scalarMult(mult, A);
+   fprintf(out, "\n");
+   fprintf(out, "(%.1f)*A =\n", mult);
+   printMatrix(out, SM);
 
   
    fclose(in);
