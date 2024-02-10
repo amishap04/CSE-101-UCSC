@@ -7,8 +7,6 @@
  * * * ***/
 
 
-#ifndef QUEUE_H_INCLUDE_
-#define QUEUE_H_INCLUDE_
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -19,57 +17,39 @@
 
 typedef struct NodeObj* Node;
 typedef struct ListObj* List;
-typedef struct QueueObj* Queue; 
 
 
-// Constructors-Destructors
+// Constructor-Destructor
 List newList(void); 
 void freeList(List* pL);
-Node newNode(int data);
+Node newNode(void* data);
 void freeNode(Node* pN);
-Queue newQueue();
-void freeQueue(Queue* pQ);
 
-
-// Access functions
+// Access Functions
 int length(List L);
 int index(List L);
-int front(List L);
-int back(List L);
-int get(List L);
-bool equals(List A, List B);
-int getQFront(Queue Q);
-int getQLength(Queue Q);
-bool isQEmpty(Queue Q);
+void* front(List L);
+void* back(List L);
+void* get(List L);
 
-
-// Manipulation procedures
+// Manipulation functions
 void clear(List L);
-void set(List L, int x);
+void set(List L, void* x);
 void moveFront(List L); 
 void moveBack(List L); 
 void movePrev(List L);
 void moveNext(List L);
-void prepend(List L, int x); 
-void append(List L, int x); 
-void insertBefore(List L, int x); 
-void insertAfter(List L, int x); 
+void prepend(List L, void* x); 
+void append(List L, void* x); 
+void insertBefore(List L, void* x); 
+void insertAfter(List L, void* x); 
 void deleteFront(List L); 
 void deleteBack(List L); 
 void delete(List L);
-void Enqueue(Queue Q, int data);
-void Dequeue(Queue Q);
 
-
-// Other operations
+// Other functions
 void printList(FILE* out, List L);
-void myPrintList(List L);
-List copyList(List L);
 List concatList(List A, List B);
-
-
-#endif
-
 
 
 

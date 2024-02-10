@@ -6,6 +6,7 @@
  * * * * Implementation for List ADT // Description
  * * * ***/
 
+
 #include "List.h"
 
 
@@ -14,7 +15,7 @@ typedef struct NodeObj* Node;
 
 
 typedef struct NodeObj{
-   int data;
+   void* data;
    Node next;
    Node prev;
 } NodeObj;
@@ -28,14 +29,7 @@ typedef struct ListObj{
 } ListObj;
 
 
-typedef struct QueueObj{
-   Node front;
-   Node back;
-   int length;
-} QueueObj;
-
-
-Node newNode(int data){
+Node newNode(void* data){
     Node N = malloc(sizeof(NodeObj));
     assert( N!=NULL );
     N->data = data;
@@ -67,95 +61,6 @@ void freeList(List* pL) {
         free(*pL);
         *pL = NULL;
     }
-}
-
-Queue newQueue(){
-   Queue Q;
-   Q = malloc(sizeof(QueueObj));
-   assert( Q!=NULL );
-   Q->front = Q->back = NULL;
-   Q->length = 0;
-   return(Q);
-}
-
-
-void freeQueue(Queue* pQ){
-   if(pQ!=NULL && *pQ!=NULL) { 
-      while( !isQEmpty(*pQ) ) { 
-         Dequeue(*pQ); 
-      }
-      free(*pQ);
-      *pQ = NULL;
-   }
-}
-
-int getQFront(Queue Q){
-   if( Q==NULL ){
-      printf("Queue Error: calling getFront() on NULL Queue reference\n");
-      exit(EXIT_FAILURE);
-   }
-   if( isQEmpty(Q) ){
-      printf("Queue Error: calling getFront() on an empty Queue\n");
-      exit(EXIT_FAILURE);
-   }
-   return(Q->front->data);
-}
-
-int getQLength(Queue Q){
-   if( Q==NULL ){
-      printf("Queue Error: calling getLength() on NULL Queue reference\n");
-      exit(EXIT_FAILURE);
-   }
-   return(Q->length);
-}
-
-bool isQEmpty(Queue Q){
-   if( Q==NULL ){
-      printf("Queue Error: calling isEmpty() on NULL Queue reference\n");
-      exit(EXIT_FAILURE);
-   }
-   return(Q->length==0);
-}
-
-void Enqueue(Queue Q, int data)
-{
-   Node N = newNode(data);
-
-   if( Q==NULL ){
-      printf("Queue Error: calling Enqueue() on NULL Queue reference\n");
-      exit(EXIT_FAILURE);
-   }
-   
-   if( isQEmpty(Q) ) { 
-      Q->front = Q->back = N; 
-   }else{ 
-      Q->back->next = N; 
-      Q->back = N; 
-   }
-   Q->length++;
-}
-
-
-void Dequeue(Queue Q){
-   Node N = NULL;
-
-   if( Q==NULL ){
-      printf("Queue Error: calling Dequeue() on NULL Queue reference\n");
-      exit(EXIT_FAILURE);
-   }
-   if( isQEmpty(Q) ){
-      printf("Queue Error: calling Dequeue on an empty Queue\n");
-      exit(EXIT_FAILURE);
-   }
-   
-   N = Q->front;
-   if( getQLength(Q)>1 ) { 
-      Q->front = Q->front->next; 
-   }else{ 
-      Q->front = Q->back = NULL; 
-   }
-   Q->length--;
-   freeNode(&N);
 }
 
 
@@ -191,7 +96,7 @@ int index(List L) {
      
 }
 
-int front(List L) {
+void* front(List L) {
     if( L==NULL ){
 	printf("List Error: calling front() on NULL List reference\n");
 	exit(EXIT_FAILURE);
@@ -204,7 +109,7 @@ int front(List L) {
 
 }
 
-int back(List L) {
+void* back(List L) {
     if( L==NULL ){
         printf("List Error: calling back() on NULL List reference\n");
         exit(EXIT_FAILURE);
@@ -216,53 +121,47 @@ int back(List L) {
     return(L->back->data);
 }
 
-int get(List L) {
+void* get(List L) {
+    if(L == NULL){
+        printf("List Error: calling get() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+    if(L->cursor == NULL){
+        printf("List Error: calling get() on null cursor reference\n");
+        exit(EXIT_FAILURE);
+    }
 
     if(index(L) >= 0 && length(L) > 0){
         return L->cursor->data;
     }
     else{
-	return -1000;
+	exit(EXIT_FAILURE);
     }
-}
-
-bool equals(List A, List B) {
-   if( A==NULL || B==NULL ){
-	printf("List Error: calling equals() on NULL List reference\n");
-        exit(EXIT_FAILURE);
-   }
-   bool equal;
-
-   equal = (A->length == B->length);
-
-   if(equal == false){
-	return equal;
-   }
-
-   A->cursor = A->front;
-   B->cursor = B->front;
-
-   while(A->cursor != NULL){
-	if(A->cursor->data != B->cursor->data){
-		return false;
-	}
-
-	A->cursor = A->cursor->next;
-	B->cursor = B->cursor->next;
-   }
-   return equal;
-
 }
 
 
 void clear(List L) {
+    if(L == NULL){
+        printf("List Error: calling clear() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     while (L->front != NULL) {
         deleteFront(L);
     }
 }
 
 
-void set(List L, int x) {
+void set(List L, void* x) {
+    if(L == NULL){
+        printf("List Error: calling set() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+    if(L->cursor == NULL){
+        printf("List Error: calling set() on null cursor reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     if (length(L) > 0 && index(L) > -1) {
         L->cursor->data = x;
     }
@@ -283,6 +182,10 @@ void moveBack(List L) {
 
 
 void movePrev(List L) {
+    if(L == NULL){
+        printf("List Error: calling movePrev() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
 
     if(L->cursor != NULL){
 
@@ -306,22 +209,30 @@ void movePrev(List L) {
 
 void moveNext(List L) {
 
+    if(L == NULL){
+        printf("List Error: calling moveNext() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     if(L->cursor != NULL){
-	if(L->cursor->next != NULL){
-		L->cursor = L->cursor->next;
-	}
-	else{
-		L->cursor = NULL;
-	}
+        if(L->cursor->next != NULL){
+            L->cursor = L->cursor->next;
+        }
+        else{
+            L->cursor = NULL;
+        }
 
     }
-    else{
-	 
-   }
 
  }
 
-void prepend(List L, int x) {
+void prepend(List L, void* x) {
+
+    if(L == NULL){
+        printf("List Error: calling prepend() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     Node newNde = newNode(x);
 
     if(length(L) == 0){
@@ -342,7 +253,13 @@ void prepend(List L, int x) {
 }
 
 
-void append(List L, int x){
+void append(List L, void* x){
+
+    if(L == NULL){
+        printf("List Error: calling append() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     Node newNde = newNode(x);
 	if(length(L) == 0){
 	   L->front = newNde;
@@ -356,7 +273,13 @@ void append(List L, int x){
     L->length++;
 }
 
-void insertBefore(List L, int x) {
+void insertBefore(List L, void* x) {
+
+    if(L == NULL){
+        printf("List Error: calling insertBefore() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     if (length(L) > 0 && index(L) >= 0) {
 
         if (L->cursor == L->front) {
@@ -373,7 +296,13 @@ void insertBefore(List L, int x) {
     }
 }
 
-void insertAfter(List L, int x) {
+void insertAfter(List L, void* x) {
+
+    if(L == NULL){
+        printf("List Error: calling insertAfter() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     if (length(L) > 0 && index(L) >= 0){
 	Node newNde = newNode(x);
 
@@ -392,6 +321,12 @@ void insertAfter(List L, int x) {
 }
 
 void deleteFront(List L) {
+
+    if(L == NULL){
+        printf("List Error: calling deleteFront() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     if (length(L) > 0) {
 	Node temp = L->front;
 	L->front = L->front->next;
@@ -403,6 +338,12 @@ void deleteFront(List L) {
 
 
 void deleteBack(List L) {
+
+    if(L == NULL){
+        printf("List Error: calling deleteBack() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     if (length(L) > 0) {
         Node temp = L->back;
         if (L->back->prev) {
@@ -424,6 +365,12 @@ void deleteBack(List L) {
 
 
 void delete(List L) {
+
+    if(L == NULL){
+        printf("List Error: calling delete() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     if (length(L) > 0 && index(L) >= 0) {
 	if(L->cursor == L->front){
 	    deleteFront(L);
@@ -446,53 +393,34 @@ void delete(List L) {
 
 
 void printList(FILE* out, List L) {
+
+    if(L == NULL){
+        printf("List Error: calling printList() on empty List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     if (L->length > 0) {
         Node current = L->front;
         while (current != NULL) {
-            fprintf(out, "%d ", current->data);
+            fprintf(out, "%p ", current->data);
             current = current->next;
         }
     }
 }
 
-void myPrintList(List L) {
-    if (L->length > 0) {
-	printf("length of list is: %d ", length(L));
-	printf("front value is: %d ", front(L));
-	printf("back value is: %d ", back(L));
-	printf("\n");
-	L->cursor = L->front;
-
-	for(int i = 1; i<=L->length; i++){
-		printf("%d-> ", L->cursor->data);
-	
-		L->cursor = L->cursor->next;
-	}
-
-	printf("\n");
-    }
-    else{
-	printf("List is Empty.\n");
-    }
-}
-
-
-List copyList(List L) {
-    List newListCopy = newList();
-
-    if(length(L) > 0){
-        Node temp = L->front;
-        while (temp != NULL) {
-            append(newListCopy, temp->data);
-            temp = temp->next;
-        }
-    }
-    return newListCopy;
-}
-
-
 
 List concatList(List A, List B) {
+
+    if(A == NULL){
+        printf("List Error: calling concatList() on empty first List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if(B == NULL){
+        printf("List Error: calling concatList() on empty second List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     List newListConcat = newList();
 
     Node currentA = A->front;
@@ -509,5 +437,8 @@ List concatList(List A, List B) {
 
     return newListConcat;
 }
+
+
+
 
 
