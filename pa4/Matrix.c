@@ -114,9 +114,15 @@ void changeEntry(Matrix M, int i, int j, double x){
                 		found = true;
                 		break;
             		} else if(j == entry->col){
-                		entry->val = x;
-                		found = true;
-                		break;
+
+				if(x == 0){
+					delete(M->rows[i-1]);	
+				}
+				else{
+                			entry->val = x;
+                			found = true;
+                			break;
+				}
             		}
         	}
 	
