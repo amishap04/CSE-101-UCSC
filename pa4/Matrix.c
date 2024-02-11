@@ -196,6 +196,7 @@ void printMatrix(FILE* out, Matrix M) {
 
 EntryObj* getColEnt(List L, int col, int size){
 
+/*
     if(L == NULL){
         printf("List Error: calling getColEnt() on NULL List reference\n");
             exit(EXIT_FAILURE);
@@ -209,6 +210,7 @@ EntryObj* getColEnt(List L, int col, int size){
     if(length(L) == 0){
         return NULL;
     }
+*/
 
     EntryObj* frontEtr = front(L);
     EntryObj* backEtr = back(L);
