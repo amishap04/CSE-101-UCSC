@@ -86,12 +86,19 @@ void freeMatrix(Matrix* pM){
 
 void changeEntry(Matrix M, int i, int j, double x){
 
+	if(x == 0){
+		return;
+	}
+
   if(M != NULL && 1 <= i && i <= M->size && 1 <= j && j <= M->size){
         List row = M->rows[i-1]; 
 
         if(row == NULL){
             return;
         }
+
+
+
 
         EntryObj* newE = newEntry(j, x, M->size); 
         bool found = false;
@@ -302,6 +309,10 @@ double dotProduct(List A, List B, int size){
         return product;
     }
 
+    else if(lenA == 0 && lenB == 0){
+	return product;
+    }
+
     else{
         if(lenA >= lenB){
 
@@ -371,16 +382,24 @@ Matrix product(Matrix A, Matrix B){
     
     List aL, bL;
     for(int row = 0; row < size(A); row++){
+	 aL = A->rows[row];
+
+	if(length(aL) == 0){
+		continue;
+	}
+
         for(int col = 0; col < size(A); col++){
-            aL = A->rows[row];
             bL = BT->rows[col];
 
             if(length(aL) == 0 || length(bL) == 0){
                 continue;
             }
+
+	    else if(length(aL) == 0 && length(bL) == 0){
+		continue;
+	    }
             else{
                 double prod = dotProduct(aL, bL, size(A));
-
                 if(prod == 0){
                     continue;
                 }
@@ -585,6 +604,11 @@ int equals(Matrix A, Matrix B){
     EntryObj* entrA;
     EntryObj* entrB;
     for(int row = 0; row < size(A); row++){
+
+	if(length(A->rows[row]) == 0 && length(B->rows[row]) == 0){
+		continue;
+	}
+
         for(int col = 0; col < size(A); col++){
 
             entrA = getColEnt(A->rows[row], col+1, size(A));
