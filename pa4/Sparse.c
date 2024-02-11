@@ -122,6 +122,20 @@ int main(int argc, char * argv[]){
    fprintf(out, "Transpose(A) =\n");
    printMatrix(out, TA);
    
+   Matrix PA = product(A, B);
+   fprintf(out, "\n");
+   fprintf(out, "A*B =\n");
+   printMatrix(out, PA);
+
+   Matrix PA2 = product(B, B);
+   fprintf(out, "\n");
+   fprintf(out, "B*B =\n");
+   printMatrix(out, PA2);
+
+
+
+
+
 
  
    fclose(in);
@@ -130,7 +144,8 @@ int main(int argc, char * argv[]){
    freeMatrix(&B);
    freeMatrix(&SM);
    freeMatrix(&TA);
-
+   freeMatrix(&PA);
+   freeMatrix(&PA2);
 
    return(0);
 

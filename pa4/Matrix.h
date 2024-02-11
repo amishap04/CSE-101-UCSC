@@ -29,7 +29,8 @@ Entry getColEnt(List L, int col, int size);
 Matrix scalarMult(double x, Matrix A);
 Matrix transpose(Matrix A);
 Matrix copy(Matrix A);
-
+double dotProduct(List A, List B, int size);
+Matrix product(Matrix A, Matrix B);
 
 
 

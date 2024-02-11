@@ -156,6 +156,9 @@ void printMatrix(FILE* out, Matrix M) {
     } else {
         printf("Matrix has no entries");
     }
+
+
+
 }
 
 
@@ -281,6 +284,113 @@ Matrix copy(Matrix A){
 
     return result;
 }
+
+
+
+double dotProduct(List A, List B, int size){
+
+    if(A == NULL || B == NULL){
+        printf("List Error: calling dotProduct() on NULL List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    double product = 0.0;
+
+    int lenA = length(A);
+    int lenB = length(B);
+
+    if(lenA == 0 || lenB == 0){
+        return product;
+    }
+
+    else{
+        if(lenA >= lenB){
+
+            EntryObj* entA;
+            EntryObj* entB;
+            for(moveFront(B); index(B) >= 0; moveNext(B)){
+                entB = ((EntryObj *)get(B));
+                entA = getColEnt(A, entB->col, size);
+
+                if(entA == NULL){
+                    continue;
+                }
+                else{
+                    product += (entB->val * entA->val);
+                }
+            }
+        }
+        else{
+            EntryObj* entA;
+            EntryObj* entB;
+            for(moveFront(A); index(A) >= 0; moveNext(A)){
+                entA = ((EntryObj *)get(A));
+                entB = getColEnt(B, entA->col, size);
+
+                if(entB == NULL){
+                    continue;
+                }
+                else{
+                    product += (entB->val * entA->val);
+                }
+            }
+
+        }
+            
+
+    }
+
+
+
+
+    return product;
+
+}
+
+
+
+Matrix product(Matrix A, Matrix B){
+
+    if(A == NULL || B == NULL){
+        printf("Matrix Error: calling product() on NULL Matrix reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if(size(A) == 0 || size(B) == 0){
+        printf("Matrix Error: calling product() on empty Matrix reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    Matrix result = newMatrix(size(A));
+    Matrix BT = transpose(B);
+    
+    List aL, bL;
+    for(int row = 0; row < size(A); row++){
+        for(int col = 0; col < size(A); col++){
+            aL = A->rows[row];
+            bL = BT->rows[col];
+
+            if(length(aL) == 0 || length(bL) == 0){
+                continue;
+            }
+            else{
+                double prod = dotProduct(aL, bL, size(A));
+
+                if(prod == 0){
+                    continue;
+                }
+                else{
+                    changeEntry(result, row+1, col+1, prod);
+                }
+            }
+        }
+    }
+    
+
+    return result;
+
+}
+
 
 
 
