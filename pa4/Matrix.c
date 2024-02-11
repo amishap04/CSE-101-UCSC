@@ -84,58 +84,38 @@ void freeMatrix(Matrix* pM){
 }
 
 
-void changeEntry(Matrix M, int i, int j, double x){
-
-    if(M != NULL && 1 <= i && i <= M->size && 1 <= j && j <= M->size){
+void changeEntry(Matrix M, int i, int j, double x) {
+    if(M != NULL && 1 <= i && i <= M->size && 1 <= j && j <= M->size) {
         List row = M->rows[i-1];
-
-        if(row == NULL){
-            return;
+        
+        for(moveFront(row); index(row) >= 0; moveNext(row)) {
+            EntryObj* entry = (EntryObj*)get(row);
+            if(entry->col == j) {
+                if(x == 0) {
+                    freeEntry(entry);  
+                    delete(row);  
+                } else {
+                    entry->val = x;  
+                }
+                return;
+            } else if(entry->col > j) {
+                break;  
+            }
         }
-
-        EntryObj* entry;
-        bool found = false;
-
-	if(length(row) == 0){
-		EntryObj* newE = newEntry(j, x, M->size);
-		prepend(M->rows[i-1], newE);
-	}
-
-	else{
-
-        	for(moveFront(row); index(row) >= 0; moveNext(row)){
-            		entry = (EntryObj*)get(row);
-            		if(j < entry->col){
-				if(x != 0){
-
-                			EntryObj* newE = newEntry(j, x, M->size);
-                			insertBefore(row, newE);
-                			found = true;
-                			break;
-				}
-            		} else if(j == entry->col){
-
-				if(x == 0){
-					delete(M->rows[i-1]);	
-				}
-				else{
-                			entry->val = x;
-                			found = true;
-                			break;
-				}
-            		}
-        	}
-	
-
-        	if(!found){
-			if(x != 0){
-            			EntryObj* newE = newEntry(j, x, M->size);
-            			append(row, newE);
-			}
-        	} 
-	}
+        
+    
+        if(x != 0) {
+            EntryObj* newE = newEntry(j, x, M->size);
+            if(index(row) >= 0) {
+                insertBefore(row, newE);  
+            } else {
+                append(row, newE);  
+            }
+        }
     }
 }
+
+
 
 
 int size(Matrix M){

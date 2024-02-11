@@ -35,12 +35,26 @@ int main(){
    printMatrix(stdout, B);
    printf("\n");
 
-
-
-   C = scalarMult(1.5, A);
-   printf("%d\n", NNZ(C));
+   C = scalarMult(-20, A);
+   printf("NNZ before %d\n", NNZ(C));
    printMatrix(stdout, C);
    printf("\n");
+
+   changeEntry(A, 1, 1, 4);
+    changeEntry(A, 1, 2, 2);
+    changeEntry(A, 1, 3, 0);
+    changeEntry(A, 2, 1, 2);
+    changeEntry(A, 3, 1, 0);
+    changeEntry(A, 2, 2, 2);
+    changeEntry(A, 3, 3, 0);
+
+
+  C = scalarMult(-20, A);
+   printf("AMISHA %d\n", NNZ(C));
+   printMatrix(stdout, C);
+   printf("\n");
+
+
 
    D = sum(A, B);
    printf("%d\n", NNZ(D));
