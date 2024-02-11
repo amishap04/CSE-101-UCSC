@@ -241,7 +241,7 @@ EntryObj* getColEnt(List L, int col, int size){
             if(curEnt->col == col){
                 return curEnt;
             }
-	        else if(curEnt->col >  col){
+	        else if(curEnt->col <  col){
 		        return NULL;
 	        }
         }   
