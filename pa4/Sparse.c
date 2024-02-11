@@ -109,9 +109,28 @@ int main(int argc, char * argv[]){
    fprintf(out, "(%.1f)*A =\n", mult);
    printMatrix(out, SM);
 
-  
+ 
+   
+
+
+
+
+
+
+   Matrix TA = transpose(A);
+   fprintf(out, "\n");
+   fprintf(out, "Transpose(A) =\n");
+   printMatrix(out, TA);
+   
+
+ 
    fclose(in);
    fclose(out);
+   freeMatrix(&A);
+   freeMatrix(&B);
+   freeMatrix(&SM);
+   freeMatrix(&TA);
+
 
    return(0);
 

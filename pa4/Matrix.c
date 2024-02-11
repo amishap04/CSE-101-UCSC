@@ -67,20 +67,22 @@ void freeEntry(EntryObj* pE){
 
 
 void freeMatrix(Matrix* pM){
-
     if(pM != NULL && *pM != NULL){
+        Matrix temp = *pM;
 
-        for(int i = 0; i < (*pM)->size; i++){
-            freeList(&((*pM)->rows[i]));
+        for(int i = 0; i < temp->size; i++){
+            if(temp->rows[i] != NULL){
+                freeList(&(temp->rows[i]));
+                temp->rows[i] = NULL;
+            }
         }
 
-        free((*pM)->rows);
-        free(pM);
+        free(temp->rows);
+        free(temp);
         *pM = NULL;
-
     }
-
 }
+
 
 void changeEntry(Matrix M, int i, int j, double x){
 
@@ -218,6 +220,68 @@ Matrix scalarMult(double x, Matrix A){
 
     return result;
 }
+
+
+
+Matrix transpose(Matrix A){
+
+    if(A == NULL){
+        printf("Matrix Error: calling transpose() on NULL Matrix reference\n");
+	    exit(EXIT_FAILURE);
+    }
+    if(size(A) == 0){
+        printf("Matrix Error: calling transpose() on empty Matrix reference\n");
+	    exit(EXIT_FAILURE);
+    }
+
+    Matrix result = newMatrix(size(A));
+    
+    for(int i = 0; i < size(A); i ++){
+        List row = A->rows[i];
+
+        if(length(row) == 0){
+            continue;
+        }
+        else{
+            for(moveFront(row); index(row) >= 0; moveNext(row)){
+                    changeEntry(result, ((EntryObj*)get(row))->col, i+1, ((EntryObj*)get(row))->val);
+            }
+        }
+    }
+
+    return result;
+
+}
+
+Matrix copy(Matrix A){
+
+    if(A == NULL){
+        printf("Matrix Error: calling transpose() on NULL Matrix reference\n");
+            exit(EXIT_FAILURE);
+    }
+    if(size(A) == 0){
+        printf("Matrix Error: calling transpose() on empty Matrix reference\n");
+            exit(EXIT_FAILURE);
+    }
+
+    Matrix result = newMatrix(size(A));
+
+    for(int i = 0; i < size(A); i ++){
+        List row = A->rows[i];
+
+        if(length(row) == 0){
+            continue;
+        }
+        else{
+            for(moveFront(row); index(row) >= 0; moveNext(row)){
+                    changeEntry(result, i+1, ((EntryObj*)get(row))->col, ((EntryObj*)get(row))->val);
+            }
+        }
+    }
+
+    return result;
+}
+
 
 
 

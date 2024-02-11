@@ -27,5 +27,9 @@ int size(Matrix M);
 void printMatrix(FILE* out, Matrix M);
 Entry getColEnt(List L, int col, int size);
 Matrix scalarMult(double x, Matrix A);
+Matrix transpose(Matrix A);
+Matrix copy(Matrix A);
+
+
 
 
