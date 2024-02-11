@@ -98,25 +98,34 @@ void changeEntry(Matrix M, int i, int j, double x){
 
         EntryObj* entry;
         bool found = false;
-        for(moveFront(row); index(row) >= 0; moveNext(row)){
-            entry = (EntryObj*)get(row);
-            if(j < entry->col){
-                EntryObj* newE = newEntry(j, x, M->size);
-                insertBefore(row, newE);
-                found = true;
-                break;
-            } else if(j == entry->col){
-                entry->val = x;
-                found = true;
-                break;
-            }
-        }
 
-        if(!found){
-            EntryObj* newE = newEntry(j, x, M->size);
-            append(row, newE);
-        } else {
-        }
+	if(length(row) == 0){
+		EntryObj* newE = newEntry(j, x, M->size);
+		prepend(M->rows[i-1], newE);
+	}
+
+	else{
+
+        	for(moveFront(row); index(row) >= 0; moveNext(row)){
+            		entry = (EntryObj*)get(row);
+            		if(j < entry->col){
+                		EntryObj* newE = newEntry(j, x, M->size);
+                		insertBefore(row, newE);
+                		found = true;
+                		break;
+            		} else if(j == entry->col){
+                		entry->val = x;
+                		found = true;
+                		break;
+            		}
+        	}
+	
+
+        	if(!found){
+            		EntryObj* newE = newEntry(j, x, M->size);
+            		append(row, newE);
+        	} 
+	}
     }
 }
 
