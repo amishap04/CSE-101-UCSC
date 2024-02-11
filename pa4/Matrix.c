@@ -659,7 +659,20 @@ void makeZero(Matrix M){
     }
 
     for(int row = 0; row < size(M); row++){
-        clear(M->rows[row]);
+	List currList = M->rows[row];
+	if(length(currList) == 0){
+		continue;
+	}
+	else{
+		while(length(currList) > 0){
+			moveFront(currList);
+			EntryObj* temp = get(currList);
+			deleteFront(currList);
+			freeEntry(temp);
+		}
+	}
+
+
     }
 
 }
