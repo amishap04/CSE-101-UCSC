@@ -110,7 +110,7 @@ void changeEntry(Matrix M, int i, int j, double x) {
             EntryObj* entry = (EntryObj*)get(row);
             if(entry->col == j) {
                 if(x == 0) {
-                    freeEntry(entry); 
+                    //freeEntry(entry); 
                     delete(row); 
                     return; 
                 } else {
