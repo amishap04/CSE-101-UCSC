@@ -35,6 +35,8 @@ int main(){
    printMatrix(stdout, B);
    printf("\n");
 
+
+
    C = scalarMult(1.5, A);
    printf("%d\n", NNZ(C));
    printMatrix(stdout, C);

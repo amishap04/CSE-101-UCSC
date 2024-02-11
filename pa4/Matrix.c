@@ -85,9 +85,6 @@ void freeMatrix(Matrix* pM){
 
 
 void changeEntry(Matrix M, int i, int j, double x){
-    if(x == 0){
-        return;
-    }
 
     if(M != NULL && 1 <= i && i <= M->size && 1 <= j && j <= M->size){
         List row = M->rows[i-1];
@@ -109,10 +106,13 @@ void changeEntry(Matrix M, int i, int j, double x){
         	for(moveFront(row); index(row) >= 0; moveNext(row)){
             		entry = (EntryObj*)get(row);
             		if(j < entry->col){
-                		EntryObj* newE = newEntry(j, x, M->size);
-                		insertBefore(row, newE);
-                		found = true;
-                		break;
+				if(x != 0){
+
+                			EntryObj* newE = newEntry(j, x, M->size);
+                			insertBefore(row, newE);
+                			found = true;
+                			break;
+				}
             		} else if(j == entry->col){
 
 				if(x == 0){
@@ -128,8 +128,10 @@ void changeEntry(Matrix M, int i, int j, double x){
 	
 
         	if(!found){
-            		EntryObj* newE = newEntry(j, x, M->size);
-            		append(row, newE);
+			if(x != 0){
+            			EntryObj* newE = newEntry(j, x, M->size);
+            			append(row, newE);
+			}
         	} 
 	}
     }
