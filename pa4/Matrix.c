@@ -361,6 +361,12 @@ Matrix product(Matrix A, Matrix B){
         exit(EXIT_FAILURE);
     }
 
+
+    if(size(A) != size(B)){
+        printf("Matrix Error: calling product() on dif size Matrix reference\n");
+        exit(EXIT_FAILURE);
+    }
+
     Matrix result = newMatrix(size(A));
     Matrix BT = transpose(B);
     
