@@ -92,6 +92,10 @@ void changeEntry(Matrix M, int i, int j, double x){
     if(M != NULL && 1 <= i && i <= M->size && 1 <= j && j <= M->size){
         List row = M->rows[i-1];
 
+        if(row == NULL){
+            return;
+        }
+
         EntryObj* entry;
         bool found = false;
         for(moveFront(row); index(row) >= 0; moveNext(row)){
@@ -101,8 +105,7 @@ void changeEntry(Matrix M, int i, int j, double x){
                 insertBefore(row, newE);
                 found = true;
                 break;
-            }
-            else if(j == entry->col){
+            } else if(j == entry->col){
                 entry->val = x;
                 found = true;
                 break;
@@ -112,10 +115,10 @@ void changeEntry(Matrix M, int i, int j, double x){
         if(!found){
             EntryObj* newE = newEntry(j, x, M->size);
             append(row, newE);
+        } else {
         }
     }
 }
-
 
 
 int size(Matrix M){
