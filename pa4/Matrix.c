@@ -606,6 +606,11 @@ int equals(Matrix A, Matrix B) {
         List rowA = A->rows[i];
         List rowB = B->rows[i];
 
+
+	if(length(rowA) == 0 && length(rowB) == 0){
+		continue;
+	}
+
         if (length(rowA) != length(rowB)) return 0;  
 
         moveFront(rowA);
