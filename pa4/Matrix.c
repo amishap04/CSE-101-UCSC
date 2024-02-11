@@ -82,7 +82,15 @@ void freeMatrix(Matrix* pM) {
 
         for (int i = 0; i < temp->size; i++) {
             if (temp->rows[i] != NULL) {
-                freeList(&(temp->rows[i])); 
+
+		if(length(temp->rows[i]) > 0){
+			for(moveFront(temp->rows[i]); index(temp->rows[i]) >= 0; moveNext(temp->rows[i])){
+				freeEntry(get(temp->rows[i]));
+			}
+		}
+
+                freeList(&(temp->rows[i]));
+ 
             }
         }
 
