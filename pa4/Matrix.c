@@ -571,8 +571,7 @@ int NNZ(Matrix M){
 }
 
 
-int equals(Matrix A, Matrix B){
-
+int equals(Matrix A, Matrix B) {
     if(A == NULL || B == NULL){
         printf("Matrix Error: calling equals() on NULL Matrix reference\n");
         exit(EXIT_FAILURE);
@@ -583,54 +582,28 @@ int equals(Matrix A, Matrix B){
         exit(EXIT_FAILURE);
     }
 
-    if(size(A) != size(B)){
-        return 0;
-    }
+    if (size(A) != size(B)) return 0;  
 
-    for(int row = 0; row < size(A); row++){
-        if(length(A->rows[row]) != length(B->rows[row])){
-            return 0;
+    for (int i = 0; i < size(A); i++) {
+        List rowA = A->rows[i];
+        List rowB = B->rows[i];
+
+        if (length(rowA) != length(rowB)) return 0;  
+
+        moveFront(rowA);
+        moveFront(rowB);
+        while (index(rowA) >= 0 && index(rowB) >= 0) {
+            EntryObj* entryA = (EntryObj*)get(rowA);
+            EntryObj* entryB = (EntryObj*)get(rowB);
+
+            if (entryA->col != entryB->col || entryA->val != entryB->val) return 0;  
+
+            moveNext(rowA);
+            moveNext(rowB);
         }
     }
-
-    EntryObj* entrA;
-    EntryObj* entrB;
-    for(int row = 0; row < size(A); row++){
-
-	if(length(A->rows[row]) == 0 && length(B->rows[row]) == 0){
-		continue;
-	}
-
-        for(int col = 0; col < size(A); col++){
-
-            entrA = getColEnt(A->rows[row], col+1, size(A));
-
-            entrB = getColEnt(B->rows[row], col+1, size(B));
-
-	
-	    if(entrA == NULL && entrB == NULL){
-		continue;
-	    }
-
-            if(entrA == NULL && entrB != NULL){
-                return 0;
-            }
-            else if(entrB == NULL && entrA != NULL){
-                return 0;
-            }
-            else if(entrA->val != entrB->val){
-                return 0;
-            }
-
-        }
-    }
-
-
-    return 1;    
-
+    return 1;  
 }
-
-
 
 void makeZero(Matrix M){
     if(M == NULL){
