@@ -110,7 +110,17 @@ int main(int argc, char * argv[]){
    printMatrix(out, SM);
 
  
-   
+   Matrix DM = diff(B, A);
+   fprintf(out, "\n");
+   fprintf(out, "B-A =\n");
+   printMatrix(out, DM);
+
+
+
+   Matrix DM2 = diff(A, A);
+   fprintf(out, "\n");
+   fprintf(out, "A-A =\n");
+   printMatrix(out, DM2);
 
 
 
@@ -137,6 +147,11 @@ int main(int argc, char * argv[]){
 
 
 
+
+
+
+
+
  
    fclose(in);
    fclose(out);
@@ -146,6 +161,8 @@ int main(int argc, char * argv[]){
    freeMatrix(&TA);
    freeMatrix(&PA);
    freeMatrix(&PA2);
+   freeMatrix(&DM);   
+   freeMatrix(&DM2);
 
    return(0);
 
