@@ -119,7 +119,8 @@ void changeEntry(Matrix M, int i, int j, double x) {
             if(entry->col == j) {
                 if(x == 0) {
                     //freeEntry(entry); 
-                    delete(row); 
+                    delete(row);
+		    freeEntry(entry); 
                     return; 
                 } else {
                     entry->val = x; 
