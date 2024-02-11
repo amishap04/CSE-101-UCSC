@@ -538,6 +538,31 @@ Matrix sum(Matrix A, Matrix B){
 }
 
 
+int NNZ(Matrix M){
+
+    if(M == NULL){
+        printf("Matrix Error: calling NNZ() on NULL matrix reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if(size(M) <= 0){
+        printf("Matrix Error: calling NNZ() on empty matrix reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    int count = 0;
+    for(int row = 0; row < size(M); row++){
+        count += length(M->rows[row]);
+    }
+
+    return count;
+
+
+}
+
+
+
+
 
 
 
