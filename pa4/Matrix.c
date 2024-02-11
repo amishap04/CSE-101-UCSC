@@ -422,7 +422,7 @@ Matrix product(Matrix A, Matrix B){
         }
     }
     
-
+    freeMatrix(&BT);
     return result;
 
 }
