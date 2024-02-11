@@ -13,12 +13,14 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <string.h>
+#include <features.h>
 #include "List.h"
 
 typedef struct EntryObj* Entry;
 typedef struct MatrixObj* Matrix;
 
 Matrix newMatrix(int n);
+void freeMatrixList(List* pL);
 void freeMatrix(Matrix* pM);
 void changeEntry(Matrix M, int i, int j, double x);
 Entry newEntry(int col, double val, int mSize);

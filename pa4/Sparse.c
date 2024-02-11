@@ -92,6 +92,11 @@ int main(int argc, char * argv[]){
         changeEntry(B, row, col, val); 
       }
 
+      if(line_count == (a_nn + b_nn +3)){
+	    break;
+      }
+
+
    }
 
    fprintf(out, "A has %d non-zero entries:\n", a_nn);

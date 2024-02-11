@@ -65,24 +65,32 @@ void freeEntry(EntryObj* pE){
 
 }
 
-
-void freeMatrix(Matrix* pM) {
-    if(pM != NULL && *pM != NULL) {
-        Matrix temp = *pM;
-
-        for(int i = 0; i < temp->size; i++) {
-            if(temp->rows[i] != NULL) {
-                freeList(&(temp->rows[i]));
-            }
-        }
-
-        free(temp->rows);
-        free(temp);
-        *pM = NULL;
+void freeMatrixList(List* pL) {
+    if (pL != NULL && *pL != NULL) {
+        clear(*pL);
+        free(*pL);
+        *pL = NULL;
     }
 }
 
 
+
+
+void freeMatrix(Matrix* pM) {
+    if (pM != NULL && *pM != NULL) {
+        Matrix temp = *pM;
+
+        for (int i = 0; i < temp->size; i++) {
+            if (temp->rows[i] != NULL) {
+                freeList(&(temp->rows[i])); 
+            }
+        }
+
+        free(temp->rows); 
+        free(temp);       
+        *pM = NULL;       
+    }
+}
 
 
 

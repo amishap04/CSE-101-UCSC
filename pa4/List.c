@@ -9,7 +9,6 @@
 
 #include "List.h"
 
-
 typedef struct NodeObj* Node;
 
 
@@ -55,13 +54,18 @@ List newList(void) {
     return(L);
 }
 
+
 void freeList(List* pL) {
     if (pL != NULL && *pL != NULL) {
-        clear(*pL);
-        free(*pL);
-        *pL = NULL;
+        while (length(*pL) > 0) {
+            deleteFront(*pL); 
+        }
+        free(*pL); 
+        *pL = NULL; 
     }
 }
+
+
 
 
 int length(List L) {
