@@ -32,6 +32,7 @@ Matrix copy(Matrix A);
 double dotProduct(List A, List B, int size);
 Matrix product(Matrix A, Matrix B);
 Matrix diff(Matrix A, Matrix B);
+Matrix sum(Matrix A, Matrix B);
 
 
 

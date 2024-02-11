@@ -462,3 +462,76 @@ Matrix diff(Matrix A, Matrix B){
 }
 
 
+
+Matrix sum(Matrix A, Matrix B){
+
+    if(A == NULL || B == NULL){
+        printf("Matrix Error: calling sum() on NULL Matrix reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if(size(A) == 0 || size(B) == 0){
+        printf("Matrix Error: calling sum() on empty Matrix reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if(size(A) != size(B)){
+        printf("Matrix Error: calling sum() on dif size Matrix reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    Matrix result = newMatrix(size(A));
+
+    List aL, bL;
+    for(int row = 0; row < size(A); row ++){
+        aL = A->rows[row];
+        bL = B->rows[row];
+
+        if(length(aL) == 0 && length(bL) == 0){
+            continue;
+        }
+
+        EntryObj* currEntA = NULL;
+        EntryObj* currEntB = NULL;
+        for(int col = 0; col < size(A); col++){
+            if(length(aL) > 0){
+                currEntA = getColEnt(aL, col+1, size(A));
+            }
+            if(length(bL) > 0){
+                currEntB = getColEnt(bL, col+1, size(B));
+            }
+
+
+            if(currEntA == NULL && currEntB == NULL){
+                continue;
+            }
+            else if(currEntB == NULL){
+                changeEntry(result, row+1, col+1, currEntA->val);
+            }
+            else if(currEntA == NULL){
+                changeEntry(result, row+1, col+1, (currEntB->val));
+            }
+            else{
+
+                if((currEntA->val + currEntB->val) != 0){
+                        changeEntry(result, row+1, col+1, (currEntA->val + currEntB->val));
+                }
+            }
+
+
+        }
+
+
+    }
+
+
+
+    return result;
+
+
+}
+
+
+
+
+

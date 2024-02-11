@@ -109,6 +109,22 @@ int main(int argc, char * argv[]){
    fprintf(out, "(%.1f)*A =\n", mult);
    printMatrix(out, SM);
 
+
+
+   Matrix SumM = sum(A, B);
+   fprintf(out, "\n");
+   fprintf(out, "A+B =\n");
+   printMatrix(out, SumM);
+
+
+   Matrix SumMA = sum(A, A);
+   fprintf(out, "\n");
+   fprintf(out, "A+A =\n");
+   printMatrix(out, SumMA);
+
+
+
+
  
    Matrix DM = diff(B, A);
    fprintf(out, "\n");
@@ -144,6 +160,9 @@ int main(int argc, char * argv[]){
 
 
 
+   fprintf(out, "\n");
+
+
 
 
 
@@ -163,6 +182,9 @@ int main(int argc, char * argv[]){
    freeMatrix(&PA2);
    freeMatrix(&DM);   
    freeMatrix(&DM2);
+   freeMatrix(&SumM);
+   freeMatrix(&SumMA);
+
 
    return(0);
 
