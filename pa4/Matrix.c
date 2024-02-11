@@ -88,6 +88,17 @@ void changeEntry(Matrix M, int i, int j, double x) {
     if(M != NULL && 1 <= i && i <= M->size && 1 <= j && j <= M->size) {
         List row = M->rows[i-1];
 
+	if(length(row) == 0){
+		if(x != 0){
+			EntryObj* entry = newEntry(j, x, M->size);
+			prepend(M->rows[i-1], entry);
+			return;
+		}
+		
+			
+	}
+
+
         moveFront(row); 
 
         while(index(row) >= 0) { 
