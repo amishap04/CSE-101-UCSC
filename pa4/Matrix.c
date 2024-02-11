@@ -355,7 +355,7 @@ Matrix copy(Matrix A){
 }
 
 
-
+/*
 double dotProduct(List A, List B, int size){
 
     if(A == NULL || B == NULL){
@@ -477,6 +477,98 @@ Matrix product(Matrix A, Matrix B){
     return result;
 
 }
+
+*/
+
+
+double dotProduct(List A, List B, int size) {
+    if (A == NULL || B == NULL) {
+        printf("List Error: calling dotProduct() on NULL List reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    double product = 0.0;
+    double* valuesA = calloc(size + 1, sizeof(double));
+    double* valuesB = calloc(size + 1, sizeof(double));
+
+    for (moveFront(A); index(A) >= 0; moveNext(A)) {
+        EntryObj* entryA = (EntryObj*)get(A);
+        valuesA[entryA->col] = entryA->val;
+    }
+
+    for (moveFront(B); index(B) >= 0; moveNext(B)) {
+        EntryObj* entryB = (EntryObj*)get(B);
+        valuesB[entryB->col] = entryB->val;
+    }
+
+    for (int i = 1; i <= size; i++) {
+        product += valuesA[i] * valuesB[i];
+    }
+
+    free(valuesA);
+    free(valuesB);
+
+    return product;
+}
+
+
+Matrix product(Matrix A, Matrix B) {
+    if (A == NULL || B == NULL) {
+        printf("Matrix Error: calling product() on NULL Matrix reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (size(A) != size(B)) {
+        printf("Matrix Error: calling product() on matrices with different sizes\n");
+        exit(EXIT_FAILURE);
+    }
+
+    Matrix result = newMatrix(size(A));
+    List* transposedB = malloc((size(B) + 1) * sizeof(List));
+
+    for (int i = 0; i <= size(B); i++) {
+        transposedB[i] = newList();
+    }
+
+    for (int i = 0; i < size(B); i++) {
+        List row = B->rows[i];
+        for (moveFront(row); index(row) >= 0; moveNext(row)) {
+            EntryObj* entry = (EntryObj*)get(row);
+            if (entry->col > size(B)) {
+                printf("Matrix Error: product() encountered invalid column index in B\n");
+                exit(EXIT_FAILURE);
+            }
+            append(transposedB[entry->col], newEntry(i + 1, entry->val, size(B)));
+        }
+    }
+
+    for (int i = 0; i < size(A); i++) {
+        List rowA = A->rows[i];
+        if (length(rowA) == 0) {
+            continue;
+        }
+        for (int j = 0; j < size(B); j++) {
+            List rowB = transposedB[j];
+            if (length(rowB) == 0) {
+                continue;
+            }
+            double dot = dotProduct(rowA, rowB, size(A));
+            if (dot != 0.0) {
+                changeEntry(result, i + 1, j + 1, dot);
+            }
+        }
+    }
+
+    for (int i = 0; i <= size(B); i++) {
+        freeList(&transposedB[i]);
+    }
+    free(transposedB);
+
+    return result;
+}
+
+
+
 
 
 
