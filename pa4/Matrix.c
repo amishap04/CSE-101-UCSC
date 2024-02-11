@@ -210,22 +210,54 @@ EntryObj* getColEnt(List L, int col, int size){
         return NULL;
     }
 
+    EntryObj* frontEtr = front(L);
+    EntryObj* backEtr = back(L);
+
+    int frontCol = frontEtr->col;
+    int backCol = backEtr->col;
+
+    int fdif = col - frontCol;
+    int bdif = backCol- col;
 
     EntryObj* curEnt;
-    for(moveFront(L); index(L) >= 0; moveNext(L)){
-        curEnt = get(L);
-        if(curEnt->col == col){
-            return curEnt;
-        }
-	else if(curEnt->col >  col){
-		return NULL;
-	}
+    if(fdif <= bdif){
+
+        for(moveFront(L); index(L) >= 0; moveNext(L)){
+            curEnt = get(L);
+            if(curEnt->col == col){
+                return curEnt;
+            }
+	        else if(curEnt->col >  col){
+		        return NULL;
+	        }
+        }   
+
+
     }
+
+    else{
+        for(moveBack(L); index(L) >= 0; movePrev(L)){
+            curEnt = get(L);
+            if(curEnt->col == col){
+                return curEnt;
+            }
+	        else if(curEnt->col >  col){
+		        return NULL;
+	        }
+        }   
+
+    }
+
+
 
     return NULL;
 
 
 }
+
+
+
+
 
 Matrix scalarMult(double x, Matrix A){
 
