@@ -94,6 +94,9 @@ void changeEntry(Matrix M, int i, int j, double x) {
 			prepend(M->rows[i-1], entry);
 			return;
 		}
+		else{
+			return;
+		}
 		
 			
 	}
