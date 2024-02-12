@@ -568,6 +568,15 @@ Matrix sum(Matrix A, Matrix B){
         exit(EXIT_FAILURE);
     }
 
+	// added new
+
+    if(A == B){
+	return scalarMult(2, A);
+    }
+
+
+	// end of new stuff
+
     Matrix result = newMatrix(size(A));
 
     List aL, bL;
@@ -681,6 +690,9 @@ int equals(Matrix A, Matrix B) {
     }
     return 1;  
 }
+
+
+
 
 void makeZero(Matrix M){
     if(M == NULL){
