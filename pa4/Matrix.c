@@ -102,55 +102,47 @@ void freeMatrix(Matrix* pM) {
 
 
 
-void changeEntry(Matrix M, int i, int j, double x) {
-    if(M != NULL && 1 <= i && i <= M->size && 1 <= j && j <= M->size) {
-        List row = M->rows[i-1];
 
-	if(length(row) == 0){
-		if(x != 0){
-			EntryObj* entry = newEntry(j, x, M->size);
-			prepend(M->rows[i-1], entry);
-			return;
-		}
-		else{
-			return;
+void changeEntry(Matrix M, int i, int j, double x){
+
+	List row = M->rows[i-1];
+
+	if(x == 0){
+		if(M != NULL && M->rows != NULL && row != NULL){
+		
+			for(moveFront(row); index(row) >= 0; moveNext(row)){
+
+				if(((EntryObj*)get(row))->col == j){
+					delete(row);
+					break;
+				}
+			}
 		}
 		
+	}
+	else{
+		
+		if(M != NULL && M->rows != NULL && row != NULL){
+			for(moveFront(row); index(row) >= 0; moveNext(row)){
+                        	if(((EntryObj*)get(row))->col > j){
+                                	insertBefore(row, newEntry(j, x, size(M)));
+                                	break;
+                        	}
 			
+                	}
+			append(row, newEntry(j, x, size(M)));
+		}
+
 	}
 
 
-        moveFront(row); 
-
-        while(index(row) >= 0) { 
-            EntryObj* entry = (EntryObj*)get(row);
-            if(entry->col == j) {
-                if(x == 0) {
-                    //freeEntry(entry); 
-                    delete(row);
-		    freeEntry(entry); 
-                    return; 
-                } else {
-                    entry->val = x; 
-                    return; 
-                }
-            } else if(entry->col > j) {
-                break; 
-            }
-            moveNext(row);
-        }
-
-        
-        if(x != 0) {
-            EntryObj* newE = newEntry(j, x, M->size);
-            if(index(row) >= 0) {
-                insertBefore(row, newE); 
-            } else {
-                append(row, newE); 
-            }
-        }
-    }
 }
+
+
+
+
+
+
 
 int size(Matrix M){
     if(M == NULL){
@@ -196,21 +188,7 @@ void printMatrix(FILE* out, Matrix M) {
 
 EntryObj* getColEnt(List L, int col, int size){
 
-/*
-    if(L == NULL){
-        printf("List Error: calling getColEnt() on NULL List reference\n");
-            exit(EXIT_FAILURE);
-    }
 
-    if(col < 1 || col > size){
-        printf("Matrix Error: calling getColEnt() on NULL Matrix reference\n");
-            exit(EXIT_FAILURE);
-    }
-
-    if(length(L) == 0){
-        return NULL;
-    }
-*/
 
     EntryObj* frontEtr = front(L);
     EntryObj* backEtr = back(L);
@@ -356,6 +334,7 @@ Matrix copy(Matrix A){
 
 
 
+
 double dotProduct(List A, List B, int size){
 
     if(A == NULL || B == NULL){
@@ -481,6 +460,7 @@ Matrix product(Matrix A, Matrix B){
 
 
 
+
 Matrix diff(Matrix A, Matrix B){
 
     if(A == NULL || B == NULL){
@@ -568,14 +548,14 @@ Matrix sum(Matrix A, Matrix B){
         exit(EXIT_FAILURE);
     }
 
-	// added new
+	
 
     if(A == B){
 	return scalarMult(2, A);
     }
 
 
-	// end of new stuff
+	
 
     Matrix result = newMatrix(size(A));
 
@@ -723,3 +703,7 @@ void makeZero(Matrix M){
     }
 
 }
+
+
+
+
