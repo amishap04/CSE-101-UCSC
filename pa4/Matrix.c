@@ -101,7 +101,7 @@ void freeMatrix(Matrix* pM) {
 }
 
 
-
+/*
 void changeEntry(Matrix M, int i, int j, double x) {
     if(M != NULL && 1 <= i && i <= M->size && 1 <= j && j <= M->size) {
         List row = M->rows[i-1];
@@ -126,7 +126,7 @@ void changeEntry(Matrix M, int i, int j, double x) {
             EntryObj* entry = (EntryObj*)get(row);
             if(entry->col == j) {
                 if(x == 0) {
-                    //freeEntry(entry); 
+                     
                     delete(row);
 		    freeEntry(entry); 
                     return; 
@@ -151,6 +151,52 @@ void changeEntry(Matrix M, int i, int j, double x) {
         }
     }
 }
+*/
+
+
+
+void changeEntry(Matrix M, int i, int j, double x){
+
+	List row = M->rows[i-1];
+
+	if(x == 0){
+		if(M != NULL && M->rows != NULL && row != NULL){
+		// check if ij entry exists
+			for(moveFront(row); index(row) >= 0; moveNext(row)){
+
+				if(((EntryObj*)get(row))->col == j){
+					delete(row);
+					break;
+				}
+			}
+		}
+		
+	}
+	else{
+		// check if ij exists
+		// if exists then change val
+		// else append
+		if(M != NULL && M->rows != NULL && row != NULL){
+			for(moveFront(row); index(row) >= 0; moveNext(row)){
+                        	if(((EntryObj*)get(row))->col > j){
+                                	insertBefore(row, newEntry(j, x, size(M)));
+                                	break;
+                        	}
+			
+                	}
+			append(row, newEntry(j, x, size(M)));
+		}
+
+	}
+
+
+}
+
+
+
+
+
+
 
 int size(Matrix M){
     if(M == NULL){
@@ -196,21 +242,7 @@ void printMatrix(FILE* out, Matrix M) {
 
 EntryObj* getColEnt(List L, int col, int size){
 
-/*
-    if(L == NULL){
-        printf("List Error: calling getColEnt() on NULL List reference\n");
-            exit(EXIT_FAILURE);
-    }
 
-    if(col < 1 || col > size){
-        printf("Matrix Error: calling getColEnt() on NULL Matrix reference\n");
-            exit(EXIT_FAILURE);
-    }
-
-    if(length(L) == 0){
-        return NULL;
-    }
-*/
 
     EntryObj* frontEtr = front(L);
     EntryObj* backEtr = back(L);
@@ -356,6 +388,7 @@ Matrix copy(Matrix A){
 
 
 
+
 double dotProduct(List A, List B, int size){
 
     if(A == NULL || B == NULL){
@@ -480,6 +513,102 @@ Matrix product(Matrix A, Matrix B){
 
 
 
+/*
+Matrix product(Matrix A, Matrix B) {
+          
+    if (A == NULL) {
+        printf("Matrix Error: calling product() on NULL Matrix reference\n");
+        exit(1);
+    }
+
+           
+    if (B == NULL) {
+        printf("Matrix Error: calling product() on NULL Matrix reference\n");
+        exit(1);
+    }
+    
+    
+    if (size(A) != size(B)) {
+        printf("Matrix Error: calling product() on matrices of different sizes\n");
+        exit(1);
+    }
+    
+    
+    B = transpose(B);
+    
+    Matrix product_matrix = newMatrix(A->size);
+    
+    int a = 0;
+    
+    while(a < product_matrix->size) {
+        
+        List product_L = product_matrix->rows[a];
+        
+        List product_A = A->rows[a];
+
+      
+        if (!(length(product_A) == 0)) {
+            int b = 0;
+
+            
+            while(b < product_matrix->size) {
+                
+                List product_B = B->rows[b];
+                
+                double product = 0;
+
+                
+                moveFront(product_A);
+                moveFront(product_B);
+                
+                
+                while ((index(product_A) >=0) && (index(product_B) >= 0)) {
+                    
+                    Entry row_A = (Entry)get(product_A);
+                    Entry row_B = (Entry)get(product_B);
+
+                    
+                    if (row_A->col > row_B->col){
+                        moveNext(product_B);
+                    }
+
+                    
+                    if(row_A->col == row_B->col) {
+                        
+                        product += row_A->val * row_B->val;
+                        
+                        moveNext(product_A);
+                        moveNext(product_B);
+                    }
+                    
+                    
+                    if (row_B->col > row_A->col){
+                        moveNext(product_A);
+                    }
+                }
+
+                
+                if (!(product == 0)) {
+                    
+                    append(product_L, newEntry((b + 1), product, size(B)));
+                    
+                    //product_matrix->nnz = product_matrix->nnz+ 1;
+                }
+
+                ++b;
+            }
+        }
+
+        ++a;
+    }
+    
+    
+    freeMatrix(&B);
+    return product_matrix;
+}
+
+*/
+
 
 Matrix diff(Matrix A, Matrix B){
 
@@ -568,14 +697,14 @@ Matrix sum(Matrix A, Matrix B){
         exit(EXIT_FAILURE);
     }
 
-	// added new
+	
 
     if(A == B){
 	return scalarMult(2, A);
     }
 
 
-	// end of new stuff
+	
 
     Matrix result = newMatrix(size(A));
 
@@ -723,3 +852,5 @@ void makeZero(Matrix M){
     }
 
 }
+
+
