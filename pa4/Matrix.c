@@ -105,17 +105,27 @@ void freeMatrix(Matrix* pM) {
 
 void changeEntry(Matrix M, int i, int j, double x){
 
+	if(M != NULL && 1 <= i && i <= M->size && 1 <= j && j <= M->size){
+
+
+
 	List row = M->rows[i-1];
 
 	if(x == 0){
 		if(M != NULL && M->rows != NULL && row != NULL){
+
+			if(length(row) > 0){
+
 		
 			for(moveFront(row); index(row) >= 0; moveNext(row)){
 
 				if(((EntryObj*)get(row))->col == j){
+					EntryObj* entry = (EntryObj*)get(row);
 					delete(row);
+					freeEntry(entry);
 					break;
 				}
+			}
 			}
 		}
 		
@@ -123,6 +133,11 @@ void changeEntry(Matrix M, int i, int j, double x){
 	else{
 		
 		if(M != NULL && M->rows != NULL && row != NULL){
+			if(length(row) == 0){
+				append(row, newEntry(j, x, size(M)));
+			}
+			else{
+
 			for(moveFront(row); index(row) >= 0; moveNext(row)){
                         	if(((EntryObj*)get(row))->col > j){
                                 	insertBefore(row, newEntry(j, x, size(M)));
@@ -131,14 +146,53 @@ void changeEntry(Matrix M, int i, int j, double x){
 			
                 	}
 			append(row, newEntry(j, x, size(M)));
+			}
 		}
 
 	}
 
-
+	}
 }
 
 
+
+/*
+void changeEntry(Matrix M, int i, int j, double x) {
+    if (M == NULL || i < 1 || i > M->size || j < 1 || j > M->size) {
+        printf("Matrix Error: changeEntry() called with invalid parameters.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    List row = M->rows[i-1];
+    bool found = false;
+
+    for (moveFront(row); index(row) >= 0; moveNext(row)) {
+        EntryObj* entry = (EntryObj*)get(row);
+        if (entry->col == j) {
+            found = true;
+            if (x == 0) {
+		EntryObj* toDelete = (EntryObj*)get(row);
+                delete(row);
+                freeEntry(toDelete);
+            } else {
+                entry->val = x;
+            }
+            break;
+        } else if (entry->col > j) {
+            break;
+        }
+    }
+
+    if (!found && x != 0) {
+        EntryObj* newE = newEntry(j, x, M->size);
+        if (index(row) >= 0) {
+            insertBefore(row, newE);
+        } else {
+            append(row, newE);
+        }
+    }
+}
+*/
 
 
 
