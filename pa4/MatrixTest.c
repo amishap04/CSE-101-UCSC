@@ -73,6 +73,62 @@ int main(){
    printf("%d\n", NNZ(A));
    printMatrix(stdout, A);
 
+
+
+
+
+
+
+// test here
+
+Matrix Amisha = newMatrix(100);
+    changeEntry(Amisha, 2, 1, 2);
+    changeEntry(Amisha, 3, 1, 5);
+    changeEntry(Amisha, 1, 2, 2);
+    changeEntry(Amisha, 1, 3, 5);
+    changeEntry(Amisha, 1, 1, 4);
+    changeEntry(Amisha, 2, 2, 2);
+    changeEntry(Amisha, 2, 5, 0);
+    changeEntry(Amisha, 2, 3, 0);
+    changeEntry(Amisha, 3, 3, 5);
+    printf("Amisha NNZ is %d\n", NNZ(Amisha));
+    printMatrix(stdout, Amisha);
+    printf("\n");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    freeMatrix(&A);
    freeMatrix(&B);
    freeMatrix(&C);

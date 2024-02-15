@@ -20,6 +20,7 @@ typedef struct EntryObj{
 typedef struct MatrixObj{
     int size;
     List* rows;
+    int nnz;
     
 } MatrixObj;
 
@@ -34,6 +35,7 @@ MatrixObj* newMatrix(int n){
 
     MatrixObj* mat = malloc(sizeof(MatrixObj));
     mat->size = n;
+    mat->nnz = 0;
     mat->rows = malloc(n * sizeof(List));
 
     for(int i = 0; i < n; i++){
@@ -123,6 +125,7 @@ void changeEntry(Matrix M, int i, int j, double x){
 					EntryObj* entry = (EntryObj*)get(row);
 					delete(row);
 					freeEntry(entry);
+					M->nnz--;
 					break;
 				}
 			}
@@ -135,17 +138,25 @@ void changeEntry(Matrix M, int i, int j, double x){
 		if(M != NULL && M->rows != NULL && row != NULL){
 			if(length(row) == 0){
 				append(row, newEntry(j, x, size(M)));
+				M->nnz++;
 			}
 			else{
 
+			bool found = false;
 			for(moveFront(row); index(row) >= 0; moveNext(row)){
+				
                         	if(((EntryObj*)get(row))->col > j){
                                 	insertBefore(row, newEntry(j, x, size(M)));
+					M->nnz++;
+					found = true;
                                 	break;
                         	}
 			
                 	}
-			append(row, newEntry(j, x, size(M)));
+			if(found == false){
+				append(row, newEntry(j, x, size(M)));
+				M->nnz++;
+			}
 			}
 		}
 
@@ -314,11 +325,13 @@ Matrix scalarMult(double x, Matrix A){
             continue;
         }
         EntryObj* entryA;
-        EntryObj* entry;
+        //EntryObj* entry;
         for(moveFront(currRow); index(currRow) >= 0; moveNext(currRow)){
             entryA = get(currRow);
-            entry = newEntry(entryA->col, (entryA->val * x), size(A));
-            append(result->rows[i], entry);
+	    changeEntry(result, i+1, entryA->col, (entryA->val * x));
+            //entry = newEntry(entryA->col, (entryA->val * x), size(A));
+            //append(result->rows[i], entry);
+	    //A->nnz++;
         }
     } 
 
@@ -675,13 +688,15 @@ int NNZ(Matrix M){
         exit(EXIT_FAILURE);
     }
 
+/*
     int count = 0;
     for(int row = 0; row < size(M); row++){
         count += length(M->rows[row]);
     }
 
     return count;
-
+*/
+    return M->nnz;
 
 }
 
@@ -750,6 +765,7 @@ void makeZero(Matrix M){
 			EntryObj* temp = get(currList);
 			deleteFront(currList);
 			freeEntry(temp);
+			M->nnz--;
 		}
 	}
 
