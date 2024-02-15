@@ -29,7 +29,9 @@ int main(){
 
    printf("%d\n", NNZ(A));
    printMatrix(stdout, A);
+   
    printf("\n");
+
 
    printf("%d\n", NNZ(B));
    printMatrix(stdout, B);
@@ -80,7 +82,7 @@ int main(){
 
 
 // test here
-
+/*
 Matrix Amisha = newMatrix(100);
     changeEntry(Amisha, 2, 1, 2);
     changeEntry(Amisha, 3, 1, 5);
@@ -99,18 +101,72 @@ Matrix Amisha = newMatrix(100);
 
 
 
+Matrix Am = newMatrix(100);
+Matrix Bm = newMatrix(100);
+    changeEntry(Am, 1, 1, 1);
+    changeEntry(Am, 1, 1, 1);
+    changeEntry(Am, 1, 3, 1);
+    changeEntry(Bm, 1, 1, 1);
+    changeEntry(Bm, 1, 3, 1);
+
+    printMatrix(stdout, Am);
+    printMatrix(stdout, Bm);
+    printf("Am and Bm %s\n", equals(Am, Bm)?"true":"false" );
+
+
+*/
+
+Matrix Am = newMatrix(100);
+Matrix Bm = newMatrix(100);
+
+    changeEntry(Am, 1, 1, 4);
+    changeEntry(Am, 1, 2, 2);
+    changeEntry(Am, 1, 3, 0);
+    changeEntry(Am, 2, 1, 2);
+    changeEntry(Am, 3, 1, 0);
+    changeEntry(Am, 2, 2, 2);
+    changeEntry(Am, 3, 3, 0);
+   // Bm = sum(Am, Am);
 
 
 
+    changeEntry(Bm, 1, 1, -4);
+    changeEntry(Bm, 1, 2, 0);
+    changeEntry(Bm, 2, 1, 0);
+    changeEntry(Bm, 2, 2, -2);
+    changeEntry(Bm, 2, 4, 2);
+    changeEntry(Bm, 3, 1, 0);
+    changeEntry(Bm, 3, 2, 2);
+    changeEntry(Bm, 7, 8, 5);
+	
+
+Matrix result = newMatrix(100);
+    
+    result = sum(Am, Bm);
+    printMatrix(stdout, Am);
+    printMatrix(stdout, Bm);
+    printf("AM %d\n", NNZ(Am));
+    printf("BM %d\n", NNZ(Bm));
+
+
+    printMatrix(stdout, result);
 
 
 
+    Matrix pC = newMatrix(15);
+    Matrix Aaa = newMatrix(15);
+    Matrix Bbb = newMatrix(15);
 
 
-
-
-
-
+    if (!equals(Aaa, Bbb))
+	printf("returning 1\n");
+    if (equals(Aaa, pC))
+    	printf("returning 2\n");
+    Matrix MMM = newMatrix(10);
+    changeEntry(MMM, 5, 5, 5);
+    makeZero(MMM);
+    if (!equals(Aaa, MMM))
+      printf("returning 3\n");
 
 
 
