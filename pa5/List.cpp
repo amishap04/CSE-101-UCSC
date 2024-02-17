@@ -255,6 +255,7 @@ void List::cleanup() {
             current = temp->next;
             --num_elements;
             if(curr_pos < pos_cursor){
+		beforeCursor = afterCursor->prev;
             	pos_cursor--;
             }
 
@@ -362,7 +363,7 @@ List& List::operator=(const List& L) {
 
         Node* current = L.frontDummy->next;
         while (current != L.backDummy) {
-            insertAfter(current->data);
+            insertBefore(current->data);
             current = current->next;
         }
     }
