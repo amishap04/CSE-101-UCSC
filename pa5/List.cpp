@@ -6,6 +6,7 @@
  * * * * Implementation for List ADT // Description
  * * * ***/
 
+
 #include <set>
 #include <string>
 #include "List.h"
@@ -51,18 +52,16 @@ int List::length() const {
 }
 
 ListElement List::front() const {
-    if (length() == 0) {
-        std::cout << "Error: List is empty." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	if (length() == 0) {
+		throw std::length_error("List: front(): empty list");
+	}
     return frontDummy->next->data;
 }
 
 ListElement List::back() const {
-    if (length() == 0) {
-        std::cout << "Error: List is empty." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	if (length() == 0) {
+		throw std::length_error("List: back(): empty list");
+	}
     return backDummy->prev->data;
 }
 
@@ -71,24 +70,26 @@ int List::position() const {
 }
 
 ListElement List::peekNext() const {
-    if (position() >= length()) {
-        std::cout << "Error: Cursor is at the end of the list." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	if (position() >= length()) {
+		 throw std::range_error("List: peekNext(): cursor at back");
+	}
     return afterCursor->data;
 }
 
 ListElement List::peekPrev() const {
-    if (position() <= 0) {
-        std::cout << "Error: Cursor is at the beginning of the list." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	if (position() <= 0) {
+	    throw std::range_error("List: peekPrev(): cursor at front");
+	 }
     return beforeCursor->data;
 }
 
 void List::clear() {
+
+	moveFront();
     while (length() > 0) {
-        eraseAfter();
+    	if(afterCursor != backDummy){
+    		eraseAfter();
+    	}
     }
 }
 
@@ -106,10 +107,10 @@ void List::moveBack() {
 }
 
 ListElement List::moveNext() {
-    if (position() >= length()) {
-        std::cout << "Error: Cursor is at the end of the list." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	if (position() >= length()) {
+		throw std::range_error("List: moveNext(): cursor at back");
+	}
+
     beforeCursor = afterCursor;
     afterCursor = afterCursor->next;
     ++pos_cursor;
@@ -117,10 +118,9 @@ ListElement List::moveNext() {
 }
 
 ListElement List::movePrev() {
-    if (position() <= 0) {
-        std::cout << "Error: Cursor is at the beginning of the list." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	if (position() <= 0) {
+		 throw std::range_error("List: movePrev(): cursor at front");
+	}
     afterCursor = beforeCursor;
     beforeCursor = beforeCursor->prev;
     --pos_cursor;
@@ -157,26 +157,23 @@ void List::insertBefore(ListElement x) {
 
 
 void List::setAfter(ListElement x) {
-    if (position() >= length()) {
-        std::cout << "Error: Cursor is at the end of the list." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	if (position() >= length()) {
+		 throw std::range_error("List: setAfter(): cursor at back");
+	}
     afterCursor->data = x;
 }
 
 void List::setBefore(ListElement x) {
-    if (position() <= 0) {
-        std::cout << "Error: Cursor is at the beginning of the list." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	if (position() <= 0) {
+		 throw std::range_error("List: setBefore(): cursor at front");
+	}
     beforeCursor->data = x;
 }
 
 void List::eraseAfter() {
-    if (position() >= length()) {
-        std::cout << "Error: Cursor is at the end of the list." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	if (position() >= length()) {
+		 throw std::range_error("List: eraseAfter(): cursor at back");
+	}
     Node* temp = afterCursor;
     beforeCursor->next = afterCursor->next;
     afterCursor->next->prev = beforeCursor;
@@ -186,10 +183,9 @@ void List::eraseAfter() {
 }
 
 void List::eraseBefore() {
-    if (position() <= 0) {
-        std::cout << "Error: Cursor is at the beginning of the list." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	if (position() <= 0) {
+		 throw std::range_error("List: eraseBefore(): cursor at front");
+	}
     movePrev();
     eraseAfter();
 }
@@ -218,13 +214,14 @@ int List::findNext(ListElement x) {
 
 int List::findPrev(ListElement x) {
     Node* current = beforeCursor;
-    int position = pos_cursor - 1;
+    int position = pos_cursor;
 
     while (current != frontDummy) {
         if (current->data == x) {
-            afterCursor = current->next;
+            afterCursor = current;
             beforeCursor = current->prev;
-            --pos_cursor;
+            --position;
+            pos_cursor = position;
             return pos_cursor;
         }
         current = current->prev;
@@ -239,6 +236,7 @@ int List::findPrev(ListElement x) {
 
 void List::cleanup() {
     Node* current = frontDummy->next;
+    int curr_pos = 0;
 
     std::set<ListElement> uniqueElements;
 
@@ -249,12 +247,17 @@ void List::cleanup() {
             uniqueElements.insert(current->data);
             temp = current;
             current = current->next;
+            curr_pos++;
         } else {
             temp->next = current->next;
             current->next->prev = temp;
             delete current;
             current = temp->next;
             --num_elements;
+            if(curr_pos < pos_cursor){
+            	pos_cursor--;
+            }
+
         }
     }
 }
@@ -265,13 +268,13 @@ List List::concat(const List& L) const {
 
     Node* current = frontDummy->next;
     while (current != backDummy) {
-        result.insertAfter(current->data);
+        result.insertBefore(current->data);
         current = current->next;
     }
 
     current = L.frontDummy->next;
     while (current != L.backDummy) {
-        result.insertAfter(current->data);
+        result.insertBefore(current->data);
         current = current->next;
     }
 
@@ -335,7 +338,6 @@ std::ostream& operator<<(std::ostream& stream, const List& L) {
 
 
 bool operator==(const List& A, const List& B) {
-	
     if (A.length() != B.length()) {
         return false;
     }
@@ -366,6 +368,7 @@ List& List::operator=(const List& L) {
     }
     return *this;
 }
+
 
 
 
