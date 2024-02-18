@@ -50,12 +50,16 @@ void shuffle(List& D){
 	List newList;
 
 	cout << "deck size       shuffle count" << endl;
+        cout << "------------------------------" << endl;
 	for(int i = 1; i <= list_size; i++){
 		for(int j = 1; j <= i; j ++){
 			newList.insertBefore(j);
 		}		
 
 		int shuffle_count = shuffle_helper(newList);
+		cout <<  i << "                  " << shuffle_count << endl;
+
+		/*
 		if(shuffle_count < 10){
 			cout <<  i << "                  " << shuffle_count << endl;
 		}
@@ -65,6 +69,7 @@ void shuffle(List& D){
 		else{
 			cout <<  i << "                " << shuffle_count << endl;		
 		}
+		*/
 		newList.clear();
 	}
 
