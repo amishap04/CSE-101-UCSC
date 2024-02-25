@@ -48,7 +48,6 @@ BigInteger::BigInteger(long x) {
 }
 
 
-// needs to be fixed bc parsing it strange
 BigInteger::BigInteger(std::string s){
 
 	if (s.empty()) {
@@ -80,7 +79,7 @@ BigInteger::BigInteger(std::string s){
         	temp = s[i] + temp;
         	if (temp.length() == POWER || i == 0) {
             		long digit_val = stol(temp); 
-            		digits.insertBefore(digit_val); 
+            		digits.insertAfter(digit_val); 
             		temp = ""; 
         	}
     	}
