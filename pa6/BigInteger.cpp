@@ -47,7 +47,9 @@ BigInteger::BigInteger(long x) {
     }
 }
 
-BigInteger(std::string s){
+
+// needs to be fixed bc parsing it strange
+BigInteger::BigInteger(std::string s){
 
 	if (s.empty()) {
         	throw std::invalid_argument("BigInteger: Constructor: empty string");
@@ -71,18 +73,26 @@ BigInteger(std::string s){
     		}
     		i++;
 	}
+	
+	int length = s.length();
+    	string temp = "";
+    	for (int i = length - 1; i >= 0; i--) {
+        	temp = s[i] + temp;
+        	if (temp.length() == POWER || i == 0) {
+            		long digit_val = stol(temp); 
+            		digits.insertBefore(digit_val); 
+            		temp = ""; 
+        	}
+    	}
 
 
-		
-
+	// not sure if this is needed.
+	if (digits.length() == 0) {
+        	signum = 0;
+        	digits.insertAfter(0); 
+    	}
 
 }
-
-
-
-
-
-
 
 
 
@@ -90,8 +100,6 @@ BigInteger::BigInteger(const BigInteger& N) {
     this->signum = N.signum;
     this->digits = N.digits;
 }
-
-
 
 
 
