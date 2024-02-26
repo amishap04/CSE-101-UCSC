@@ -85,7 +85,7 @@ BigInteger::BigInteger(std::string s){
     	}
 
 
-	// not sure if this is needed.
+	
 	if (digits.length() == 0) {
         	signum = 0;
         	digits.insertAfter(0); 
@@ -95,11 +95,154 @@ BigInteger::BigInteger(std::string s){
 
 
 
+
+
 BigInteger::BigInteger(const BigInteger& N) {
     this->signum = N.signum;
     this->digits = N.digits;
 }
 
+
+
+int BigInteger::sign() const{
+    return this->signum;
+}
+
+
+
+int BigInteger::compare(const BigInteger& N) const {
+
+	return 0;
+
+}
+
+void BigInteger::makeZero() {
+    digits.clear();
+    signum = 0;
+}
+
+
+void BigInteger::negate() {
+
+}
+
+
+BigInteger BigInteger::add(const BigInteger& N) const {
+
+	BigInteger X = *this;
+
+	return X;
+}
+
+
+  
+BigInteger BigInteger::sub(const BigInteger& N) const {
+	
+	BigInteger X = *this;
+
+        return X;
+
+}
+ 
+
+BigInteger BigInteger::mult(const BigInteger& N) const {
+
+	BigInteger X = *this;
+
+        return X;
+}
+
+
+
+std::string BigInteger::to_string() {
+
+	std::string out = "";
+	return out;
+}
+
+
+
+std::ostream& operator<<( std::ostream& stream, BigInteger N ) {
+    return stream<<N.BigInteger::to_string();
+}
+
+
+
+bool operator==( const BigInteger& A, const BigInteger& B ) {
+    int i = A.compare(B);
+    return (i == 0) ? true : false;
+}
+
+
+
+bool operator<( const BigInteger& A, const BigInteger& B ) {
+    int i = A.compare(B);
+    return (i == -1) ? true : false;
+}
+
+
+
+
+bool operator<=( const BigInteger& A, const BigInteger& B ) {
+    int i = A.compare(B);
+    return ((i == 0) || (i == -1)) ? true : false;
+}
+
+
+
+bool operator>( const BigInteger& A, const BigInteger& B ) {
+    int i = A.compare(B);
+    return (i == 1) ? true : false;
+}
+
+
+ 
+bool operator>=( const BigInteger& A, const BigInteger& B ) {
+    int i = A.compare(B);
+    return ((i == 0) || (i == 1)) ? true : false;
+}
+
+
+
+BigInteger operator+( const BigInteger& A, const BigInteger& B ) {
+    return A.add(B);
+}
+
+
+
+BigInteger operator+=( BigInteger& A, const BigInteger& B ) {
+    BigInteger I = A.add(B);
+    A.digits = I.digits;
+    A.signum = I.signum;
+    return A; 
+}
+
+
+
+BigInteger operator-( const BigInteger& A, const BigInteger& B ) {
+    return A.sub(B);
+}
+
+
+BigInteger operator-=( BigInteger& A, const BigInteger& B ) {
+    BigInteger I = A.sub(B);
+    A.digits = I.digits;
+    A.signum = I.signum;
+    return A; 
+}
+
+
+BigInteger operator*( const BigInteger& A, const BigInteger& B ) {
+    return A.mult(B);
+}
+
+
+BigInteger operator*=( BigInteger& A, const BigInteger& B ) {
+    BigInteger I = A.mult(B);
+    A.digits = I.digits;
+    A.signum = I.signum;
+    return A; 
+}
 
 
 
