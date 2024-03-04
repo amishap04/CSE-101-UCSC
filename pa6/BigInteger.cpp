@@ -30,26 +30,6 @@ void removeLeadingZeros( List* L) {
     }
 }
 
-List multHelper(long sVal, List *bList, int* count) {
-    List newL;
-    long carryVal = 0;
-    long temp = 0;
-
-    for (bList->moveBack(); bList->position() > 0; bList->movePrev()) {
-        temp = (bList->peekPrev() * sVal) + carryVal;
-        carryVal = temp / BASE;
-        temp %= BASE;
-        newL.insertAfter(temp);
-    }
-    if (carryVal > 0) {
-        newL.insertAfter(carryVal);
-    }
-    newL.moveBack();
-    for (int i = 0; i < *count; i++) {
-        newL.insertAfter(0);
-    }
-    return newL;
-}
 
 
 BigInteger::BigInteger() {
@@ -444,6 +424,28 @@ List multiplyAndShift(long scalar, List *inputList, int* shiftCount) {
     }
 
     return result;
+}
+
+
+List multHelper(long sVal, List *bList, int* count) {
+    List newL;
+    long carryVal = 0;
+    long temp = 0;
+
+    for (bList->moveBack(); bList->position() > 0; bList->movePrev()) {
+        temp = (bList->peekPrev() * sVal) + carryVal;
+        carryVal = temp / BASE;
+        temp %= BASE;
+        newL.insertAfter(temp);
+    }
+    if (carryVal > 0) {
+        newL.insertAfter(carryVal);
+    }
+    newL.moveBack();
+    for (int i = 0; i < *count; i++) {
+        newL.insertAfter(0);
+    }
+    return newL;
 }
 
 
