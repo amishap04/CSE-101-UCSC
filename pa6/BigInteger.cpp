@@ -1,5 +1,4 @@
 /**
- 
  * * * * Amisha Prasad // First and Last Name
  * * * * aprasa14 // UCSC UserID
  * * * * 2024 Winter CSE101 PA6 // Assignment Number
@@ -20,11 +19,9 @@
 
 using namespace std;
 
-const ListElement BASE  = 10;  
+const ListElement BASE  = 1000000000;  
 const int         POWER = 9;    
 
-
-// making constructors
 
 
 BigInteger::BigInteger() {
@@ -196,19 +193,25 @@ void sumList(List& Result, List First, List Second, int signMultiplier) {
     }
 }
 
+
 void invertListValues(List& myList) {
     for (myList.moveFront(); myList.position() < myList.length(); myList.moveNext()) {
         myList.setAfter(myList.peekNext() * -1);
     }
 }
 
-void negateList(List* L) {
-    L->moveFront();
 
-    for (; L->length() > 0 && !L->peekNext(); L->eraseAfter());
+void negateList(List& L) {
+    L.moveFront();
+    
+    while (L.position() < L.length()) {
+        L.setAfter(-1 * L.peekNext());
+        L.moveNext();
+    }
+
 }
 
-
+/*
 int normalizeList(List& L) {
     if (L.front() == 0) return 0;
 
@@ -238,7 +241,47 @@ int normalizeList(List& L) {
 
     return sign;
 }
+*/
 
+
+int normalizeList(List& L) {
+    if (L.front() == 0) {
+        return 0;
+    }
+
+    int signVal = 1;
+    if (L.front() < 0) {
+        negateList(L);
+        signVal = -1;
+    }
+
+    ListElement val = 0;
+    int carryOver = 0;
+    L.moveBack();
+    while (L.position() > 0) {
+        val = L.peekPrev();
+        if (val < 0) {
+            val += BASE + carryOver;
+            L.setBefore(val);
+            carryOver = -1;
+        }
+        else {
+            val += carryOver;
+            carryOver = 0;
+            if (val >= BASE) {
+                carryOver = val / BASE;
+                val = val % BASE;
+            }
+            L.setBefore(val);
+        }
+        L.movePrev();
+    }
+    if (carryOver != 0) {
+        L.moveFront();
+        L.insertAfter(carryOver);
+    }
+    return signVal;
+}
 
 void shiftList(List& L, int p) {
     L.moveBack();
@@ -250,6 +293,8 @@ void shiftList(List& L, int p) {
 }
 
 
+
+/*
 List scalarMult(long s, List* tempList, int* count) {
     ListElement carry = 0, tempL = 0;
     List newList;
@@ -279,7 +324,21 @@ List scalarMult(long s, List* tempList, int* count) {
     return (newList);
 }
 
+*/
 
+// trying new method because old was slow
+
+void scalarMultList(List& L, ListElement element) {
+    L.moveFront();
+    while (L.position() < L.length()) {
+        L.setAfter(L.peekNext() * element);
+        L.moveNext();
+    }
+}
+
+
+
+/*
 BigInteger BigInteger::add(const BigInteger& N) const {
     BigInteger A = *this; 
     BigInteger B = N;
@@ -335,8 +394,30 @@ BigInteger BigInteger::add(const BigInteger& N) const {
     C.digits = cList;
     return (C);
 }
+*/
+
+BigInteger BigInteger::add(const BigInteger& N) const{
+    BigInteger A;
+    List sum;
+    List AL = this->digits;
+    List BL = N.digits;
+    
+    if (this->signum < 0) {
+        negateList(AL);
+    }
+    if (N.signum < 0) {
+        negateList(BL);
+    }
+    sumList(sum, AL, BL, 1);
+    A.signum = normalizeList(sum);
+    A.digits = sum;
+
+    return A;
+}
 
 
+
+/*
 BigInteger BigInteger::sub(const BigInteger& N) const {
     BigInteger A = N; 
     BigInteger B = *this;
@@ -428,11 +509,20 @@ BigInteger BigInteger::sub(const BigInteger& N) const {
     return (C);
 }
 
+*/
+
+BigInteger BigInteger::sub(const BigInteger& N) const{
+    BigInteger A;
+    BigInteger newN = N;
+
+    negateList(newN.digits);
+    A = this->add(newN);
+    
+    return A;
+}
 
 
 
-
-// multiplication heler function
 
 List multiplyAndShift(long scalar, List *inputList, int* shiftCount) {
     List result;
@@ -461,7 +551,7 @@ List multiplyAndShift(long scalar, List *inputList, int* shiftCount) {
     return result;
 }
 
-
+/*
  
 BigInteger BigInteger::mult(const BigInteger& N) const {
     BigInteger A;
@@ -488,7 +578,46 @@ BigInteger BigInteger::mult(const BigInteger& N) const {
     A.signum = signum * N.signum;
     return (A);
 }
+*/
 
+
+BigInteger BigInteger::mult(const BigInteger& N) const{
+    BigInteger A;
+
+    if (this->signum == 0 || N.signum == 0){
+        return A;
+    }
+
+    List prodList;
+    prodList.insertAfter(0);
+    List AL;
+    List digN = N.digits;
+
+    digN.moveBack();
+    int shiftVal = 0;
+    while (digN.position() > 0) {
+        AL = this->digits;
+        scalarMultList(AL, digN.peekPrev());
+        shiftList(AL, shiftVal);
+        
+        List pC = prodList;
+        sumList(prodList, pC, AL, 1);
+        normalizeList(prodList);
+
+        digN.movePrev();
+        shiftVal++;
+    }
+
+    A.digits = prodList;
+    if (this->signum == N.signum) {
+        A.signum = 1;
+    }
+    else {
+        A.signum = -1;
+    }
+
+    return A;
+}
 
 
 
@@ -518,6 +647,7 @@ std::string BigInteger::to_string() {
     }
     return output;
 }
+
 
 
 
@@ -602,6 +732,15 @@ BigInteger operator*=( BigInteger& A, const BigInteger& B ) {
     A.signum = I.signum;
     return A; 
 }
+
+
+
+
+
+
+
+
+
 
 
 
