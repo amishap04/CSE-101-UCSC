@@ -46,9 +46,11 @@ BigInteger::BigInteger(long x) {
     if (x < 0) {
         signum = -1;
         x = -x;
-    } else {
+    } 
+    else {
         signum = 1;
     }
+
     while (x > 0) {
         digits.insertBefore(x % BASE);
         x /= BASE;
@@ -112,6 +114,9 @@ int BigInteger::sign() const{
     return this->signum;
 }
 
+
+
+/*
 int BigInteger::compare(const BigInteger& N) const {
     if (this->signum != N.signum) {
         return this->signum > N.signum ? 1 : -1;
@@ -147,6 +152,42 @@ int BigInteger::compare(const BigInteger& N) const {
 
     return 0;
 }
+*/
+
+
+int BigInteger::compare(const BigInteger& N) const {
+    if (signum > N.signum) {
+        return 1;
+    } else if (signum < N.signum) {
+        return -1;
+    } else if (signum == 0) {
+        return 0;
+    }
+
+    const List& A = this->digits;
+    const List& B = N.digits;
+
+    int lengthComparison = A.length() - B.length();
+    if (lengthComparison != 0) {
+        return (signum == 1) ? (lengthComparison > 0 ? 1 : -1) : (lengthComparison < 0 ? 1 : -1);
+    }
+
+    List A_copy = A;
+    List B_copy = B;
+    A_copy.moveFront();
+    B_copy.moveFront();
+    while (A_copy.position() < A.length()) {
+        int digitComparison = A_copy.peekNext() - B_copy.peekNext();
+        if (digitComparison != 0) {
+            return (signum == 1) ? (digitComparison > 0 ? 1 : -1) : (digitComparison < 0 ? 1 : -1);
+        }
+        A_copy.moveNext();
+        B_copy.moveNext();
+    }
+
+    return 0;
+}
+
 
 
 void BigInteger::makeZero() {
