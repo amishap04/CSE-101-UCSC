@@ -263,17 +263,13 @@ void shiftList(List& L, int p) {
     }
 }
 
-
-
-void scalarMultList(List& L, ListElement element) {
+void ScalarMultList(List& L, ListElement element) {
     L.moveFront();
     while (L.position() < L.length()) {
         L.setAfter(L.peekNext() * element);
         L.moveNext();
     }
 }
-
-
 
 BigInteger BigInteger::add(const BigInteger& N) const {
     BigInteger A = *this;
