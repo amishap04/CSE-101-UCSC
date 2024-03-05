@@ -23,15 +23,6 @@ const ListElement BASE  = 1000000000;
 const int         POWER = 9;           
 
 
-void removeLeadingZeros( List* L) {
-    L->moveFront();
-    while (L->length() > 0 && !L->peekNext()) {
-        L->eraseAfter();
-    }
-}
-
-
-
 BigInteger::BigInteger() {
     digits = List();
     signum = 0;
@@ -57,6 +48,13 @@ BigInteger::BigInteger(long x) {
     }
 }
 
+
+void removeLeadingZeros( List* L) {
+    L->moveFront();
+    while (L->length() > 0 && !L->peekNext()) {
+        L->eraseAfter();
+    }
+}
 
 BigInteger::BigInteger(std::string s) {
     if (!s.length()) {
@@ -116,45 +114,6 @@ int BigInteger::sign() const{
 
 
 
-/*
-int BigInteger::compare(const BigInteger& N) const {
-    if (this->signum != N.signum) {
-        return this->signum > N.signum ? 1 : -1;
-    }
-    if (this->signum == 0) {
-        return 0;
-    }
-
-    List A = this->digits;
-    List B = N.digits;
-    int lengthComparison = A.length() - B.length();
-
-    if (this->signum == 1) {
-        if (lengthComparison != 0) {
-            return lengthComparison > 0 ? 1 : -1;
-        }
-    } else {
-        if (lengthComparison != 0) {
-            return lengthComparison < 0 ? 1 : -1;
-        }
-    }
-
-    A.moveFront();
-    B.moveFront();
-    while (A.position() < A.length()) {
-        int digitComparison = A.peekNext() - B.peekNext();
-        if (digitComparison != 0) {
-            return (this->signum == 1 ? 1 : -1) * (digitComparison > 0 ? 1 : -1);
-        }
-        A.moveNext();
-        B.moveNext();
-    }
-
-    return 0;
-}
-*/
-
-
 int BigInteger::compare(const BigInteger& N) const {
     if (signum > N.signum) {
         return 1;
@@ -199,6 +158,7 @@ void BigInteger::negate() {
     signum *= -1;
 }
 
+// helper functions tantalo mentioned in pa6 handout
 
 void negateList(List& L) {
     L.moveFront();
@@ -210,36 +170,42 @@ void negateList(List& L) {
 
 }
 
+
 void sumList(List& Result, List First, List Second, int signMultiplier) {
     Result.clear();
-    for(Second.moveFront(); Second.position() < Second.length(); Second.moveNext()) {
-        Second.setAfter(signMultiplier * Second.peekNext());
+    List TempSecond = Second;
+    
+    TempSecond.moveFront();
+    while (TempSecond.position() < TempSecond.length()) {
+        int currentValue = TempSecond.peekNext();
+        TempSecond.eraseAfter();
+        TempSecond.insertBefore(signMultiplier * currentValue);
+        TempSecond.moveNext();
     }
     
-    First.moveBack();
-    Second.moveBack();
+    First.moveFront();
+    TempSecond.moveFront();
     
-    while (First.position() > 0 && Second.position() > 0) {
-        Result.insertAfter(First.peekPrev() + Second.peekPrev());
-        First.movePrev();
-        Second.movePrev();
-    }
-    
-    while (First.position() > 0) {
-        Result.insertAfter(First.peekPrev());
-        First.movePrev();
-    }
-    
-    while (Second.position() > 0) {
-        Result.insertAfter(Second.peekPrev());
-        Second.movePrev();
+    while (First.position() < First.length() || TempSecond.position() < TempSecond.length()) {
+        int firstVal = 0, secondVal = 0;
+        if (First.position() < First.length()) {
+            firstVal = First.peekNext();
+            First.moveNext();
+        }
+        if (TempSecond.position() < TempSecond.length()) {
+            secondVal = TempSecond.peekNext();
+            TempSecond.moveNext();
+        }
+        Result.insertAfter(firstVal + secondVal);
     }
 
     Result.moveFront();
     while (Result.front() == 0 && Result.length() > 1) {
         Result.eraseAfter();
+        Result.moveFront();
     }
 }
+
 
 
 void invertListValues(List& myList) {
@@ -316,24 +282,32 @@ BigInteger BigInteger::add(const BigInteger& N) const {
     if (A.sign() > 0 && B.sign() < 0) {
         B.negate();
         return A.sub(B);
-    } else if (A.sign() < 0 && B.sign() > 0) {
+    } 
+    else if (A.sign() < 0 && B.sign() > 0) {
         A.negate();
         return B.sub(A);
-    } else if (A.sign() < 0 && B.sign() < 0) {
+    } 
+    else if (A.sign() < 0 && B.sign() < 0) {
         A.negate();
         B.negate();
         C = A.add(B);
         C.negate();
         return C;
     }
+
     if (A > B) {
         return B.add(A);
     }
-    List aList = A.digits;
-    List bList = B.digits;
-    List cList = C.digits;
+
+    List aList, bList, cList;
+
+    aList = A.digits;
+    bList = B.digits;
+    cList = C.digits;
+    
     long carry = 0;
     long temp = 0;
+
     aList.moveBack();
     bList.moveBack();
     while (aList.position() > 0 && bList.position() > 0) {
@@ -351,9 +325,11 @@ BigInteger BigInteger::add(const BigInteger& N) const {
         cList.insertAfter(temp);
         bList.movePrev();
     }
+
     if (carry > 0) {
         cList.insertAfter(carry);
     }
+
     C.signum = 1;
     C.digits = cList;
     return C;
@@ -366,6 +342,7 @@ BigInteger BigInteger::sub(const BigInteger& N) const {
     BigInteger A = N;
     BigInteger B = *this;
     BigInteger C;
+
     List aList = A.digits;
     List bList = B.digits;
     List cList = C.digits;
@@ -408,38 +385,42 @@ BigInteger BigInteger::sub(const BigInteger& N) const {
     bList.moveBack();
     long dist = 0;
     long temp = 0;
-    int i = bList.position();
-    while (!(i <= 0)) {
+    int pos = bList.position();
+    while (!(pos <= 0)) {
         if (aList.peekPrev() - dist < bList.peekPrev()) {
             temp = aList.peekPrev() + BASE - bList.peekPrev() - dist;
             dist = 1;
-        } else {
+        } 
+        else {
             temp = aList.peekPrev() - dist - bList.peekPrev();
             dist = 0;
         }
         cList.insertAfter(temp);
         aList.movePrev();
         bList.movePrev();
-        i--;
+        pos--;
     }
+
     while (aList.position() > 0) {
         if (aList.peekPrev() - dist < 0) {
             temp = aList.peekPrev() + BASE - dist;
             dist = 1;
-        } else {
+        } 
+        else {
             temp = aList.peekPrev() - dist;
             dist = 0;
         }
         cList.insertAfter(temp);
         aList.movePrev();
     }
+
     C.digits = cList;
     removeLeadingZeros(&(C.digits));
     C.signum = -1;
     return C;
 }
 
-
+// helper function for mult
 List multiplyAndShift(long scalar, List *inputList, int* shiftCount) {
     List result;
     long carryOver = 0;
@@ -467,7 +448,7 @@ List multiplyAndShift(long scalar, List *inputList, int* shiftCount) {
     return result;
 }
 
-
+// another mult helper function
 List multHelper(long sVal, List *bList, int* count) {
     List newL;
     long carryVal = 0;
@@ -498,48 +479,54 @@ BigInteger BigInteger::mult(const BigInteger& N) const {
 
     List aList = A.digits;
     List bList = B.digits;
-    
+
     int count = 0;
 
     aList.moveBack();
     bList.moveBack();
-    int pos = aList.position();
-    for (int i = pos; i > 0; i--) {
-        List temp = multHelper(aList.peekPrev(), &bList, &count);  
+    while (aList.position() > 0) {
+        List temp = multHelper(aList.peekPrev(), &bList, &count);
         BigInteger Temp;
         Temp.signum = 1;
         Temp.digits = temp;
-        C = C.add(Temp);  
-        aList.movePrev();  
+        C = C.add(Temp);
+        aList.movePrev();
         count++;
     }
-    C.signum = A.signum * B.signum;  
+    C.signum = A.signum * B.signum;
     return C;
 }
+
+
 
 std::string BigInteger::to_string() {
     std::string out = "";
     if (this->signum == 0) {
-        return "0";  
+        return "0";
     } else if (signum == -1) {
-        out += "-";  
+        out += "-";
     }
     digits.moveFront();
 
     while (digits.front() == 0 && digits.length() > 1) {
         digits.eraseAfter();
+        digits.moveFront();
     }
-    for (digits.moveFront(); digits.position() < digits.length(); digits.moveNext()) {
+
+    while (digits.position() < digits.length()) {
         std::string A = std::to_string(digits.peekNext());
         std::string B = "";
 
         while ((int)(B.length() + A.length()) < POWER && digits.position() != 0) {
             B += '0';
         }
-        out += (B + A);  
+        out += (B + A);
+        digits.moveNext();
     }
     return out;
 }
+
+
 
 
 std::ostream& operator<<( std::ostream& stream, BigInteger N ) {
