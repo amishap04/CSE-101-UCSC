@@ -6,15 +6,14 @@
  * * * * Implementation for Dictionary ADT // Description
  * * * ***/
 
+
 #include "Dictionary.h"
 #include <stdexcept>
 
 using namespace std;
 
-// node constructor
 Dictionary::Node::Node(keyType k, valType v) : key(k), val(v), parent(nullptr), left(nullptr), right(nullptr) {}
 
-//helper functions
 void Dictionary::inOrderString(std::string& s, Node* R) const {
     if (R != nil) {
         inOrderString(s, R->left);
@@ -33,7 +32,7 @@ void Dictionary::preOrderString(std::string& s, Node* R) const {
 
 void Dictionary::preOrderCopy(Node* R, Node* N) {
     if (R != N) {
-        setValue(R->key, R->val); // This will insert a new node or update an existing one
+        setValue(R->key, R->val); 
         preOrderCopy(R->left, N);
         preOrderCopy(R->right, N);
     }
@@ -46,6 +45,22 @@ void Dictionary::postOrderDelete(Node* R) {
         delete R;
     }
 }
+
+void Dictionary::transplant(Node* U, Node* V) {
+    if (U->parent == nil) {
+        root = V;
+    }
+    else if (U == U->parent->left) {
+        U->parent->left = V;
+    }
+    else {
+        U->parent->right = V;
+    }
+    if (V != nil) {
+        V->parent = U->parent;
+    }
+}
+
 
 Dictionary::Node* Dictionary::search(Node* R, keyType k) const {
     if (R == nil || R->key == k) return R;
@@ -84,22 +99,18 @@ Dictionary::Node* Dictionary::findPrev(Node* N) {
 }
 
 
-// default constructor
 Dictionary::Dictionary() : nil(new Node("", 0)), root(nil), current(nil), num_pairs(0) {}
 
-// copy constructor
 Dictionary::Dictionary(const Dictionary& D) : Dictionary() {
     preOrderCopy(D.root, D.nil);
 }
 
-// destructor
 Dictionary::~Dictionary() {
     postOrderDelete(root);
     delete nil;
 }
 
 
-// access functions:
 int Dictionary::size() const {
     return num_pairs;
 }
@@ -128,7 +139,6 @@ valType& Dictionary::currentVal() const {
     return current->val;
 }
 
-// manipulation functions
 void Dictionary::clear() {
     postOrderDelete(root);
     root = nil;
@@ -161,6 +171,41 @@ void Dictionary::setValue(keyType k, valType v) {
     }
 }
 
+
+void Dictionary::remove(keyType k) {
+    if (contains(k) == false) {
+        throw logic_error("Dictionary: remove(): key \"" + k + "\" does not exist");
+    }
+    Node* N = search(root, k);
+    if (N == current) {
+        current = nil;
+    }
+    if (N->left == nil) {
+        transplant(N, N->right);
+        delete N;
+    }
+    else if (N->right == nil) {
+        transplant(N, N->left);
+        delete N;
+    }
+    else {
+        Node* Y = findMin(N->right);
+        if (Y->parent != N) {
+            transplant(Y, Y->right);
+            Y->right = N->right;
+            Y->right->parent = Y;
+        }
+        transplant(N, Y);
+        Y->left = N->left;
+        Y->left->parent = Y;
+        delete N;
+    }
+    num_pairs--;
+}
+
+
+
+/*
 void Dictionary::remove(keyType k) {
     Node* node = search(root, k);
     if (node == nil) return;
@@ -183,6 +228,8 @@ void Dictionary::remove(keyType k) {
     delete node;
     num_pairs--;
 }
+*/
+
 
 void Dictionary::begin() {
     current = (root != nil) ? findMin(root) : nil;
@@ -204,7 +251,6 @@ void Dictionary::prev() {
     }
 }
 
-// other functions
 std::string Dictionary::to_string() const {
     std::string s;
     inOrderString(s, root);
@@ -224,7 +270,6 @@ bool Dictionary::equals(const Dictionary& D) const {
 
 
 
-// overloaded operators
 std::ostream& operator<<(std::ostream& stream, Dictionary& D) {
     return stream << D.Dictionary::to_string();
 }
@@ -243,3 +288,4 @@ Dictionary& Dictionary::operator=(const Dictionary& D) {
     }
     return *this;
 }
+
