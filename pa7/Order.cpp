@@ -19,31 +19,34 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    ifstream infile(argv[1]);
-    if (!infile.is_open()) {
+    ifstream input(argv[1]);
+
+    if (!input.is_open()) {
         cerr << "Could not open the file " << argv[1] << endl;
         return EXIT_FAILURE;
     }
-    ofstream outfile;
-    outfile.open(argv[2], fstream::out);
+
+    ofstream output;
+    output.open(argv[2], fstream::out);
 
 
-    Dictionary D;
-    string k = "";
-    int v = 1;
-    while (getline(infile, k)) {
-        D.setValue(k, v);
-        v++;
+    Dictionary newDict;
+    string newString = "";
+    int val = 1;
+    while (getline(input, newString)) {
+        newDict.setValue(newString, val);
+        val++;
     }
 
-    outfile << D.to_string() << endl;
-    outfile << D.pre_string() << endl;
+    output << newDict.to_string() << endl;
+    output << newDict.pre_string() << endl;
 
-    D.clear();
+    newDict.clear();
 
-    infile.close();
-    outfile.close();
-    return EXIT_SUCCESS;
+    input.close();
+    output.close();
+
+    return 0;
 }
 
 
