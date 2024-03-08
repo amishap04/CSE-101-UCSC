@@ -19,6 +19,7 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
+    // get input file
     ifstream input(argv[1]);
 
     if (!input.is_open()) {
@@ -26,18 +27,24 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
+    // get output file
     ofstream output;
+
+    // open output file
     output.open(argv[2], fstream::out);
 
-
+    // create new dictionary, string, and int
     Dictionary newDict;
     string newString = "";
     int val = 1;
+
+    // loop through and get each line of input
     while (getline(input, newString)) {
         newDict.setValue(newString, val);
         val++;
     }
 
+    // printing to output
     output << newDict.to_string() << endl;
     output << newDict.pre_string() << endl;
 
