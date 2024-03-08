@@ -13,7 +13,18 @@
 using namespace std;
 
 // node constructor
-Dictionary::Node::Node(keyType k, valType v) : key(k), val(v), parent(nullptr), left(nullptr), right(nullptr) {}
+
+Dictionary::Node::Node(keyType k, valType v)
+    : key(k),  
+      val(v),  
+      parent(nullptr), 
+      left(nullptr), 
+      right(nullptr)   
+{
+    
+}
+
+
 
 // helper functions
 void Dictionary::inOrderString(std::string& s, Node* R) const {
@@ -56,18 +67,23 @@ Dictionary::Node* Dictionary::search(Node* R, keyType k) const {
 }
 
 Dictionary::Node* Dictionary::findMin(Node* R) {
-    while (R != nil && R->left != nil) R = R->left;
+    while (R != nil && R->left != nil){
+	 R = R->left;
+    }
     return R;
 }
 
 Dictionary::Node* Dictionary::findMax(Node* R) {
-    while (R != nil && R->right != nil) R = R->right;
+    while (R != nil && R->right != nil){ 
+	R = R->right;
+    }
     return R;
 }
 
 Dictionary::Node* Dictionary::findNext(Node* N) {
     if (N->right != nil) return findMin(N->right);
     Node* P = N->parent;
+
     while (P != nil && N == P->right) {
         N = P;
         P = P->parent;
@@ -86,7 +102,15 @@ Dictionary::Node* Dictionary::findPrev(Node* N) {
 }
 
 // default constructor
-Dictionary::Dictionary() : nil(new Node("", 0)), root(nil), current(nil), num_pairs(0) {}
+Dictionary::Dictionary() 
+    : nil(new Node("", 0)), 
+      root(nil),            
+      current(nil),          
+      num_pairs(0)           
+{
+}
+
+
 
 // copy constructor
 Dictionary::Dictionary(const Dictionary& D) : Dictionary() {
@@ -145,18 +169,22 @@ void Dictionary::setValue(keyType k, valType v) {
     }
     if (node != nil) {
         node->val = v;
-    } else {
+    } 
+    else {
         Node* newNode = new Node(k, v);
         newNode->parent = parent;
         newNode->left = nil;
         newNode->right = nil;
         if (parent == nil) {
             root = newNode;
-        } else if (k < parent->key) {
+        } 
+        else if (k < parent->key) {
             parent->left = newNode;
-        } else {
+        } 
+        else {
             parent->right = newNode;
         }
+
         num_pairs++;
     }
 }
@@ -176,9 +204,11 @@ void Dictionary::remove(keyType k) {
     if (child != nil) child->parent = node->parent;
     if (node->parent == nil) {
         root = child;
-    } else if (node == node->parent->left) {
+    } 
+    else if (node == node->parent->left) {
         node->parent->left = child;
-    } else {
+    } 
+    else {
         node->parent->right = child;
     }
     if (node == current) current = nil;
