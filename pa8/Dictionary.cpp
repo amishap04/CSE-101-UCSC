@@ -100,11 +100,11 @@ void Dictionary::postOrderDelete(Node* R) {
 }
 
 Dictionary::Node* Dictionary::search(Node* R, keyType k) const {
-    if (R == nil || R->key == k) return R;
-    if (k < R->key) return search(R->left, k);
-    else return search(R->right, k);
+    while (R != nil && k != R->key) {
+        R = (k < R->key) ? R->left : R->right;
+    }
+    return R;
 }
-
 
 Dictionary::Node* Dictionary::findMin(Node* R) {
     while (R != nil && R->left != nil){
