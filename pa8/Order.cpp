@@ -6,6 +6,10 @@
  * * * * Client file for Dictionary ADT // Description
  * * * ***/
 
+
+
+// same as pa7
+
 #include "Dictionary.h"
 #include <fstream>
 
@@ -48,6 +52,9 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
+
+
 
 
 
