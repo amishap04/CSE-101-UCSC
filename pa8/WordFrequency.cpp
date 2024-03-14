@@ -13,31 +13,36 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    size_t begin, end, len;
-    ifstream in;
-    ofstream out;
-    string line, key;
+    size_t begin;
+    size_t end;
+    size_t len;
+    ifstream input;
+    ofstream output;
+    string line;
+    string key;
     string delim = " \t\\\"\',<.>/?;:[{]}|`~!@#$%^&*()-_=+0123456789";
-    Dictionary D;
+    Dictionary newDict;
 
     if (argc != 3) {
         cerr << "Usage: " << argv[0] << " <input file> <output file>" << endl;
         return EXIT_FAILURE;
     }
 
-    in.open(argv[1]);
-    if (!in.is_open()) {
+    input.open(argv[1]);
+
+    if (!input.is_open()) {
         cerr << "Unable to open file " << argv[1] << " for reading" << endl;
         return EXIT_FAILURE;
     }
 
-    out.open(argv[2]);
-    if (!out.is_open()) {
+    output.open(argv[2]);
+
+    if (!output.is_open()) {
         cerr << "Unable to open file " << argv[2] << " for reading" << endl;
         return EXIT_FAILURE;
     }
 
-    while (getline(in, line)) {
+    while (getline(input, line)) {
         len = line.length();
 
         begin = min(line.find_first_not_of(delim, 0), len);
@@ -47,11 +52,11 @@ int main(int argc, char* argv[]) {
         while (key != "") {
             transform(key.begin(), key.end(), key.begin(), ::tolower);
 
-            if (D.contains(key)) {
-                D.getValue(key)++;
+            if (newDict.contains(key)) {
+                newDict.getValue(key)++;
             }
             else {
-                D.setValue(key, 1);
+                newDict.setValue(key, 1);
             }
 
             begin = min(line.find_first_not_of(delim, (end + 1)), len);
@@ -60,11 +65,11 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    out << D << endl;
+    output << newDict << endl;
     
-    D.clear();
-    in.close();
-    out.close();
+    newDict.clear();
+    input.close();
+    output.close();
 
     return 0;
 }
