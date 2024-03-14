@@ -107,6 +107,7 @@ Dictionary::Node* Dictionary::search(Node* R, keyType k) const {
     return R;
 }
 
+
 Dictionary::Node* Dictionary::findMin(Node* R) {
     while (R != nil && R->left != nil){
 	 R = R->left;
@@ -120,6 +121,7 @@ Dictionary::Node* Dictionary::findMax(Node* R) {
     }
     return R;
 }
+
 
 Dictionary::Node* Dictionary::findNext(Node* N) {
     if (N->right != nil) return findMin(N->right);
